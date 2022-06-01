@@ -52,6 +52,7 @@ int main()
     server_address.sin_addr.s_addr = INADDR_ANY;
 
     stop_on_error(bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address)));
+    printf("Servidor escuchando en el puerto 8080");
 
     stop_on_error(listen(server_socket, 2));
 
