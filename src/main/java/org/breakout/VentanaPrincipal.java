@@ -2,6 +2,7 @@ package org.breakout;
 
 import javafx.concurrent.Task;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -19,11 +20,15 @@ public class VentanaPrincipal {
      * @throws FileNotFoundException the file not found exception
      */
     public static void ventana(Stage Lobby) throws FileNotFoundException, URISyntaxException {
-        Lobby.setTitle("Breakout");
-        Group root = new Group(); // se crea la ventana
-        Scene scene = new Scene(root, 800, 750, Color.valueOf("#262934")); // se liga scene al root
-        Lobby.setScene(scene); // se le da al metodo el scene
-        // Imagen de fondo
+        Lobby.setTitle( "Breakout" );
+
+        Racket racket = new Racket(200, 200, 100, 50);
+        
+        Group root = new Group(racket.getShape()); //se crea la ventana
+
+        Scene scene = new Scene(root,800,750); //se liga scene al root
+        Lobby.setScene( scene ); //se le da al metodo el scene
+        //Imagen de fondo
 
         Task<Void> ventanaPrincipal = new Task<Void>() {
             @Override
