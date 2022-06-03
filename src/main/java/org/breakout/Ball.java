@@ -4,8 +4,8 @@ import javafx.scene.shape.Circle;
 
 public class Ball{
     private Circle circle;
-    private int xSpeed = -3;
-    private int ySpeed = 3;
+    private int xSpeed = -10;
+    private int ySpeed = 10;
     private int xLimit;
     private int yLimit;
 
@@ -15,9 +15,8 @@ public class Ball{
         this.yLimit = 400;
     }
 
-    public void move(){
-        int x = (int)this.circle.getCenterX();
-        int y = (int)this.circle.getCenterY();
+
+    public void checkParameters(int x, int y){
         if (x < 0){
             this.changeDirectionX();
         }else if(x > xLimit){ //Falta poner el tamaño de la ventana
@@ -27,6 +26,12 @@ public class Ball{
         }else if(y > yLimit){ //Falta poner el tamaño de la ventana
             this.changeDirectionY();
         }
+    }
+
+    public void move(){
+        int x = (int)this.circle.getCenterX();
+        int y = (int)this.circle.getCenterY();
+        checkParameters(x, y);
         this.circle.setCenterX(x + xSpeed);
         this.circle.setCenterY(y + ySpeed);
     }
@@ -42,6 +47,4 @@ public class Ball{
     public Circle getShape(){
         return this.circle;
     }
-    // public 
-
 }

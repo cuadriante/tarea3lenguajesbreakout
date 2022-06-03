@@ -2,13 +2,13 @@ package org.breakout;
 
 import javafx.scene.shape.Rectangle;
 
-public class Racket{
+public class PlayerBar {
     private Rectangle rectangle;
     float center;
     // private PhysicsEntity prueba;
     private final int SPEED = 5;
 
-    public Racket(int posX, int posY, int width, int height){
+    public PlayerBar(int posX, int posY, int width, int height){
         // this.rectangle = new Rectangle(posX, posY, width, height);
         this.rectangle = new Rectangle(width, height);
         this.rectangle.setX(posX);
