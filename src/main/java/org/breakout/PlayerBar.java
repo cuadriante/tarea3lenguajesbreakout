@@ -41,4 +41,5 @@ public class PlayerBar {
             this.setCenter();
         }
     }
+
 }

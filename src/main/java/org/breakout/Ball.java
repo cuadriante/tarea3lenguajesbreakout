@@ -17,16 +17,28 @@ public class Ball{
 
 
     public void checkParameters(int x, int y){
-        if (x < 0){
+        int radius = (int)this.circle.getRadius() + 10; //Por algun motivo si le pongo 10 funciona
+        if (x - radius < 0){
             this.changeDirectionX();
-        }else if(x > xLimit){ //Falta poner el tamaño de la ventana
+        }else if(x + radius > xLimit){ //Falta poner el tamaño de la ventana
             this.changeDirectionX();
-        }else if(y < 0){
+        }else if(y - radius < 0){
             this.changeDirectionY();
-        }else if(y > yLimit){ //Falta poner el tamaño de la ventana
-            this.changeDirectionY();
+        }else if(y + radius> yLimit){ //Falta poner el tamaño de la ventana
+            // this.changeDirectionY();
+            // this.removeBall();
         }
     }
+
+    public boolean dropBall() {
+        int y = (int)this.circle.getCenterY();
+        boolean droped = false;
+        if (y > yLimit){
+            droped = true;
+        }
+        return droped;
+    }
+
 
     public void move(){
         int x = (int)this.circle.getCenterX();
@@ -44,7 +56,19 @@ public class Ball{
         this.xSpeed = -1*this.xSpeed;
     }
 
+    // public void changeDirections(){
+    //     this.xSpeed = -1*this.xSpeed;
+    //     this.ySpeed = -1*this.ySpeed;
+    // }
+
     public Circle getShape(){
         return this.circle;
+    }
+
+
+    public void checkCollision(PlayerBar playerBar) {
+        if(this.circle.getBoundsInParent().intersects( playerBar.getShape().getBoundsInParent()) ){
+            this.changeDirectionY();
+        }
     }
 }

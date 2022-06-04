@@ -1,6 +1,11 @@
 package org.breakout;
 
 import javafx.concurrent.Task;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.breakout.GameWindow;
 import org.ietf.jgss.GSSManager;
 
@@ -9,18 +14,22 @@ public class GameLoop {
     private boolean gameStatus = true;
     Client client;
     private final GameWindow gameWindow;
-    private final Ball ball;
+    // private final Ball ball;
+    private List<Ball> ballList;
+    private final PlayerBar playerBar;
 
-    GameLoop(GameWindow gw, Ball b){
+    GameLoop(GameWindow gw, ArrayList<Ball> bl, PlayerBar pb){
         gameWindow = gw;
-        ball = b;
+        ballList = bl;
+        playerBar = pb;
         System.out.println("wowow");
     }
 
     //void receiveClient(Client client);
 
     void loop(){
-        gameWindow.getBall().move();
+        // *COMENTÉ ESTO JEJE
+        // gameWindow.getBall().move(); 
        while(LOOP) {
            //
            try {
@@ -43,17 +52,29 @@ public class GameLoop {
                 @Override
                 public Void call() {
                     if (gameStatus) {
-                        try {
-                           ball.move();
-                            Thread.sleep(200);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        // ArrayList<Ball> ballListCopy = new ArrayList<Ball>(ballList);
+                        // for (Ball ball : ballListCopy){
+                        Iterator<Ball> itr = ballList.iterator();
+                        while(itr.hasNext()){
+                            Ball ball = itr.next();
+                            try {
+                                ball.move();
+                                ball.checkCollision(playerBar);
+                                if(ball.dropBall()){
+                                    gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
+                                    atLeastOneBall();
+                                }
+                                Thread.sleep(200);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     } else{
                         gameWindow.endGame();
                     }
                     return null;
                 }
+
             };
             ballMovementAnimation.setOnSucceeded(event -> {
                 if (ballMovementAnimation.isDone()){
@@ -61,5 +82,11 @@ public class GameLoop {
                 }
             });
             new Thread(ballMovementAnimation).start();
+        }
+
+    private void atLeastOneBall() {
+        if (ballList.size() == 0){
+            gameStatus = false;
+        }
     }
 }
