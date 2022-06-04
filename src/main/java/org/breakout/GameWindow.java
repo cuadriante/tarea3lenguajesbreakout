@@ -1,7 +1,6 @@
 package org.breakout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -22,7 +21,7 @@ public class GameWindow {
 
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
-        Ball ball = new Ball(100, 100, 10);
+        Ball ball = new Ball(100, 100);
         ballList.add(ball);
         start(Lobby);
         connectToClient();
@@ -101,6 +100,17 @@ public class GameWindow {
         root.getChildren().remove(ball.getShape());
         ballList.remove(ball);
         System.out.println(ballList.size());
+    }
+
+    /**
+     * Agrega una bola al juego
+     */
+    public void newBall() {
+        int y = STAGE_HEIGHT/2;
+        int x = STAGE_WIDTH/2;
+        Ball newBall = new Ball(x, y);
+        ballList.add(newBall);
+        root.getChildren().add(newBall.getShape());
     }
 
 }

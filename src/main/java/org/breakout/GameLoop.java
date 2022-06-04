@@ -52,8 +52,6 @@ public class GameLoop {
                 @Override
                 public Void call() {
                     if (gameStatus) {
-                        // ArrayList<Ball> ballListCopy = new ArrayList<Ball>(ballList);
-                        // for (Ball ball : ballListCopy){
                         Iterator<Ball> itr = ballList.iterator();
                         while(itr.hasNext()){
                             Ball ball = itr.next();
@@ -88,5 +86,12 @@ public class GameLoop {
         if (ballList.size() == 0){
             gameStatus = false;
         }
+    }
+
+    /**
+     * Crea una bola nueva en el juego
+     */
+    private void newBall(){
+        gameWindow.newBall();
     }
 }
