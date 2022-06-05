@@ -10,10 +10,10 @@ public class BlockFactory {
         Block block = null;
         switch (type)
         {
-            case 0 -> block = new GreenBlock(x, y, width, height);
-            case 1 -> block = new RedBlock(x, y, width, height);
-            case 2 -> block = new OrangeBlock(x, y, width, height);
-            case 3 -> block = new YellowBlock(x, y, width, height);
+            case 0 -> block = new SpeedUpBlock(x, y, width, height);
+            case 1 -> block = new MakeSmallerBlock(x, y, width, height);
+            case 2 -> block = new MakeBiggerBlock(x, y, width, height);
+            case 3 -> block = new SpeedDownBlock(x, y, width, height);
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
         return block;

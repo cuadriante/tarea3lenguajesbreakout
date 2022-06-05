@@ -112,6 +112,7 @@ public class GameWindow {
                 blockList.add(block);
                 root.getChildren().add(block.getShape());
                 x += BlockFactory.getWidth() + 5;
+                block.createRectangleColor(row);
             }
             x = 3;
             y += BlockFactory.getHeight() + 5;

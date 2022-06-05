@@ -46,14 +46,31 @@ public abstract class Block {
         id = id;
     }
 
-    public void setRectangleColor(Color col, Color stroke){
+    public void createRectangleColor(int row){
+         switch (row) {
+            case (0), (1) -> setRectangleColor(Color.SEAGREEN);
+            case (2), (3) -> setRectangleColor(Color.LEMONCHIFFON);
+            case (4), (5) -> setRectangleColor(Color.ORANGE);
+            case (6), (7) -> setRectangleColor(Color.FIREBRICK);
+            default -> throw new IllegalStateException("Unexpected value: " + row);
+        };
+
+    }
+
+    public void setRectangleColor(Color col){
         rectangle.setArcWidth(15.0);
         rectangle.setArcHeight(10.0);
         setCenter();
         rectangle.setFill(col);
+
+    }
+
+    public void setRectangleStroke(Color stroke){
         rectangle.setStrokeWidth(2);
         rectangle.setStroke(stroke);
     }
+
+
 
 }
 
