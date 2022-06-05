@@ -1,5 +1,6 @@
 package org.breakout.blockFactory;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Block {
@@ -15,7 +16,7 @@ public abstract class Block {
         this.rectangle = new Rectangle(width, height);
         this.rectangle.setX(posX);
         this.rectangle.setY(posY);
-        setCenter();
+
     }
 
     abstract void construct();
@@ -36,6 +37,7 @@ public abstract class Block {
     }
 
     public void setType(int type) {
+        this.type = type;
     }
 
     public int getId() {
@@ -46,9 +48,19 @@ public abstract class Block {
         id = id;
     }
 
+    public void setRectangleColor(Color col, Color stroke){
+        rectangle.setArcWidth(15.0);
+        rectangle.setArcHeight(10.0);
+        setCenter();
+        rectangle.setFill(col);
+        rectangle.setStrokeWidth(2);
+        rectangle.setStroke(stroke);
+    }
+
 }
 
-enum Color
+
+enum col
 {
     GREEN, YELLOW, ORANGE, RED
 }

@@ -1,12 +1,7 @@
 package org.breakout.blockFactory;
 
-import org.breakout.Ball;
-import org.breakout.PlayerBar;
-
-import java.util.ArrayList;
-
 public class BlockFactory {
-    private static final int width = 40;
+    private static final int width = 45;
     private static final int height = 10;
     private static final int rows = 8;
     private static final int columns = 8;
@@ -24,12 +19,12 @@ public class BlockFactory {
         return block;
     }
 
-    public static Color getColorByType(int type){ // esto se puede hacer mas mejor
+    public static col getColorByType(int type){ // esto se puede hacer mas mejor
         return switch (type) {
-            case (0) -> Color.GREEN;
-            case (1) -> Color.YELLOW;
-            case (2) -> Color.ORANGE;
-            case (3) -> Color.RED;
+            case (0) -> col.GREEN;
+            case (1) -> col.YELLOW;
+            case (2) -> col.ORANGE;
+            case (3) -> col.RED;
             default -> null;
         };
     }

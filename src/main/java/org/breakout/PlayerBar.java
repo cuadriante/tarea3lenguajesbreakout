@@ -1,5 +1,6 @@
 package org.breakout;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -24,6 +25,11 @@ public class PlayerBar {
         this.rectangle = new Rectangle(width, height);
         this.rectangle.setX(posX);
         this.rectangle.setY(posY);
+        rectangle.setArcWidth(15.0);
+        rectangle.setArcHeight(10.0);
+        rectangle.setFill(Color.CRIMSON);
+        rectangle.setStrokeWidth(2);
+        rectangle.setStroke(Color.PINK);
         setCenter();
     }
 

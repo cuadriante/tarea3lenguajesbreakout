@@ -3,18 +3,21 @@ package org.breakout;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
+
 public class GameWindow {
 
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    private final PlayerBar playerBar = new PlayerBar(200, 350, 100, 20);
+    private final PlayerBar playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
     // private final Ball ball = new Ball(100, 100, 10);
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
@@ -23,7 +26,7 @@ public class GameWindow {
 
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
-        Ball ball = new Ball(100, 100, this);
+        Ball ball = new Ball(STAGE_WIDTH/2, STAGE_HEIGHT - 180, this);
         ballList.add(ball);
         start(Lobby);
         connectToClient();
@@ -58,7 +61,7 @@ public class GameWindow {
         root.setPrefSize(STAGE_WIDTH, STAGE_HEIGHT);
 
         Scene scene = new Scene(root); //se liga scene al root
-
+        scene.setFill(Color.SADDLEBROWN);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override
@@ -82,8 +85,8 @@ public class GameWindow {
 
     public void buildBlockList() { // esto se hace con la matriz del server
         int id = 0;
-        int x = 5;
-        int y = 0;
+        int x = 3;
+        int y = 40; // dejar este espacio para poner la info del jugador
 
         for (int row = 0; row < BlockFactory.getRows(); row++) {
             for (int col = 0; col < BlockFactory.getColumns(); col++) {
@@ -91,9 +94,9 @@ public class GameWindow {
                 Block block = BlockFactory.buildBlock(type, x, y, id);
                 blockList.add(block);
                 root.getChildren().add(block.getShape());
-                x += BlockFactory.getWidth() + 10;
+                x += BlockFactory.getWidth() + 5;
             }
-            x = 5;
+            x = 3;
             y += BlockFactory.getHeight() + 5;
         }
     }

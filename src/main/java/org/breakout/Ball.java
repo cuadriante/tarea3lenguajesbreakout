@@ -12,7 +12,7 @@ public class Ball{
     private int ySpeed = 10;
     private int xLimit;
     private int yLimit;
-    private final int RADIUS = 10;
+    private final int RADIUS = 5;
 
     private GameWindow gameWindow;
     private int life;
