@@ -1,8 +1,8 @@
 package org.breakout;
 
-import org.breakout.GameWindow;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+import org.breakout.blockFactory.Block;
 
 /**
  * Clase de la bola de Breakout.
@@ -124,8 +124,19 @@ public class Ball{
      * lo hace, cambia la dirección de la bola
      * @param playerBar Barra del jugador
      */
-    public void checkCollision(PlayerBar playerBar) {
+    public void checkPlayerBarCollision(PlayerBar playerBar) {
         if(this.circle.getBoundsInParent().intersects( playerBar.getShape().getBoundsInParent()) ){
+            this.changeDirectionY();
+        }
+    }
+    public void checkCollision() {
+        for(Block b : gameWindow.getBlockList()){
+            if(b.getShape().isVisible() && this.circle.getBoundsInParent().intersects(b.getShape().getBoundsInParent()) ){
+                this.changeDirectionY();
+                b.getShape().setVisible(false);
+            }
+        }
+        if(this.circle.getBoundsInParent().intersects(gameWindow.getPlayerBar().getShape().getBoundsInParent()) ){
             this.changeDirectionY();
         }
     }

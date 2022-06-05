@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.breakout.GameWindow;
-import org.ietf.jgss.GSSManager;
-
 public class GameLoop {
     private boolean LOOP = true;
     private boolean gameStatus = true;
@@ -34,7 +31,7 @@ public class GameLoop {
             //
             try {
                 System.out.println("wowo");
-                Thread.sleep(4000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -57,7 +54,7 @@ public class GameLoop {
                         Ball ball = itr.next();
                         try {
                             ball.move();
-                            ball.checkCollision(playerBar);
+                            ball.checkCollision();
                             if(ball.dropBall()){
                                 gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
                                 atLeastOneBall();

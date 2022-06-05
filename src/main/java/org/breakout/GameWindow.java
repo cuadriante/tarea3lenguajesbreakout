@@ -179,8 +179,13 @@ public class GameWindow {
     //     return this.ball;
     // }
 
-    public void setBlockList(){
 
+    public PlayerBar getPlayerBar() {
+        return playerBar;
+    }
+
+    public ArrayList<Block> getBlockList() {
+        return blockList;
     }
 
     public void endGame(){
