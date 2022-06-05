@@ -42,68 +42,11 @@ public class GameWindow {
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
         Lobby.setResizable(false);
-        Ball ball = new Ball(STAGE_WIDTH/2, STAGE_HEIGHT - 180, this);
+        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
         ballList.add(ball);
         start(Lobby);
         createLabels();
         connectToClient();
-    }
-
-    private void createLabels() {
-
-        double fontSize = 15;
-        FontWeight fontWeight = FontWeight.BOLD;
-        Font numberFont = Font.font("Biome", fontWeight,fontSize);
-
-        double labelFontSize = 10;
-        FontWeight labelFontWeight = FontWeight.BOLD;
-        Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
-
-        String puntaje = Integer.toString(pts);
-        puntos.setText(puntaje);
-        puntos.setX(10);
-        puntos.setY(30);
-        puntos.setFill(Color.SADDLEBROWN);
-        puntos.setFont(numberFont);
-
-        puntosLabel.setText("SCORE");
-        puntosLabel.setX(10);
-        puntosLabel.setY(15);
-        puntosLabel.setFill(Color.SADDLEBROWN);
-        puntosLabel.setFont(labelFont);
-
-        String nivelString = Integer.toString(lvl);
-        level.setText(nivelString);
-        level.setX(100);
-        level.setY(30);
-        level.setFill(Color.SADDLEBROWN);
-        level.setFont(numberFont);
-
-        levelLabel.setText("LEVEL");
-        levelLabel.setX(100);
-        levelLabel.setY(15);
-        levelLabel.setFill(Color.SADDLEBROWN);
-        levelLabel.setFont(labelFont);
-
-        String livesString = Integer.toString(life);
-        lives.setText(livesString);
-        lives.setX(380);
-        lives.setY(30);
-        lives.setFill(Color.SADDLEBROWN);
-        lives.setFont(numberFont);
-
-        livesLabel.setText("LIVES");
-        livesLabel.setX(365);
-        livesLabel.setY(15);
-        livesLabel.setFill(Color.SADDLEBROWN);
-        livesLabel.setFont(labelFont);
-
-        root.getChildren().add(puntos);
-        root.getChildren().add(level);
-        root.getChildren().add(lives);
-        root.getChildren().add(livesLabel);
-        root.getChildren().add(puntosLabel);
-        root.getChildren().add(levelLabel);
     }
 
     private void connectToClient() {
@@ -211,6 +154,63 @@ public class GameWindow {
         Ball newBall = new Ball(x, y, this);
         ballList.add(newBall);
         root.getChildren().add(newBall.getShape());
+    }
+
+    private void createLabels() {
+
+        double fontSize = 15;
+        FontWeight fontWeight = FontWeight.BOLD;
+        Font numberFont = Font.font("Biome", fontWeight,fontSize);
+
+        double labelFontSize = 10;
+        FontWeight labelFontWeight = FontWeight.BOLD;
+        Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
+
+        String puntaje = Integer.toString(pts);
+        puntos.setText(puntaje);
+        puntos.setX(10);
+        puntos.setY(30);
+        puntos.setFill(Color.SADDLEBROWN);
+        puntos.setFont(numberFont);
+
+        puntosLabel.setText("SCORE");
+        puntosLabel.setX(10);
+        puntosLabel.setY(15);
+        puntosLabel.setFill(Color.SADDLEBROWN);
+        puntosLabel.setFont(labelFont);
+
+        String nivelString = Integer.toString(lvl);
+        level.setText(nivelString);
+        level.setX(100);
+        level.setY(30);
+        level.setFill(Color.SADDLEBROWN);
+        level.setFont(numberFont);
+
+        levelLabel.setText("LEVEL");
+        levelLabel.setX(100);
+        levelLabel.setY(15);
+        levelLabel.setFill(Color.SADDLEBROWN);
+        levelLabel.setFont(labelFont);
+
+        String livesString = Integer.toString(life);
+        lives.setText(livesString);
+        lives.setX(380);
+        lives.setY(30);
+        lives.setFill(Color.SADDLEBROWN);
+        lives.setFont(numberFont);
+
+        livesLabel.setText("LIVES");
+        livesLabel.setX(365);
+        livesLabel.setY(15);
+        livesLabel.setFill(Color.SADDLEBROWN);
+        livesLabel.setFont(labelFont);
+
+        root.getChildren().add(puntos);
+        root.getChildren().add(level);
+        root.getChildren().add(lives);
+        root.getChildren().add(livesLabel);
+        root.getChildren().add(puntosLabel);
+        root.getChildren().add(levelLabel);
     }
 
 }

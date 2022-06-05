@@ -71,14 +71,14 @@ public class PlayerBar {
      * Hace la raqueta de juego más ancha
      */
     public void makeBigger(){
-        int extraWidth = (int)(rectangle.getWidth()*0.25);
+        int extraWidth = (int)(rectangle.getWidth()*0.2);
         rectangle.setWidth(rectangle.getWidth() + extraWidth);
     }
     /**
      * Hace la barra de juego más angosta
      */
     public void makeSmaller(){
-        int extraWidth = (int)(rectangle.getWidth()*0.25);
-        rectangle.setWidth(rectangle.getWidth() + extraWidth);
+        int extraWidth = (int)(rectangle.getWidth()*0.2);
+        rectangle.setWidth(rectangle.getWidth() - extraWidth);
     }
 }

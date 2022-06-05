@@ -89,6 +89,7 @@ public class GameLoop {
             }
         }
         gameStatus = false;
+        //newBall();
     }
 
     /**

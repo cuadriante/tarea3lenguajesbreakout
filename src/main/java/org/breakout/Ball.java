@@ -4,13 +4,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
 import org.breakout.blockFactory.Block;
 
+
 /**
  * Clase de la bola de Breakout.
  */
 public class Ball{
     private Circle circle;
-    private int xSpeed = -10;
-    private int ySpeed = 10;
+    private double xSpeed = -10;
+    private double ySpeed = 10;
     private int xLimit;
     private int yLimit;
     private final int RADIUS = 5;
@@ -108,15 +109,17 @@ public class Ball{
      * Aumenta la velocidad de la pelota
      */
     public void speedUp(){
-        xSpeed = 2*xSpeed;
-        ySpeed = 2*ySpeed;
+        xSpeed = 1.2*xSpeed;
+        ySpeed = 1.2*ySpeed;
+        //xSpeed = 2*xSpeed;
+        //ySpeed = 2*ySpeed;
     }
     /**
      * Disminuye la velocidad de la pelota
      */
     public void speedDown(){
-        xSpeed = xSpeed/2;
-        ySpeed = ySpeed/2;
+        xSpeed = xSpeed/1.2;
+        ySpeed = ySpeed/1.2;
     }
 
     /**
@@ -134,10 +137,25 @@ public class Ball{
             if(b.getShape().isVisible() && this.circle.getBoundsInParent().intersects(b.getShape().getBoundsInParent()) ){
                 this.changeDirectionY();
                 b.getShape().setVisible(false);
+                activatePower(b.getType());
             }
         }
         if(this.circle.getBoundsInParent().intersects(gameWindow.getPlayerBar().getShape().getBoundsInParent()) ){
             this.changeDirectionY();
         }
     }
+
+    public void activatePower(int type) {
+        switch (type) {
+            case (0) -> speedUp();
+            case (1) -> gameWindow.getPlayerBar().makeBigger();
+            case (2) -> gameWindow.getPlayerBar().makeSmaller();
+            case (3) -> speedDown();
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        }
+
+    }
+
+
+
 }

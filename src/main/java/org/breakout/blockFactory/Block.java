@@ -21,8 +21,6 @@ public abstract class Block {
 
     abstract void construct();
 
-
-
     private void setCenter(){
         this.center = (float) (this.rectangle.getX() + this.rectangle.getWidth()/2);
         System.out.println(this.center);
