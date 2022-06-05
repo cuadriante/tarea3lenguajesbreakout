@@ -61,7 +61,7 @@ public class GameWindow {
         root.setPrefSize(STAGE_WIDTH, STAGE_HEIGHT);
 
         Scene scene = new Scene(root); //se liga scene al root
-        scene.setFill(Color.SADDLEBROWN);
+        scene.setFill(Color.BURLYWOOD);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override

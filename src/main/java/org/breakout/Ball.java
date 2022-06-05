@@ -2,6 +2,7 @@ package org.breakout;
 
 import org.breakout.GameWindow;
 import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 
 /**
  * Clase de la bola de Breakout.
@@ -25,6 +26,9 @@ public class Ball{
  */
     public Ball(int centerX, int centerY, GameWindow gw){
         this.circle = new Circle(centerX, centerY, RADIUS);
+        circle.setFill(Color.OLIVE);
+        circle.setStrokeWidth(2);
+        circle.setStroke(Color.DARKOLIVEGREEN);
         this.xLimit = 400;
         this.yLimit = 400;
         gameWindow = gw;

@@ -27,9 +27,9 @@ public class PlayerBar {
         this.rectangle.setY(posY);
         rectangle.setArcWidth(15.0);
         rectangle.setArcHeight(10.0);
-        rectangle.setFill(Color.CRIMSON);
+        rectangle.setFill(Color.SALMON);
         rectangle.setStrokeWidth(2);
-        rectangle.setStroke(Color.PINK);
+        rectangle.setStroke(Color.CRIMSON);
         setCenter();
     }
 
