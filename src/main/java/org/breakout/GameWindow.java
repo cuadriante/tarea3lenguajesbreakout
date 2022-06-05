@@ -1,12 +1,13 @@
 package org.breakout;
 
-import java.util.ArrayList;
-
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.breakout.blockFactory.Block;
+import org.breakout.blockFactory.BlockFactory;
+import java.util.ArrayList;
 
 public class GameWindow {
 
@@ -16,12 +17,13 @@ public class GameWindow {
     private final PlayerBar playerBar = new PlayerBar(200, 350, 100, 20);
     // private final Ball ball = new Ball(100, 100, 10);
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
-    final GameLoop GAME_LOOP = new GameLoop(this, ballList, playerBar); // creo que esto es un singleton xd
+    private ArrayList<Block> blockList = new ArrayList<Block>();
+    final GameLoop GAME_LOOP = new GameLoop(this, ballList, playerBar); // creo que esto es un singleton xd // no es
 
 
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
-        Ball ball = new Ball(100, 100);
+        Ball ball = new Ball(100, 100, this);
         ballList.add(ball);
         start(Lobby);
         connectToClient();
@@ -50,6 +52,8 @@ public class GameWindow {
         }
         root.getChildren().add(playerBar.getShape());
 
+        buildBlockList();
+
         // root.getChildren().addAll(playerBar.getShape(), ball.getShape());
         root.setPrefSize(STAGE_WIDTH, STAGE_HEIGHT);
 
@@ -76,8 +80,22 @@ public class GameWindow {
         Lobby.show();
     }
 
-    void addBlock(){
+    public void buildBlockList() { // esto se hace con la matriz del server
+        int id = 0;
+        int x = 5;
+        int y = 0;
 
+        for (int row = 0; row < BlockFactory.getRows(); row++) {
+            for (int col = 0; col < BlockFactory.getColumns(); col++) {
+                int type = (int) (Math.random() * 4);
+                Block block = BlockFactory.buildBlock(type, x, y, id);
+                blockList.add(block);
+                root.getChildren().add(block.getShape());
+                x += BlockFactory.getWidth() + 10;
+            }
+            x = 5;
+            y += BlockFactory.getHeight() + 5;
+        }
     }
 
     // public Ball getBall(){
@@ -108,7 +126,7 @@ public class GameWindow {
     public void newBall() {
         int y = STAGE_HEIGHT/2;
         int x = STAGE_WIDTH/2;
-        Ball newBall = new Ball(x, y);
+        Ball newBall = new Ball(x, y, this);
         ballList.add(newBall);
         root.getChildren().add(newBall.getShape());
     }

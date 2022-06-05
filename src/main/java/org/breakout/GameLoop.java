@@ -29,18 +29,18 @@ public class GameLoop {
 
     void loop(){
         // *COMENTÉ ESTO JEJE
-        // gameWindow.getBall().move(); 
-       while(LOOP) {
-           //
-           try {
-               System.out.println("wowo");
-               Thread.sleep(4000);
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
-           LOOP = false;
-       }
-            //gameWindow.getBall().move();
+        // gameWindow.getBall().move();
+        while(LOOP) {
+            //
+            try {
+                System.out.println("wowo");
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            LOOP = false;
+        }
+        //gameWindow.getBall().move();
         //}
         // move ball
         // loop. por ahora
@@ -48,39 +48,39 @@ public class GameLoop {
 
     public void ballAnimationLoop(){
         Task<Void> ballMovementAnimation;
-            ballMovementAnimation = new Task<>() {
-                @Override
-                public Void call() {
-                    if (gameStatus) {
-                        Iterator<Ball> itr = ballList.iterator();
-                        while(itr.hasNext()){
-                            Ball ball = itr.next();
-                            try {
-                                ball.move();
-                                ball.checkCollision(playerBar);
-                                if(ball.dropBall()){
-                                    gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
-                                    atLeastOneBall();
-                                }
-                                Thread.sleep(200);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+        ballMovementAnimation = new Task<>() {
+            @Override
+            public Void call() {
+                if (gameStatus) {
+                    Iterator<Ball> itr = ballList.iterator();
+                    while(itr.hasNext()){
+                        Ball ball = itr.next();
+                        try {
+                            ball.move();
+                            ball.checkCollision(playerBar);
+                            if(ball.dropBall()){
+                                gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
+                                atLeastOneBall();
                             }
+                            Thread.sleep(200);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } else{
-                        gameWindow.endGame();
                     }
-                    return null;
+                } else{
+                    gameWindow.endGame();
                 }
+                return null;
+            }
 
-            };
-            ballMovementAnimation.setOnSucceeded(event -> {
-                if (ballMovementAnimation.isDone()){
-                    ballAnimationLoop();
-                }
-            });
-            new Thread(ballMovementAnimation).start();
-        }
+        };
+        ballMovementAnimation.setOnSucceeded(event -> {
+            if (ballMovementAnimation.isDone()){
+                ballAnimationLoop();
+            }
+        });
+        new Thread(ballMovementAnimation).start();
+    }
 
     private void atLeastOneBall() {
         if (ballList.size() == 0){

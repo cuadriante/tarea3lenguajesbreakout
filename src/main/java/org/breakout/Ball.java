@@ -1,5 +1,6 @@
 package org.breakout;
 
+import org.breakout.GameWindow;
 import javafx.scene.shape.Circle;
 
 /**
@@ -12,15 +13,22 @@ public class Ball{
     private int xLimit;
     private int yLimit;
     private final int RADIUS = 10;
+
+    private GameWindow gameWindow;
+    private int life;
 /**
  * Constructor de la clasa Ball
+ *
  * @param centerX Posición en el eje X de la bola
  * @param centerY Posición en el eje Y de la bola
+ * @param gw
  */
-    public Ball(int centerX, int centerY){
+    public Ball(int centerX, int centerY, GameWindow gw){
         this.circle = new Circle(centerX, centerY, RADIUS);
         this.xLimit = 400;
         this.yLimit = 400;
+        gameWindow = gw;
+        life = 1;
     }
 
     /**
@@ -40,6 +48,10 @@ public class Ball{
             // this.changeDirectionY();
             // this.removeBall();
         }
+    }
+
+    public void collision(){
+       // if (!Game)
     }
 
     /**
@@ -80,10 +92,10 @@ public class Ball{
         this.xSpeed = -1*this.xSpeed;
     }
 
-/**
- * Retorna el atributo circulo.
- * @return circle
- */
+    /**
+    * Retorna el atributo circulo.
+    * @return circle
+    */
     public Circle getShape(){
         return this.circle;
     }
