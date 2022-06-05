@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.scene.paint.Color;
 
@@ -33,21 +34,21 @@ public class GameWindow {
 
     private static final Text lives = new Text();
     private final PlayerBar playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
-    // private final Ball ball = new Ball(100, 100, 10);
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
-    final GameLoop GAME_LOOP = new GameLoop(this, ballList, playerBar); // creo que esto es un singleton xd // no es
+    final GameLoop GAME_LOOP = new GameLoop(this, ballList, blockList, playerBar); // creo que esto es un singleton xd // no es
 
 
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
         Lobby.setResizable(false);
-        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
-        ballList.add(ball);
+        
         start(Lobby);
         createLabels();
         connectToClient();
     }
+    
+
 
     private void connectToClient() {
         GAME_LOOP.ballAnimationLoop();
@@ -67,12 +68,11 @@ public class GameWindow {
 
     private void start(Stage Lobby) {
         root = new Pane();
-        for (Ball ball : ballList){
-            root.getChildren().add(ball.getShape());
-        }
-        root.getChildren().add(playerBar.getShape());
-
+        
         buildBlockList();
+        buildBallList();
+        root.getChildren().add(playerBar.getShape());
+        
 
         // root.getChildren().addAll(playerBar.getShape(), ball.getShape());
         root.setPrefSize(STAGE_WIDTH, STAGE_HEIGHT);
@@ -118,10 +118,36 @@ public class GameWindow {
         }
     }
 
-    // public Ball getBall(){
-    //     return this.ball;
+    /**
+     * Crea la lista de bloques de acuerdo a la 
+     * matriz que recibe del servidor
+     */
+    // public void buildBlockList2(){
+    //     int matriz[][]; //DECLARA MATRIZ
+    //     int x = 3;
+    //     int y = 40;
+    //     int id = 0;
+
+    //     for (int i = 0; i < matriz.length; i++){
+    //         for (int j = 0; i < matriz[0].length; j++){
+    //             int type = matriz[i][j];
+    //             Block block = BlockFactory.buildBlock(type, x, y, id);
+    //             blockList.add(block);
+    //             root.getChildren().add(block.getShape());
+    //             x += BlockFactory.getWidth() + 5;
+    //         }
+    //         x = 3;
+    //         y += BlockFactory.getHeight() + 5;
+    //     }
     // }
 
+    private void buildBallList() {
+        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
+        ballList.add(ball);
+        for (Ball element : ballList){
+            root.getChildren().add(element.getShape());
+        }
+    }
 
     public PlayerBar getPlayerBar() {
         return playerBar;
@@ -156,22 +182,41 @@ public class GameWindow {
         root.getChildren().add(newBall.getShape());
     }
 
+    /**
+     * Aumenta la velocidad de las bolas
+     */
+    private void speedUpBalls(){
+        Iterator<Ball> itr = ballList.iterator();
+        while(itr.hasNext()){
+            Ball ball = itr.next();
+            ball.speedUp();
+        }
+    }
+
     public static void updatePuntos(int suma){
         pts = pts+suma;
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
     }
 
-    public static void nextLevel(int nivel){
+    //*Le borré el parametro de entrada porque 
+    //* no entendí para que se usaba
+    public void nextLevel(){
         lvl++;
         String niv = Integer.toString(lvl);
         puntos.setText(niv);
+        // setUpNextLevel();
+        // speedUpBalls();
     }
     public static void terminarJuego(char condicion){
         //Llamar ventana game over
         //GameStage.close();
         //stagePrincipal.show();
     }
+
+    // private void setUpNextLevel(){
+        
+    // }
 
 
 

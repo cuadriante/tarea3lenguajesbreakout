@@ -132,6 +132,7 @@ public class Ball{
             this.changeDirectionY();
         }
     }
+    
     public void checkCollision() {
         for(Block b : gameWindow.getBlockList()){
             if(b.getShape().isVisible() && this.circle.getBoundsInParent().intersects(b.getShape().getBoundsInParent()) ){

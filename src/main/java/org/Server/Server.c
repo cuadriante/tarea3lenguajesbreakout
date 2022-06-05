@@ -3,10 +3,11 @@
 #include <stdbool.h>
 #include <errno.h>
 
-#include <sys/socket.h>
+// #include <sys/socket.h>
+#include <Winsock2.h>
 #include <sys/types.h>
 
-#include <netinet/in.h>
+// #include <netinet/in.h>
 
 const int PORT = 8080;
 const int BUFFER_SIZE = 256;

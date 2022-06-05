@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.breakout.blockFactory.Block;
+
 public class GameLoop {
     private boolean LOOP = true;
     private boolean gameStatus = true;
     Client client;
     private final GameWindow gameWindow;
-    // private final Ball ball;
-    private List<Ball> ballList;
+    private ArrayList<Block> blockList;
+    private ArrayList<Ball> ballList;
     private final PlayerBar playerBar;
 
-    GameLoop(GameWindow gw, ArrayList<Ball> bl, PlayerBar pb){
+    GameLoop(GameWindow gw, ArrayList<Ball> bl, ArrayList<Block> blockLst, PlayerBar pb){
         gameWindow = gw;
         ballList = bl;
+        blockList = blockLst;
         playerBar = pb;
         System.out.println("wowow");
     }
@@ -49,6 +52,10 @@ public class GameLoop {
             @Override
             public Void call() {
                 if (gameStatus) {
+                    
+                    isLevelComplete(); // !Creo que esto va a dar error por editar el hilo principal
+                    
+                    // Animacion de bola
                     Iterator<Ball> itr = ballList.iterator();
                     while(itr.hasNext()){
                         Ball ball = itr.next();
@@ -58,7 +65,6 @@ public class GameLoop {
                             if(ball.dropBall()){
                                 ball.getShape().setVisible(false);
                                 ballList.remove(ball);
-                                //gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
                                 atLeastOneBall();
                             }
                             Thread.sleep(200);
@@ -97,5 +103,17 @@ public class GameLoop {
      */
     private void newBall(){
         gameWindow.newBall();
+    }
+
+    /**
+     * Verifica si ya se pasó el nivel reivisando el número
+     * de bloques no destruidos
+     */
+    private void isLevelComplete(){
+        int size = blockList.size();
+        if(size == 0){
+            gameWindow.nextLevel();
+        }
+
     }
 }
