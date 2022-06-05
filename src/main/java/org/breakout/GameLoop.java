@@ -56,7 +56,9 @@ public class GameLoop {
                             ball.move();
                             ball.checkCollision();
                             if(ball.dropBall()){
-                                gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
+                                ball.getShape().setVisible(false);
+                                ballList.remove(ball);
+                                //gameWindow.removeBall(ball); //! Da error porque borro algo de javafx desde un hilo diferente al principal
                                 atLeastOneBall();
                             }
                             Thread.sleep(200);
@@ -80,9 +82,13 @@ public class GameLoop {
     }
 
     private void atLeastOneBall() {
-        if (ballList.size() == 0){
-            gameStatus = false;
+        for(Ball b : ballList){
+            if (b.getShape().isVisible()){
+                gameStatus = true;
+                break;
+            }
         }
+        gameStatus = false;
     }
 
     /**
