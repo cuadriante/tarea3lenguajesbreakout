@@ -156,6 +156,25 @@ public class GameWindow {
         root.getChildren().add(newBall.getShape());
     }
 
+    public static void updatePuntos(int suma){
+        pts = pts+suma;
+        String puntaje = Integer.toString(pts);
+        puntos.setText(puntaje);
+    }
+
+    public static void nextLevel(int nivel){
+        lvl++;
+        String niv = Integer.toString(lvl);
+        puntos.setText(niv);
+    }
+    public static void terminarJuego(char condicion){
+        //Llamar ventana game over
+        //GameStage.close();
+        //stagePrincipal.show();
+    }
+
+
+
     private void createLabels() {
 
         double fontSize = 15;
