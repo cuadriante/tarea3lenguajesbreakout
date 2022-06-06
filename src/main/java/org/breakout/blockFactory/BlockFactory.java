@@ -14,6 +14,8 @@ public class BlockFactory {
             case 1 -> block = new MakeSmallerBlock(x, y, width, height);
             case 2 -> block = new MakeBiggerBlock(x, y, width, height);
             case 3 -> block = new SpeedDownBlock(x, y, width, height);
+            case 4 -> block = new AddBallBlock(x, y, width, height);
+            case 5 -> block = new AddLifeBlock(x, y, width, height);
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
         return block;

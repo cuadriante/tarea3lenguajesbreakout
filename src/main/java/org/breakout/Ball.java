@@ -152,6 +152,8 @@ public class Ball{
             case (1) -> gameWindow.getPlayerBar().makeBigger();
             case (2) -> gameWindow.getPlayerBar().makeSmaller();
             case (3) -> speedDown();
+            case (4) -> gameWindow.newLife();
+            case (5) -> gameWindow.newBall();
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
 

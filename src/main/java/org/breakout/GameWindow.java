@@ -107,7 +107,7 @@ public class GameWindow {
 
         for (int row = 0; row < BlockFactory.getRows(); row++) {
             for (int col = 0; col < BlockFactory.getColumns(); col++) {
-                int type = (int) (Math.random() * 4);
+                int type = (int) (Math.random() * 6);
                 Block block = BlockFactory.buildBlock(type, x, y, id);
                 blockList.add(block);
                 root.getChildren().add(block.getShape());
@@ -181,6 +181,15 @@ public class GameWindow {
         Ball newBall = new Ball(x, y, this);
         ballList.add(newBall);
         root.getChildren().add(newBall.getShape());
+    }
+
+    /**
+     * Agrega una vida al jugadoor
+     */
+    public void newLife() {
+        life++;
+        String vidas = Integer.toString(life);
+        lives.setText(vidas);
     }
 
     /**
