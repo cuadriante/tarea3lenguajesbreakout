@@ -19,8 +19,7 @@ public class Main extends Application {
 
   public static void main(String[] args) {
     Client client = new Client(8080);
-    client.send_message("hola server 1");
-    client.send_message("hola server 2");
+    client.get_blocks();
     // launch(args);
   }
 

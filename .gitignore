@@ -5,3 +5,5 @@
 /bin
 /build
 /src/main/java/org/Server/server
+/src/main/java/org/Server/.idea/
+/src/main/java/org/Server/cmake-build-debug/

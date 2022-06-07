@@ -41,4 +41,18 @@ public class Client {
             error.printStackTrace();
         }
     }
+
+    public void get_blocks() {
+        try {
+            output_buffer.write("1\0");
+            output_buffer.flush();
+
+            while (input_buffer.ready()) {
+                String block_str = input_buffer.readLine();
+                System.out.println(block_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
 }
