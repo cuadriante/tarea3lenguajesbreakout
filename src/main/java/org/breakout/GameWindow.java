@@ -83,6 +83,7 @@ public class GameWindow {
 
             @Override
             public void handle(KeyEvent event) {
+                // newBall();
                 switch (event.getCode()) {
                     case LEFT:
                         playerBar.moveLeft();
@@ -215,8 +216,7 @@ public class GameWindow {
         lvl++;
         String niv = Integer.toString(lvl);
         puntos.setText(niv);
-        // setUpNextLevel();
-        // speedUpBalls();
+        setUpNextLevel();
     }
     public static void terminarJuego(char condicion){
         //Llamar ventana game over
@@ -224,9 +224,10 @@ public class GameWindow {
         //stagePrincipal.show();
     }
 
-    // private void setUpNextLevel(){
-        
-    // }
+    private void setUpNextLevel(){
+        // buildBlockList2();
+        // speedUpBalls();
+    }
 
 
 

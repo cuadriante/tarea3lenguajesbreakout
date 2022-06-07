@@ -1,10 +1,23 @@
 #include "server.h"
+#pragma comment(lib,"ws2_32.lib")
 
 int server_socket;
 struct sockaddr_in server_address;
 
 int main()
 {
+    //Varas de los sockets de Windows
+    WSADATA wsa;
+
+    printf("\nInitialising Winsock...\n");
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+    {
+        printf("Failed. Error Code : %d",WSAGetLastError());
+        return 1;
+    }
+
+    printf("Initialised.\n");
+
     GameData *game_data = start_game();
 
     server_socket = stop_on_error(socket(AF_INET, SOCK_STREAM, 0));
