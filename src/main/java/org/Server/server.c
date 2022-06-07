@@ -5,11 +5,10 @@
 #include <errno.h>
 
 #include <unistd.h>
-
 #include <sys/socket.h>
 #include <sys/types.h>
 
-// #include <netinet/in.h>
+#include <netinet/in.h>
 
 const int PORT = 8080;
 const int INPUT_BUFFER_SIZE = 256;
