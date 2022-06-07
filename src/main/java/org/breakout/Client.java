@@ -34,7 +34,9 @@ public class Client {
             output_buffer.write(message);
             output_buffer.flush();
 
-            System.out.println("Respuesta del servidor: " + input_buffer.readLine());
+            String response = input_buffer.readLine();
+
+            System.out.println(response);
         } catch (Exception error) {
             error.printStackTrace();
         }
