@@ -63,20 +63,19 @@ void receive_message()
 
 void process_message(const char *received_message)
 {
-
     if (strcmp(received_message, "1") == 0)
         send_blocks();
     else if (strcmp(received_message, "2") == 0)
-        send_score();
+        send_balls();
     else if (strcmp(received_message, "3") == 0)
-        send_lives();
+        send_score();
     else if (strcmp(received_message, "4") == 0)
+        send_lives();
+    else if (strcmp(received_message, "5") == 0)
         send_level();
     else
     {
-        char error_str[] = "Mensaje no reconocido\n";
-        printf("%s", error_str);
-        send_message(error_str);
+        send_message("Mensaje no reconocido\n");
     }
 }
 
@@ -93,17 +92,31 @@ void send_blocks()
     {
         for (int j = 0; j < BLOCK_COLUMNS; j++)
         {
-            Block *block = game_data->blocks[i][j];
-
             sprintf(block_str, "%d,%d,%d,%d,%d\n",
-                    block->broken,
-                    block->row,
-                    block->column,
-                    block->level,
-                    block->power_up);
+                    game_data->blocks[i][j]->broken,
+                    game_data->blocks[i][j]->row,
+                    game_data->blocks[i][j]->column,
+                    game_data->blocks[i][j]->level,
+                    game_data->blocks[i][j]->power_up);
 
             send_message(block_str);
         }
+    }
+}
+
+void send_balls()
+{
+    char ball_str[55];
+    for (int i = 0; i < game_data->existing_balls; i++)
+    {
+        sprintf(ball_str, "%d,%d,%d,%d,%d\n",
+                game_data->balls[i]->id,
+                game_data->balls[i]->pos_x,
+                game_data->balls[i]->pos_y,
+                game_data->balls[i]->speed_x,
+                game_data->balls[i]->speed_y);
+
+        send_message(ball_str);
     }
 }
 
@@ -112,7 +125,6 @@ void send_score()
     char score_str[10];
     sprintf(score_str, "%d\n", game_data->score);
 
-    printf("%s", score_str);
     send_message(score_str);
 }
 
@@ -121,7 +133,6 @@ void send_lives()
     char lives_str[10];
     sprintf(lives_str, "%d\n", game_data->lives);
 
-    printf("%s", lives_str);
     send_message(lives_str);
 }
 
@@ -130,6 +141,5 @@ void send_level()
     char level_str[10];
     sprintf(level_str, "%d\n", game_data->level);
 
-    printf("%s", level_str);
     send_message(level_str);
 }

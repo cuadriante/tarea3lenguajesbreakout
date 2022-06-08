@@ -40,9 +40,6 @@ public class Client {
 
     public void get_blocks() {
         try {
-            // output_buffer.write("1\0");
-            // output_buffer.flush();
-
             send_message("1\0");
 
             while (input_buffer.ready()) {
@@ -54,9 +51,22 @@ public class Client {
         }
     }
 
-    public void get_score() {
+    public void get_balls() {
         try {
             send_message("2\0");
+
+            while (input_buffer.ready()) {
+                String ball_str = input_buffer.readLine();
+                System.out.println(ball_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void get_score() {
+        try {
+            send_message("3\0");
 
             while (input_buffer.ready()) {
                 String score_str = input_buffer.readLine();
@@ -69,7 +79,7 @@ public class Client {
 
     public void get_lives() {
         try {
-            send_message("3\0");
+            send_message("4\0");
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
@@ -82,7 +92,7 @@ public class Client {
 
     public void get_level() {
         try {
-            send_message("4\0");
+            send_message("5\0");
 
             while (input_buffer.ready()) {
                 String level_str = input_buffer.readLine();
@@ -95,15 +105,11 @@ public class Client {
 
     public void test_communication() {
         try {
-            System.out.println("Bloques <----------------------");
             get_blocks();
-            System.out.println("Puntuación <----------------------");
+            get_balls();
             get_score();
-            System.out.println("Vidas <----------------------");
             get_lives();
-            System.out.println("Nivel <----------------------");
             get_level();
-            System.out.println("Error nqv <----------------------");
             send_message("ola");
             System.out.println(input_buffer.readLine());
         } catch (Exception error) {
