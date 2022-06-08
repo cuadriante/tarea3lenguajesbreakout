@@ -5,3 +5,14 @@
 
 #define BLOCK_ROWS 8
 #define BLOCK_COLUMNS 8
+
+#define DEFAULT_SCORE 0
+#define DEFAULT_LIVES 3
+#define DEFAULT_LEVEL 1
+#define DEFAULT_BALL_QUANTITY 0
+
+#define MAX_BALLS 10
+#define DEFAULT_POS_X 200;
+#define DEFAULT_POS_Y 200;
+#define DEFAULT_SPEED_X -10;
+#define DEFAULT_SPEED_Y 10;

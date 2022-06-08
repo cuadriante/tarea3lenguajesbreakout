@@ -1,13 +1,7 @@
 package org.breakout;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import org.breakout.GameLoop;
 
 /**
  * The type Main.
@@ -19,7 +13,8 @@ public class Main extends Application {
 
   public static void main(String[] args) {
     Client client = new Client(8080);
-    client.get_blocks();
+    client.test_communication();
+
     // launch(args);
   }
 

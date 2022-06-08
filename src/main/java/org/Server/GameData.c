@@ -6,13 +6,27 @@ GameData *start_game()
 
     srand(time(0));
 
-    int block_level = 4;
+    game_data->score = DEFAULT_SCORE;
+    game_data->lives = DEFAULT_LIVES;
+    game_data->level = DEFAULT_LEVEL;
+    game_data->existing_balls = DEFAULT_BALL_QUANTITY;
+
+    create_new_ball(game_data);
+    generate_blocks(game_data);
+
+    return game_data;
+}
+
+void generate_blocks(GameData *game_data)
+{
+    int block_level;
+    int block_power_up;
     for (int i = 0; i < BLOCK_ROWS; i++)
     {
         block_level = get_block_level(i);
         for (int j = 0; j < BLOCK_COLUMNS; j++)
         {
-            int block_power_up = generate_random_powerup(1, 6);
+            block_power_up = generate_random_powerup(1, 6);
 
             game_data->blocks[i][j] = malloc(sizeof(Block));
             *(game_data->blocks[i][j]) = (Block){.broken = 0,
@@ -22,21 +36,25 @@ GameData *start_game()
                                                  .power_up = block_power_up};
         }
     }
-
-    return game_data;
 }
 
-float generate_random_powerup(const int min_number, const int max_number)
+void create_new_ball(GameData *game_data)
 {
-    float prob = (float)rand() / (float)RAND_MAX;
+    for (int i = 0; i < MAX_BALLS; i++)
+    {
+        if (i == game_data->existing_balls)
+        {
+            game_data->balls[i] = malloc(sizeof(Ball));
+            game_data->balls[i]->id = i + 1;
+            game_data->balls[i]->pos_x = DEFAULT_POS_X;
+            game_data->balls[i]->pos_y = DEFAULT_POS_Y;
+            game_data->balls[i]->speed_x = DEFAULT_SPEED_X;
+            game_data->balls[i]->speed_y = DEFAULT_SPEED_Y;
 
-    if (prob >= 0.7)
-    {
-        return rand() % max_number + min_number;
-    }
-    else
-    {
-        return -1;
+            game_data->existing_balls++;
+
+            break;
+        }
     }
 }
 
@@ -57,5 +75,19 @@ int get_block_level(int row_index)
     else
     {
         return 4;
+    }
+}
+
+int generate_random_powerup(const int min_number, const int max_number)
+{
+    float prob = (float)rand() / (float)RAND_MAX;
+
+    if (prob >= 0.7)
+    {
+        return rand() % max_number + min_number;
+    }
+    else
+    {
+        return -1;
     }
 }

@@ -16,9 +16,29 @@ typedef struct
 
 typedef struct
 {
+    int id;
+    int pos_x;
+    int pos_y;
+    int speed_x;
+    int speed_y;
+} Ball;
+
+typedef struct
+{
+    int score;
+    int lives;
+    int level;
+
+    int existing_balls;
+
+    Ball *balls[MAX_BALLS];
     Block *blocks[BLOCK_ROWS][BLOCK_COLUMNS];
 } GameData;
 
 GameData *start_game();
+
+void generate_blocks(GameData *game_data);
+void create_new_ball(GameData *game_data);
+
 int get_block_level(int row_index);
-float generate_random_powerup(const int min_number, const int max_number);
+int generate_random_powerup(const int min_number, const int max_number);
