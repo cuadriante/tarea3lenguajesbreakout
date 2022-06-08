@@ -29,3 +29,8 @@ void send_balls();
 void send_score();
 void send_lives();
 void send_level();
+
+void add_life();
+void take_life();
+void level_up();
+void add_ball();

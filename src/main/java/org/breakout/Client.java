@@ -33,6 +33,9 @@ public class Client {
         try {
             output_buffer.write(message);
             output_buffer.flush();
+
+            while (!input_buffer.ready())
+                Thread.sleep(10);
         } catch (Exception error) {
             error.printStackTrace();
         }
@@ -44,7 +47,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
-                System.out.println(block_str);
+                System.out.println("Bloque: " + block_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -57,7 +60,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String ball_str = input_buffer.readLine();
-                System.out.println(ball_str);
+                System.out.println("Bola: " + ball_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -70,7 +73,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String score_str = input_buffer.readLine();
-                System.out.println(score_str);
+                System.out.println("Puntuación: " + score_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -83,7 +86,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
-                System.out.println(lives_str);
+                System.out.println("Vidas: " + lives_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -96,7 +99,59 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String level_str = input_buffer.readLine();
-                System.out.println(level_str);
+                System.out.println("Nivel: " + level_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void add_life() {
+        try {
+            send_message("6\0");
+
+            while (input_buffer.ready()) {
+                String lives_str = input_buffer.readLine();
+                System.out.println("Ahora tiene " + lives_str + " vidas");
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void take_life() {
+        try {
+            send_message("7\0");
+
+            while (input_buffer.ready()) {
+                String lives_str = input_buffer.readLine();
+                System.out.println("Ahora tiene " + lives_str + " vidas");
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void level_up() {
+        try {
+            send_message("8\0");
+
+            while (input_buffer.ready()) {
+                String level_str = input_buffer.readLine();
+                System.out.println("Subió al nivel: " + level_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void add_ball() {
+        try {
+            send_message("9\0");
+
+            while (input_buffer.ready()) {
+                String ball_str = input_buffer.readLine();
+                System.out.println("Bola: " + ball_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -110,8 +165,13 @@ public class Client {
             get_score();
             get_lives();
             get_level();
-            send_message("ola");
-            System.out.println(input_buffer.readLine());
+            add_life();
+            add_life();
+            take_life();
+            level_up();
+            add_ball();
+            send_message("ola\0");
+            System.out.println("Error: " + input_buffer.readLine());
         } catch (Exception error) {
             error.printStackTrace();
         }

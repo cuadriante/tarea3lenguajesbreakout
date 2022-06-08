@@ -38,26 +38,6 @@ void generate_blocks(GameData *game_data)
     }
 }
 
-void create_new_ball(GameData *game_data)
-{
-    for (int i = 0; i < MAX_BALLS; i++)
-    {
-        if (i == game_data->existing_balls)
-        {
-            game_data->balls[i] = malloc(sizeof(Ball));
-            game_data->balls[i]->id = i + 1;
-            game_data->balls[i]->pos_x = DEFAULT_POS_X;
-            game_data->balls[i]->pos_y = DEFAULT_POS_Y;
-            game_data->balls[i]->speed_x = DEFAULT_SPEED_X;
-            game_data->balls[i]->speed_y = DEFAULT_SPEED_Y;
-
-            game_data->existing_balls++;
-
-            break;
-        }
-    }
-}
-
 int get_block_level(int row_index)
 {
     if (row_index >= 6)
@@ -89,5 +69,25 @@ int generate_random_powerup(const int min_number, const int max_number)
     else
     {
         return -1;
+    }
+}
+
+void create_new_ball(GameData *game_data)
+{
+    for (int i = 0; i < MAX_BALLS; i++)
+    {
+        if (i == (game_data->existing_balls))
+        {
+            game_data->balls[i] = malloc(sizeof(Ball));
+            game_data->balls[i]->id = i + 1;
+            game_data->balls[i]->pos_x = DEFAULT_POS_X;
+            game_data->balls[i]->pos_y = DEFAULT_POS_Y;
+            game_data->balls[i]->speed_x = DEFAULT_SPEED_X;
+            game_data->balls[i]->speed_y = DEFAULT_SPEED_Y;
+
+            game_data->existing_balls += 1;
+
+            break;
+        }
     }
 }

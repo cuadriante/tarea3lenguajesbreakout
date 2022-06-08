@@ -73,10 +73,16 @@ void process_message(const char *received_message)
         send_lives();
     else if (strcmp(received_message, "5") == 0)
         send_level();
+    else if (strcmp(received_message, "6") == 0)
+        add_life();
+    else if (strcmp(received_message, "7") == 0)
+        take_life();
+    else if (strcmp(received_message, "8") == 0)
+        level_up();
+    else if (strcmp(received_message, "9") == 0)
+        add_ball();
     else
-    {
         send_message("Mensaje no reconocido\n");
-    }
 }
 
 void send_message(const char *message)
@@ -142,4 +148,32 @@ void send_level()
     sprintf(level_str, "%d\n", game_data->level);
 
     send_message(level_str);
+}
+
+void add_life()
+{
+    game_data->lives += 1;
+
+    send_lives();
+}
+
+void take_life()
+{
+    game_data->lives -= 1;
+
+    send_lives();
+}
+
+void level_up()
+{
+    game_data->level += 1;
+
+    send_level();
+}
+
+void add_ball()
+{
+    create_new_ball(game_data);
+
+    send_balls();
 }
