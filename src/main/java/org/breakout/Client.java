@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Client {
     private Socket socket;
@@ -49,7 +48,6 @@ public class Client {
         ArrayList<int[]> blockAttributesArray = new ArrayList<>();
         try {
             send_message("1\0");
-            int i = 0;
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
                 int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
@@ -74,43 +72,52 @@ public class Client {
         }
     }
 
-    public void get_score() {
+    public int get_score() {
+        int returned = -1;
         try {
             send_message("3\0");
 
             while (input_buffer.ready()) {
                 String score_str = input_buffer.readLine();
                 System.out.println("Puntuación: " + score_str);
+                returned = adapter.singleDatatoInt(score_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
         }
+        return returned;
     }
 
-    public void get_lives() {
+    public int get_lives() {
+        int returned = -1;
         try {
             send_message("4\0");
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
+                returned = adapter.singleDatatoInt(lives_str);
                 System.out.println("Vidas: " + lives_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
         }
+        return returned;
     }
 
-    public void get_level() {
+    public int get_level() {
+        int returned = -1;
         try {
             send_message("5\0");
 
             while (input_buffer.ready()) {
                 String level_str = input_buffer.readLine();
+                returned = adapter.singleDatatoInt(level_str);
                 System.out.println("Nivel: " + level_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
         }
+        return returned;
     }
 
     public void add_life() {

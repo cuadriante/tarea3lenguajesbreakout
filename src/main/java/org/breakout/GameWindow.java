@@ -11,9 +11,7 @@ import javafx.stage.Stage;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 
-import java.security.KeyStore.Entry.Attribute;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import javafx.scene.paint.Color;
@@ -23,9 +21,9 @@ public class GameWindow {
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    public static int pts = 0;
-    public static int lvl = 0;
-    public static int life = 3;
+    // public static int pts = 0;
+    // public static int lvl = 0;
+    // public static int life = 3;
 
     Client client = new Client(8080);
 
@@ -149,6 +147,21 @@ public class GameWindow {
     //     y += BlockFactory.getHeight() + 5;
     // }
 
+    /**
+     * Hace visibles los bloques y, mediante una llamada al server,
+     * determina y asigna los atributos de los bloques del siguiente nivel.
+     * TODO: llamar al server y cambiar el poder de los bloques
+     */
+    private void resetBlocks(){
+        // ArrayList<int[]> blockAttributesArray = client.get_blocks();
+        for(Block block : blockList){
+            block.getShape().setVisible(true);
+            //CAMBIAR EL PODER
+        }
+
+
+    }
+
     private void buildBallList() {
         Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
         ballList.add(ball);
@@ -189,9 +202,9 @@ public class GameWindow {
         if (!flag){
             int y = STAGE_HEIGHT/2;
             int x = STAGE_WIDTH/2;
-            Ball newBall = new Ball(x, y, this);
-            ballList.add(newBall);
-            root.getChildren().add(newBall.getShape());
+            Ball ball = new Ball(x, y, this);
+            ballList.add(ball);
+            root.getChildren().add(ball.getShape());
             client.add_ball();
         }
     }
@@ -200,7 +213,15 @@ public class GameWindow {
      * Agrega una vida al jugadoor
      */
     public void newLife() {
-        life++;
+        client.add_life();
+        int life = client.get_lives();
+        String vidas = Integer.toString(life);
+        lives.setText(vidas);
+    }
+
+    public void minusOneLife(){
+        client.take_life();
+        int life = client.get_lives();
         String vidas = Integer.toString(life);
         lives.setText(vidas);
     }
@@ -216,16 +237,17 @@ public class GameWindow {
         }
     }
 
-    public static void updatePuntos(int suma){
-        pts = pts+suma;
+    public void updatePuntos(){
+        int pts = client.get_score();
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
     }
 
     public void nextLevel(){
-        lvl++;
+        client.level_up();
+        int lvl = client.get_level();
         String niv = Integer.toString(lvl);
-        puntos.setText(niv);
+        level.setText(niv);
         setUpNextLevel();
     }
     public static void terminarJuego(char condicion){
@@ -235,11 +257,13 @@ public class GameWindow {
     }
 
     private void setUpNextLevel(){
-        // buildBlockList2();
-        // speedUpBalls();
+        resetBlocks();
+        for(Ball ball : ballList){
+            ball.setInvisible();
+        }
+        newBall();
+        speedUpBalls();
     }
-
-
 
     private void createLabels() {
 
@@ -251,6 +275,7 @@ public class GameWindow {
         FontWeight labelFontWeight = FontWeight.BOLD;
         Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
 
+        int pts = client.get_score();
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
         puntos.setX(10);
@@ -264,6 +289,7 @@ public class GameWindow {
         puntosLabel.setFill(Color.SADDLEBROWN);
         puntosLabel.setFont(labelFont);
 
+        int lvl = client.get_level();
         String nivelString = Integer.toString(lvl);
         level.setText(nivelString);
         level.setX(100);
@@ -277,6 +303,7 @@ public class GameWindow {
         levelLabel.setFill(Color.SADDLEBROWN);
         levelLabel.setFont(labelFont);
 
+        int life = client.get_lives();
         String livesString = Integer.toString(life);
         lives.setText(livesString);
         lives.setX(380);

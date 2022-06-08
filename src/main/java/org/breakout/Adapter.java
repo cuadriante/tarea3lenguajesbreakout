@@ -1,6 +1,5 @@
 package org.breakout;
 
-import java.util.Arrays;
 
 public class Adapter {
     

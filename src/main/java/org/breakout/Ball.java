@@ -18,7 +18,6 @@ public class Ball{
     private final int RADIUS = 5;
 
     private GameWindow gameWindow;
-    private int life;
 /**
  * Constructor de la clasa Ball
  *
@@ -35,7 +34,6 @@ public class Ball{
         this.yLimit = 400;
         this.visibility = true;
         gameWindow = gw;
-        life = 1;
     }
 
     /**
@@ -69,7 +67,6 @@ public class Ball{
         int y = (int)this.circle.getCenterY();
         boolean droped = false;
         if (y > yLimit ){
-            System.out.println("se pasó");
             droped = true;
         }
         return droped;
