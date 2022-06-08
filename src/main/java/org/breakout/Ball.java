@@ -14,6 +14,7 @@ public class Ball{
     private double ySpeed = 10;
     private int xLimit;
     private int yLimit;
+    private boolean visibility;
     private final int RADIUS = 5;
 
     private GameWindow gameWindow;
@@ -32,6 +33,7 @@ public class Ball{
         circle.setStroke(Color.DARKOLIVEGREEN);
         this.xLimit = 400;
         this.yLimit = 400;
+        this.visibility = true;
         gameWindow = gw;
         life = 1;
     }
@@ -66,7 +68,8 @@ public class Ball{
     public boolean dropBall() {
         int y = (int)this.circle.getCenterY();
         boolean droped = false;
-        if (y > yLimit){
+        if (y > yLimit ){
+            System.out.println("se pasó");
             droped = true;
         }
         return droped;
@@ -76,11 +79,13 @@ public class Ball{
      * Mueve la bola
      */
     public void move(){
-        int x = (int)this.circle.getCenterX();
-        int y = (int)this.circle.getCenterY();
-        checkParameters(x, y);
-        this.circle.setCenterX(x + xSpeed);
-        this.circle.setCenterY(y + ySpeed);
+        if (this.visibility == true){
+            int x = (int)this.circle.getCenterX();
+            int y = (int)this.circle.getCenterY();
+            checkParameters(x, y);
+            this.circle.setCenterX(x + xSpeed);
+            this.circle.setCenterY(y + ySpeed);
+        }
     }
 
     /**
@@ -120,6 +125,27 @@ public class Ball{
     public void speedDown(){
         xSpeed = xSpeed/1.2;
         ySpeed = ySpeed/1.2;
+    }
+
+    /**
+     * Establece el atributo de visibilidad a falso
+     */
+    public void setInvisible(){
+        boolean value = false;
+        this.visibility = value;
+        this.circle.setVisible(value);
+    }
+
+    public boolean getVisibility(){
+        return this.visibility;
+    }
+    
+    public void recycle(int X, int Y){
+        this.circle.setCenterX(X);
+        this.circle.setCenterY(Y);
+        this.circle.setVisible(true);
+        this.visibility = true;
+
     }
 
     /**

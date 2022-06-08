@@ -63,8 +63,7 @@ public class GameLoop {
                             ball.move();
                             ball.checkCollision();
                             if(ball.dropBall()){
-                                ball.getShape().setVisible(false);
-                                ballList.remove(ball);
+                                ball.setInvisible();
                                 atLeastOneBall();
                             }
                             Thread.sleep(200);
@@ -110,10 +109,15 @@ public class GameLoop {
      * de bloques no destruidos
      */
     private void isLevelComplete(){
-        int size = blockList.size();
-        if(size == 0){
+        boolean flag = false;
+        for (Block block : blockList){
+            if(block.getShape().isVisible()){
+                flag = true;
+                break;
+            }
+        }
+        if(!flag){
             gameWindow.nextLevel();
         }
-
     }
 }

@@ -10,7 +10,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
+
+import java.security.KeyStore.Entry.Attribute;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javafx.scene.paint.Color;
@@ -22,8 +25,9 @@ public class GameWindow {
     private Pane root;
     public static int pts = 0;
     public static int lvl = 0;
-
     public static int life = 3;
+
+    Client client = new Client(8080);
 
     private static final Text puntosLabel = new Text();
     private static final Text levelLabel = new Text();
@@ -83,7 +87,6 @@ public class GameWindow {
 
             @Override
             public void handle(KeyEvent event) {
-                // newBall();
                 switch (event.getCode()) {
                     case LEFT:
                         playerBar.moveLeft();
@@ -124,23 +127,26 @@ public class GameWindow {
      * Crea la lista de bloques de acuerdo a la 
      * matriz que recibe del servidor
      */
-    // public void buildBlockList2(){
-    //     int matriz[][]; //DECLARA MATRIZ
+    // public void buildBlockList(){
+    //     ArrayList<int[]> blockAttributesArray = client.get_blocks();
     //     int x = 3;
     //     int y = 40;
     //     int id = 0;
 
-    //     for (int i = 0; i < matriz.length; i++){
-    //         for (int j = 0; i < matriz[0].length; j++){
-    //             int type = matriz[i][j];
-    //             Block block = BlockFactory.buildBlock(type, x, y, id);
-    //             blockList.add(block);
+    //     for (int[] blockAttributes : blockAttributesArray){
+    //         int isBroken = blockAttributes[0];
+    //         int row = blockAttributes[0];
+    //         int column = blockAttributes[0];
+    //         int power = blockAttributes[0]; //type?
+    //         System.out.println(Arrays.toString(blockAttributes));
+    //         Block block = BlockFactory.buildBlock(power, x, y, id);
+    //         blockList.add(block);
     //             root.getChildren().add(block.getShape());
     //             x += BlockFactory.getWidth() + 5;
-    //         }
-    //         x = 3;
-    //         y += BlockFactory.getHeight() + 5;
+    //             block.createRectangleColor(row);
     //     }
+    //     x = 3;
+    //     y += BlockFactory.getHeight() + 5;
     // }
 
     private void buildBallList() {
@@ -167,21 +173,27 @@ public class GameWindow {
         return this;
     }
 
-    public void removeBall(Ball ball){
-        root.getChildren().remove(ball.getShape());
-        ballList.remove(ball);
-        System.out.println(ballList.size());
-    }
-
     /**
      * Agrega una bola al juego
+     * Todo: Enviar la bola al server
      */
     public void newBall() {
-        int y = STAGE_HEIGHT/2;
-        int x = STAGE_WIDTH/2;
-        Ball newBall = new Ball(x, y, this);
-        ballList.add(newBall);
-        root.getChildren().add(newBall.getShape());
+        boolean flag = false;
+        for(Ball ball : ballList ){
+            if (ball.getVisibility() == false){
+                ball.recycle(this.STAGE_WIDTH/2, this.STAGE_HEIGHT/2);
+                flag = true;
+                break;
+            }
+        }
+        if (!flag){
+            int y = STAGE_HEIGHT/2;
+            int x = STAGE_WIDTH/2;
+            Ball newBall = new Ball(x, y, this);
+            ballList.add(newBall);
+            root.getChildren().add(newBall.getShape());
+            client.add_ball();
+        }
     }
 
     /**
@@ -210,8 +222,6 @@ public class GameWindow {
         puntos.setText(puntaje);
     }
 
-    //*Le borré el parametro de entrada porque 
-    //* no entendí para que se usaba
     public void nextLevel(){
         lvl++;
         String niv = Integer.toString(lvl);

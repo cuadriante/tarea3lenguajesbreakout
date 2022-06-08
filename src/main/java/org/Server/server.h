@@ -1,17 +1,17 @@
 #pragma once
-// #pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "ws2_32.lib")
 
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
 #include <unistd.h>
-#include <sys/socket.h>
+// #include <sys/socket.h>
 #include <sys/types.h>
 
-#include <netinet/in.h>
+// #include <netinet/in.h>
 
-// #include <winsock2.h> //Para Windows
+#include <winsock2.h> //Para Windows
 
 #include "constants.h"
 #include "GameData.h"
