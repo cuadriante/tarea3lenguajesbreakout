@@ -29,8 +29,7 @@ void generate_blocks(GameData *game_data)
             block_power_up = generate_random_powerup(1, 6);
 
             game_data->blocks[i][j] = malloc(sizeof(Block));
-            *(game_data->blocks[i][j]) = (Block){.broken = 0,
-                                                 .row = i,
+            *(game_data->blocks[i][j]) = (Block){.row = i,
                                                  .column = j,
                                                  .level = block_level,
                                                  .power_up = block_power_up};

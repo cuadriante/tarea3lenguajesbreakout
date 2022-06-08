@@ -7,7 +7,6 @@
 
 typedef struct
 {
-    int broken;
     int row;
     int column;
     int level;

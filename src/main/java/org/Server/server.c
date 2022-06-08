@@ -58,11 +58,6 @@ void receive_message()
     char received_message[INPUT_BUFFER_SIZE];
     stop_on_error(recv(client_socket, received_message, INPUT_BUFFER_SIZE, 0));
 
-    process_message(received_message);
-}
-
-void process_message(const char *received_message)
-{
     if (strcmp(received_message, "1") == 0)
         send_blocks();
     else if (strcmp(received_message, "2") == 0)
@@ -81,8 +76,46 @@ void process_message(const char *received_message)
         level_up();
     else if (strcmp(received_message, "9") == 0)
         add_ball();
+    else if (received_message[0] == '$')
+        process_message(received_message);
     else
         send_message("Mensaje no reconocido\n");
+}
+
+void process_message(const char *received_message)
+{
+    if (received_message[1] == '1')
+    {
+        int block_position[10];
+        separate_parameters(received_message, block_position);
+        destroy_block(block_position[0], block_position[1]);
+    }
+    else
+        send_message("Mensaje no reconocido\n");
+}
+
+void separate_parameters(const char *string, int *parameters)
+{
+    char parameter[3] = "\0";
+    int parameter_index = 0;
+
+    int string_size = strlen(string);
+    char character = '\0';
+    for (int i = 3; i < string_size; i++)
+    {
+        character = string[i];
+        if (character == ',')
+        {
+            parameters[parameter_index] = atoi(parameter);
+            strcpy(parameter, "\0");
+            parameter_index += 1;
+        }
+        else
+        {
+            strcat(parameter, &character);
+        }
+    }
+    parameters[parameter_index] = atoi(parameter);
 }
 
 void send_message(const char *message)
@@ -93,13 +126,12 @@ void send_message(const char *message)
 
 void send_blocks()
 {
-    char block_str[11];
+    char block_str[12];
     for (int i = 0; i < BLOCK_ROWS; i++)
     {
         for (int j = 0; j < BLOCK_COLUMNS; j++)
         {
-            sprintf(block_str, "%d,%d,%d,%d,%d\n",
-                    game_data->blocks[i][j]->broken,
+            sprintf(block_str, "%d,%d,%d,%d\n",
                     game_data->blocks[i][j]->row,
                     game_data->blocks[i][j]->column,
                     game_data->blocks[i][j]->level,
@@ -176,4 +208,17 @@ void add_ball()
     create_new_ball(game_data);
 
     send_balls();
+}
+
+void destroy_block(const int row, const int column)
+{
+    Block *block = game_data->blocks[row][column];
+    game_data->score += block->level * 100;
+
+    char position_str[10];
+    sprintf(position_str, "%d,%d\n", block->row, block->column);
+
+    free(block);
+
+    send_message(position_str);
 }

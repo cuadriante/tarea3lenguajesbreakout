@@ -158,6 +158,21 @@ public class Client {
         }
     }
 
+    public void destroy_block(int row, int column) {
+        try {
+            send_message("$1,"
+                    + Integer.toString(row) + ","
+                    + Integer.toString(column) + "\0");
+
+            while (input_buffer.ready()) {
+                String position_str = input_buffer.readLine();
+                System.out.println("Posición del bloque eliminado: " + position_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void test_communication() {
         try {
             get_blocks();
@@ -172,6 +187,10 @@ public class Client {
             add_ball();
             send_message("ola\0");
             System.out.println("Error: " + input_buffer.readLine());
+            destroy_block(7, 5);
+            destroy_block(1, 7);
+            destroy_block(2, 2);
+            get_score();
         } catch (Exception error) {
             error.printStackTrace();
         }
