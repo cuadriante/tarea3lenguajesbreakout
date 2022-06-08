@@ -72,6 +72,7 @@ int generate_random_powerup(const int min_number, const int max_number)
 }
 
 void create_new_ball(GameData *game_data)
+
 {
     for (int i = 0; i < MAX_BALLS; i++)
     {
@@ -87,6 +88,17 @@ void create_new_ball(GameData *game_data)
             game_data->existing_balls += 1;
 
             break;
+        }
+    }
+}
+
+Ball *get_ball_by_id(GameData *game_data, int ball_id)
+{
+    for (int i = 0; i < game_data->existing_balls; i++)
+    {
+        if (game_data->balls[i]->id == ball_id)
+        {
+            return game_data->balls[i];
         }
     }
 }

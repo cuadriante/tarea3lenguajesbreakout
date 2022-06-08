@@ -10,12 +10,11 @@ GameData *game_data;
 int main()
 {
     // Varas de los sockets de Windows
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-    {
-        return 1;
-    }
-    // game_data =
+    // WSADATA wsa;
+    // if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    // {
+    //     return 1;
+    // }
     game_data = start_game();
 
     server_socket = stop_on_error(socket(AF_INET, SOCK_STREAM, 0));
@@ -89,6 +88,18 @@ void process_message(const char *received_message)
         int block_position[10];
         separate_parameters(received_message, block_position);
         destroy_block(block_position[0], block_position[1]);
+    }
+    else if (received_message[1] == '2')
+    {
+        int ball_id[1];
+        separate_parameters(received_message, ball_id);
+        move_ball_x(ball_id[0]);
+    }
+    else if (received_message[1] == '3')
+    {
+        int ball_id[1];
+        separate_parameters(received_message, ball_id);
+        move_ball_y(ball_id[0]);
     }
     else
         send_message("Mensaje no reconocido\n");
@@ -208,6 +219,28 @@ void add_ball()
     create_new_ball(game_data);
 
     send_balls();
+}
+
+void move_ball_x(const int id)
+{
+    Ball *ball = get_ball_by_id(game_data, id);
+    ball->pos_x += ball->speed_x;
+
+    char pos_x_str[6];
+    sprintf(pos_x_str, "%d\n", ball->pos_x);
+
+    send_message(pos_x_str);
+}
+
+void move_ball_y(const int id)
+{
+    Ball *ball = get_ball_by_id(game_data, id);
+    ball->pos_y += ball->speed_y;
+
+    char pos_y_str[6];
+    sprintf(pos_y_str, "%d\n", ball->pos_y);
+
+    send_message(pos_y_str);
 }
 
 void destroy_block(const int row, const int column)

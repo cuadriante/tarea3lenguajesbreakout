@@ -1,17 +1,17 @@
 #pragma once
-#pragma comment(lib, "ws2_32.lib")
 
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
 #include <unistd.h>
-// #include <sys/socket.h>
+#include <sys/socket.h>
 #include <sys/types.h>
 
-// #include <netinet/in.h>
+#include <netinet/in.h>
 
-#include <winsock2.h> //Para Windows
+// #include <winsock2.h> //Para Windows
+// #pragma comment(lib, "ws2_32.lib")
 
 #include "constants.h"
 #include "GameData.h"
@@ -35,4 +35,8 @@ void add_life();
 void take_life();
 void level_up();
 void add_ball();
+
+void move_ball_x(const int id);
+void move_ball_y(const int id);
+
 void destroy_block(const int pos_x, const int pos_y);

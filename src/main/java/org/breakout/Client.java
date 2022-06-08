@@ -172,6 +172,36 @@ public class Client {
         }
     }
 
+    public void move_ball_x(int ball_id) {
+        try {
+            send_message("$2,"
+                    + Integer.toString(ball_id) + "\0");
+
+            while (input_buffer.ready()) {
+                String pos_x_str = input_buffer.readLine();
+                System.out.println("Posición X de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void move_ball_y(int ball_id) {
+        try {
+            send_message("$3,"
+                    + Integer.toString(ball_id) + "\0");
+
+            while (input_buffer.ready()) {
+                String pos_x_str = input_buffer.readLine();
+                System.out.println("Posición Y de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void destroy_block(int row, int column) {
         try {
             send_message("$1,"
@@ -205,6 +235,15 @@ public class Client {
             // destroy_block(1, 7);
             // destroy_block(2, 2);
             // get_score();
+            move_ball_x(1);
+            move_ball_y(1);
+            get_balls();
+            System.out.println("----------------");
+            add_ball();
+            move_ball_x(2);
+            move_ball_x(2);
+            move_ball_y(2);
+            get_balls();
         } catch (Exception error) {
             error.printStackTrace();
         }
