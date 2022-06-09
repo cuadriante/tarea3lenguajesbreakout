@@ -24,8 +24,9 @@ void send_message(const char *message);
 void process_message(const char *received_message);
 void separate_parameters(const char *string, int *parameters);
 
-void send_blocks();
 void send_balls();
+void send_blocks();
+void send_paddle();
 
 void send_score();
 void send_lives();
@@ -41,5 +42,9 @@ void move_ball_y(const int id);
 
 void set_ball_speed_x(const int speed);
 void set_ball_speed_y(const int speed);
+
+void set_paddle_width(const int width);
+void set_paddle_position(const int position);
+void set_paddle_speed(const int speed);
 
 void destroy_block(const int pos_x, const int pos_y);

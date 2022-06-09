@@ -57,10 +57,12 @@ void receive_message()
     char received_message[INPUT_BUFFER_SIZE];
     stop_on_error(recv(client_socket, received_message, INPUT_BUFFER_SIZE, 0));
 
-    if (strcmp(received_message, "1") == 0)
+    if (strcmp(received_message, "0") == 0)
         send_blocks();
-    else if (strcmp(received_message, "2") == 0)
+    else if (strcmp(received_message, "1") == 0)
         send_balls();
+    else if (strcmp(received_message, "2") == 0)
+        send_paddle();
     else if (strcmp(received_message, "3") == 0)
         send_score();
     else if (strcmp(received_message, "4") == 0)
@@ -113,6 +115,24 @@ void process_message(const char *received_message)
         separate_parameters(received_message, speed);
         set_ball_speed_y(speed[0]);
     }
+    else if (received_message[1] == '6')
+    {
+        int width[1];
+        separate_parameters(received_message, width);
+        set_paddle_width(width[0]);
+    }
+    else if (received_message[1] == '7')
+    {
+        int position[1];
+        separate_parameters(received_message, position);
+        set_paddle_position(position[0]);
+    }
+    else if (received_message[1] == '8')
+    {
+        int speed[1];
+        separate_parameters(received_message, speed);
+        set_paddle_speed(speed[0]);
+    }
     else
         send_message("Mensaje no reconocido\n");
 }
@@ -147,6 +167,22 @@ void send_message(const char *message)
     stop_on_error(send(client_socket, message, message_size, 0));
 }
 
+void send_balls()
+{
+    char ball_str[55];
+    for (int i = 0; i < game_data->existing_balls; i++)
+    {
+        sprintf(ball_str, "%d,%d,%d,%d,%d\n",
+                game_data->balls[i]->id,
+                game_data->balls[i]->pos_x,
+                game_data->balls[i]->pos_y,
+                game_data->ball_speed_x,
+                game_data->ball_speed_y);
+
+        send_message(ball_str);
+    }
+}
+
 void send_blocks()
 {
     char block_str[12];
@@ -165,20 +201,15 @@ void send_blocks()
     }
 }
 
-void send_balls()
+void send_paddle()
 {
-    char ball_str[55];
-    for (int i = 0; i < game_data->existing_balls; i++)
-    {
-        sprintf(ball_str, "%d,%d,%d,%d,%d\n",
-                game_data->balls[i]->id,
-                game_data->balls[i]->pos_x,
-                game_data->balls[i]->pos_y,
-                game_data->ball_speed_x,
-                game_data->ball_speed_y);
+    char paddle_str[15];
+    sprintf(paddle_str, "%d,%d,%d\n",
+            game_data->paddle->width,
+            game_data->paddle->position,
+            game_data->paddle->speed);
 
-        send_message(ball_str);
-    }
+    send_message(paddle_str);
 }
 
 void send_score()
@@ -275,10 +306,40 @@ void set_ball_speed_y(const int speed)
     send_message(speed_y_str);
 }
 
+void set_paddle_width(const int width)
+{
+    game_data->paddle->width = width;
+
+    char width_str[6];
+    sprintf(width_str, "%d\n", game_data->paddle->width);
+
+    send_message(width_str);
+}
+
+void set_paddle_position(const int position)
+{
+    game_data->paddle->position = position;
+
+    char position_str[6];
+    sprintf(position_str, "%d\n", game_data->paddle->position);
+
+    send_message(position_str);
+}
+
+void set_paddle_speed(const int speed)
+{
+    game_data->paddle->speed = speed;
+
+    char speed_str[6];
+    sprintf(speed_str, "%d\n", game_data->paddle->speed);
+
+    send_message(speed_str);
+}
+
 void destroy_block(const int row, const int column)
 {
     Block *block = game_data->blocks[row][column];
-    game_data->score += block->level * 100;
+    game_data->score += block->level * game_data->level * BASE_POINTS;
 
     char position_str[10];
     sprintf(position_str, "%d,%d\n", block->row, block->column);
