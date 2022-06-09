@@ -39,4 +39,7 @@ void add_ball();
 void move_ball_x(const int id);
 void move_ball_y(const int id);
 
+void set_ball_speed_x(const int speed);
+void set_ball_speed_y(const int speed);
+
 void destroy_block(const int pos_x, const int pos_y);

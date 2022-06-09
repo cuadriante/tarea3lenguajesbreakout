@@ -9,6 +9,10 @@ GameData *start_game()
     game_data->score = DEFAULT_SCORE;
     game_data->lives = DEFAULT_LIVES;
     game_data->level = DEFAULT_LEVEL;
+
+    game_data->ball_speed_x = DEFAULT_SPEED_X;
+    game_data->ball_speed_y = DEFAULT_SPEED_Y;
+
     game_data->existing_balls = DEFAULT_BALL_QUANTITY;
 
     create_new_ball(game_data);
@@ -82,8 +86,6 @@ void create_new_ball(GameData *game_data)
             game_data->balls[i]->id = i + 1;
             game_data->balls[i]->pos_x = DEFAULT_POS_X;
             game_data->balls[i]->pos_y = DEFAULT_POS_Y;
-            game_data->balls[i]->speed_x = DEFAULT_SPEED_X;
-            game_data->balls[i]->speed_y = DEFAULT_SPEED_Y;
 
             game_data->existing_balls += 1;
 

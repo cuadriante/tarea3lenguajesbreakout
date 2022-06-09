@@ -101,21 +101,33 @@ void process_message(const char *received_message)
         separate_parameters(received_message, ball_id);
         move_ball_y(ball_id[0]);
     }
+    else if (received_message[1] == '4')
+    {
+        int speed[1];
+        separate_parameters(received_message, speed);
+        set_ball_speed_x(speed[0]);
+    }
+    else if (received_message[1] == '5')
+    {
+        int speed[1];
+        separate_parameters(received_message, speed);
+        set_ball_speed_y(speed[0]);
+    }
     else
         send_message("Mensaje no reconocido\n");
 }
 
 void separate_parameters(const char *string, int *parameters)
 {
-    char parameter[3] = "\0";
+    char parameter[5] = "\0";
     int parameter_index = 0;
 
     int string_size = strlen(string);
-    char character = '\0';
+    char character[2] = "\0\0";
     for (int i = 3; i < string_size; i++)
     {
-        character = string[i];
-        if (character == ',')
+        character[0] = string[i];
+        if (character[0] == ',')
         {
             parameters[parameter_index] = atoi(parameter);
             strcpy(parameter, "\0");
@@ -123,7 +135,7 @@ void separate_parameters(const char *string, int *parameters)
         }
         else
         {
-            strcat(parameter, &character);
+            strcat(parameter, &character[0]);
         }
     }
     parameters[parameter_index] = atoi(parameter);
@@ -162,8 +174,8 @@ void send_balls()
                 game_data->balls[i]->id,
                 game_data->balls[i]->pos_x,
                 game_data->balls[i]->pos_y,
-                game_data->balls[i]->speed_x,
-                game_data->balls[i]->speed_y);
+                game_data->ball_speed_x,
+                game_data->ball_speed_y);
 
         send_message(ball_str);
     }
@@ -224,7 +236,7 @@ void add_ball()
 void move_ball_x(const int id)
 {
     Ball *ball = get_ball_by_id(game_data, id);
-    ball->pos_x += ball->speed_x;
+    ball->pos_x += game_data->ball_speed_x;
 
     char pos_x_str[6];
     sprintf(pos_x_str, "%d\n", ball->pos_x);
@@ -235,12 +247,32 @@ void move_ball_x(const int id)
 void move_ball_y(const int id)
 {
     Ball *ball = get_ball_by_id(game_data, id);
-    ball->pos_y += ball->speed_y;
+    ball->pos_y += game_data->ball_speed_y;
 
     char pos_y_str[6];
     sprintf(pos_y_str, "%d\n", ball->pos_y);
 
     send_message(pos_y_str);
+}
+
+void set_ball_speed_x(const int speed)
+{
+    game_data->ball_speed_x = speed;
+
+    char speed_x_str[6];
+    sprintf(speed_x_str, "%d\n", game_data->ball_speed_x);
+
+    send_message(speed_x_str);
+}
+
+void set_ball_speed_y(const int speed)
+{
+    game_data->ball_speed_y = speed;
+
+    char speed_y_str[6];
+    sprintf(speed_y_str, "%d\n", game_data->ball_speed_y);
+
+    send_message(speed_y_str);
 }
 
 void destroy_block(const int row, const int column)

@@ -18,8 +18,6 @@ typedef struct
     int id;
     int pos_x;
     int pos_y;
-    int speed_x;
-    int speed_y;
 } Ball;
 
 typedef struct
@@ -27,6 +25,9 @@ typedef struct
     int score;
     int lives;
     int level;
+
+    int ball_speed_x;
+    int ball_speed_y;
 
     int existing_balls;
 
