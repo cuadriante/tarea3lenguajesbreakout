@@ -47,7 +47,7 @@ public class Client {
     public ArrayList<int[]> get_blocks() {
         ArrayList<int[]> blockAttributesArray = new ArrayList<>();
         try {
-            send_message("1\0");
+            send_message("0\0");
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
                 int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
@@ -61,11 +61,24 @@ public class Client {
 
     public void get_balls() {
         try {
-            send_message("2\0");
+            send_message("1\0");
 
             while (input_buffer.ready()) {
                 String ball_str = input_buffer.readLine();
                 System.out.println("Bola: " + ball_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void get_paddle() {
+        try {
+            send_message("2\0");
+
+            while (input_buffer.ready()) {
+                String paddle_str = input_buffer.readLine();
+                System.out.println("Paddle: " + paddle_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -232,6 +245,45 @@ public class Client {
         }
     }
 
+    public void set_paddle_width(int width) {
+        try {
+            send_message("$6," + Integer.toString(width) + "\0");
+
+            while (input_buffer.ready()) {
+                String width_str = input_buffer.readLine();
+                System.out.println("Ancho del paddle: " + width_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void set_paddle_position(int position) {
+        try {
+            send_message("$7," + Integer.toString(position) + "\0");
+
+            while (input_buffer.ready()) {
+                String position_str = input_buffer.readLine();
+                System.out.println("Posición del paddle: " + position_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void set_paddle_speed(int speed) {
+        try {
+            send_message("$8," + Integer.toString(speed) + "\0");
+
+            while (input_buffer.ready()) {
+                String speed_str = input_buffer.readLine();
+                System.out.println("Velocidad del paddle: " + speed_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void destroy_block(int row, int column) {
         try {
             send_message("$1,"
@@ -274,6 +326,15 @@ public class Client {
             set_ball_speed_x(-20);
             set_ball_speed_y(-2);
             get_balls();
+            System.out.println("----------------");
+            get_paddle();
+            set_paddle_width(55);
+            set_paddle_position(205);
+            set_paddle_position(150);
+            set_paddle_speed(10);
+            set_paddle_speed(-10);
+            get_paddle();
+
         } catch (Exception error) {
             error.printStackTrace();
         }
