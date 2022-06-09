@@ -1,7 +1,10 @@
 package org.breakout;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.breakout.blockFactory.Block;
 
 
@@ -76,13 +79,21 @@ public class Ball{
      * Mueve la bola
      */
     public void move(){
-        if (this.visibility == true){
+        if (this.visibility){
             int x = (int)this.circle.getCenterX();
             int y = (int)this.circle.getCenterY();
             checkParameters(x, y);
-            this.circle.setCenterX(x + xSpeed);
+            setBallXandY(x, y);
             this.circle.setCenterY(y + ySpeed);
+            Timeline ballMovement = new Timeline(new KeyFrame(Duration.millis(25), mover -> setBallXandY(x, y)));
+            ballMovement.setCycleCount(1);
+            ballMovement.play();
         }
+    }
+
+    public void setBallXandY(int x, int y){
+        this.circle.setCenterY(y + ySpeed);
+        this.circle.setCenterX(x + xSpeed);
     }
 
     /**

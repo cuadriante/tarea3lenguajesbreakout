@@ -1,7 +1,8 @@
 package org.breakout;
 
 import javafx.concurrent.Task;
-
+import javafx.application.Platform;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -46,43 +47,24 @@ public class GameLoop {
     }
 
     public void ballAnimationLoop(){
-        Task<Void> ballMovementAnimation;
-        ballMovementAnimation = new Task<>() {
-            @Override
-            public Void call() {
-                if (gameStatus) {
-                    
-                    isLevelComplete(); // !Creo que esto va a dar error por editar el hilo principal
-                    
-                    // Animacion de bola
-                    Iterator<Ball> itr = ballList.iterator();
-                    while(itr.hasNext()){
-                        Ball ball = itr.next();
-                        try {
-                            ball.move();
-                            ball.checkCollision();
-                            if(ball.dropBall()){
-                                ball.setInvisible();
-                                atLeastOneBall();
+        new Timer().schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override public void run() {
+                                if (gameStatus) {
+                                    isLevelComplete(); // !Creo que esto va a dar error por editar el hilo principal
+                                    // Animacion de bola
+                                    moveBalls();
+                                } else{
+                                    gameWindow.endGame();
+                                }
                             }
-                            Thread.sleep(200);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else{
-                    gameWindow.endGame();
-                }
-                return null;
-            }
+                        });
 
-        };
-        ballMovementAnimation.setOnSucceeded(event -> {
-            if (ballMovementAnimation.isDone()){
-                ballAnimationLoop();
-            }
-        });
-        new Thread(ballMovementAnimation).start();
+                    }
+                }, 0, 100);
     }
 
     private void atLeastOneBall() {
@@ -119,4 +101,18 @@ public class GameLoop {
             gameWindow.nextLevel();
         }
     }
+
+    public void moveBalls() {
+        Iterator<Ball> itr = ballList.iterator();
+        while (itr.hasNext()) {
+            Ball ball = itr.next();
+            ball.move();
+            ball.checkCollision();
+            if (ball.dropBall()) {
+                ball.setInvisible();
+                atLeastOneBall();
+            }
+        }
+    }
+
 }
