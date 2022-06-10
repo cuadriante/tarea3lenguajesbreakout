@@ -84,7 +84,6 @@ void create_new_ball(GameData *game_data)
 {
     for (int i = 0; i < MAX_BALLS; i++)
     {
-        Ball *ball;
         if (i == game_data->existing_balls)
         {
             game_data->balls[i] = malloc(sizeof(Ball));
