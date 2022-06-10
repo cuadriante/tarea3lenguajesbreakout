@@ -18,6 +18,7 @@ typedef struct
     int id;
     int pos_x;
     int pos_y;
+    int hidden;
 } Ball;
 
 typedef struct

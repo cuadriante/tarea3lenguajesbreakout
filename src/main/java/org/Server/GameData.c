@@ -81,19 +81,25 @@ int generate_random_powerup(const int min_number, const int max_number)
 }
 
 void create_new_ball(GameData *game_data)
-
 {
     for (int i = 0; i < MAX_BALLS; i++)
     {
-        if (i == (game_data->existing_balls))
+        Ball *ball;
+        if (i == game_data->existing_balls)
         {
             game_data->balls[i] = malloc(sizeof(Ball));
             game_data->balls[i]->id = i + 1;
             game_data->balls[i]->pos_x = INITIAL_POS_X;
             game_data->balls[i]->pos_y = INITIAL_POS_Y;
+            game_data->balls[i]->hidden = false;
 
             game_data->existing_balls += 1;
 
+            break;
+        }
+        else if (game_data->balls[i]->hidden)
+        {
+            game_data->balls[i]->hidden = false;
             break;
         }
     }

@@ -297,6 +297,20 @@ public class Client {
         }
     }
 
+    public void hide_ball(int id) {
+        try {
+            send_message("$9,"
+                    + Integer.toString(id) + "\0");
+
+            while (input_buffer.ready()) {
+                String position_str = input_buffer.readLine();
+                System.out.println("Bola escondida: " + position_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void test_communication() {
         try {
             get_blocks();
@@ -332,6 +346,10 @@ public class Client {
             // set_paddle_speed(10);
             // set_paddle_speed(-10);
             // get_paddle();
+            add_ball();
+            move_ball_x(1);
+            hide_ball(1);
+            add_ball();
 
         } catch (Exception error) {
             error.printStackTrace();

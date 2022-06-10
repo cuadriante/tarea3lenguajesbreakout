@@ -10,11 +10,11 @@ GameData *game_data;
 int main()
 {
     // Varas de los sockets de Windows
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-    {
-        return 1;
-    }
+    // WSADATA wsa;
+    // if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    // {
+    //     return 1;
+    // }
     game_data = start_game();
 
     server_socket = stop_on_error(socket(AF_INET, SOCK_STREAM, 0));
@@ -132,6 +132,12 @@ void process_message(const char *received_message)
         int speed[1];
         separate_parameters(received_message, speed);
         set_paddle_speed(speed[0]);
+    }
+    else if (received_message[1] == '9')
+    {
+        int id[1];
+        separate_parameters(received_message, id);
+        hide_ball(id[0]);
     }
     else
         send_message("Mensaje no reconocido\n");
@@ -347,4 +353,20 @@ void destroy_block(const int row, const int column)
     free(block);
 
     send_message(position_str);
+}
+
+void hide_ball(const int id)
+{
+    Ball *ball = get_ball_by_id(game_data, id);
+    ball->pos_x = INITIAL_POS_X;
+    ball->pos_y = INITIAL_POS_Y;
+    ball->hidden = true;
+
+    char hidden_str[15];
+    sprintf(hidden_str, "%d,%d,%d\n",
+            ball->id,
+            ball->pos_x,
+            ball->pos_y);
+
+    send_message(hidden_str);
 }
