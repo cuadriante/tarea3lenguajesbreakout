@@ -8,8 +8,8 @@ public class MakeBiggerBlock extends Block{
     //private final Color stroke = Color.ORANGERED;
     private final Color stroke = Color.CYAN;
 
-    public MakeBiggerBlock(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+    public MakeBiggerBlock(int posX, int posY, int width, int height, int row, int colum) {
+        super(posX, posY, width, height, row, colum);
         construct();
     }
 

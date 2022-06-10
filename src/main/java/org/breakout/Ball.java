@@ -13,6 +13,7 @@ import org.breakout.blockFactory.Block;
  */
 public class Ball{
     private Circle circle;
+    private int id;
     private float xSpeed = -10;
     private float ySpeed = 10;
     private int xLimit;
@@ -28,7 +29,7 @@ public class Ball{
  * @param centerY Posición en el eje Y de la bola
  * @param gw
  */
-    public Ball(int centerX, int centerY, GameWindow gw){
+    public Ball(int centerX, int centerY, GameWindow gw, int id){
         this.circle = new Circle(centerX, centerY, RADIUS);
         circle.setFill(Color.OLIVE);
         circle.setStrokeWidth(2);
@@ -36,6 +37,7 @@ public class Ball{
         this.xLimit = 400;
         this.yLimit = 400;
         this.visibility = true;
+        this.id = id;
         gameWindow = gw;
     }
 
@@ -118,6 +120,10 @@ public class Ball{
         return this.circle;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
     /**
      * Aumenta la velocidad de la pelota
      */
@@ -190,10 +196,11 @@ public class Ball{
 
     public void activatePower(int type) {
         switch (type) {
+            // case (-1) -> gameWindow.speedUpBalls(); // Temporal
             case (0) -> gameWindow.speedUpBalls();
             case (1) -> gameWindow.biggerPlayerbar();
             case (2) -> gameWindow.smallerPlayerbar();
-            case (3) -> speedDown();
+            case (3) -> gameWindow.speedDownBalls();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();
             default -> throw new IllegalStateException("Unexpected value: " + type);

@@ -107,6 +107,7 @@ public class GameLoop {
         while (itr.hasNext()) {
             Ball ball = itr.next();
             ball.move();
+            gameWindow.sendMovement(ball);
             ball.checkCollision();
             if (ball.dropBall()) {
                 ball.setInvisible();

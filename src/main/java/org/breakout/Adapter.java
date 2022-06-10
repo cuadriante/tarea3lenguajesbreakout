@@ -17,12 +17,12 @@ public class Adapter {
     public int[] stringToBlockAttributes(String data){
         String[] arrOfStr = data.split(",", -2);
 
-        int isBreak = Integer.parseInt(arrOfStr[0]);
-        int row = Integer.parseInt(arrOfStr[1]);
-        int col = Integer.parseInt(arrOfStr[2]);
+        int row = Integer.parseInt(arrOfStr[0]);
+        int column = Integer.parseInt(arrOfStr[1]);
+        int pts = Integer.parseInt(arrOfStr[2]);
         int power = Integer.parseInt(arrOfStr[3]);
 
-        int blockAttributes[] = {isBreak, row, col, power};
+        int blockAttributes[] = {row, column, pts, power};
         return  blockAttributes;
     }
 

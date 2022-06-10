@@ -35,7 +35,7 @@ void generate_blocks(GameData *game_data)
         block_level = get_block_level(i);
         for (int j = 0; j < BLOCK_COLUMNS; j++)
         {
-            block_power_up = generate_random_powerup(1, 6);
+            block_power_up = generate_random_powerup(0, 5);
 
             game_data->blocks[i][j] = malloc(sizeof(Block));
             *(game_data->blocks[i][j]) = (Block){.row = i,

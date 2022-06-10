@@ -8,8 +8,8 @@ public class AddBallBlock extends Block{
     //private final Color stroke = Color.ORANGERED;
     private final Color stroke = Color.VIOLET;
 
-    public AddBallBlock(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+    public AddBallBlock(int posX, int posY, int width, int height, int row, int colum) {
+        super(posX, posY, width, height, row, colum);
         construct();
     }
 

@@ -10,12 +10,16 @@ public abstract class Block {
     private int type;
     private int color;
     private int effect;
+    private int row;
+    private int colum;
 
-    public Block(int posX, int posY, int width, int height){
+    public Block(int posX, int posY, int width, int height, int row, int col){
         // this.rectangle = new Rectangle(posX, posY, width, height);
         this.rectangle = new Rectangle(width, height);
         this.rectangle.setX(posX);
         this.rectangle.setY(posY);
+        this.row = row;
+        this.colum = col;
 
     }
 
@@ -42,6 +46,14 @@ public abstract class Block {
         return id;
     }
 
+    public int getRow(){
+        return row;
+    }
+
+    public int getColum(){
+        return colum;
+    }
+    
     public void setId(int id) {
         id = id;
     }

@@ -21,9 +21,7 @@ public class GameWindow {
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    // public static int pts = 0;
-    // public static int lvl = 0;
-    // public static int life = 3;
+    private int numBalls = 1;
 
     Client client = new Client(8080);
 
@@ -111,50 +109,32 @@ public class GameWindow {
         Lobby.show();
     }
 
-    public void buildBlockList() { // esto se hace con la matriz del server
-        int id = 0;
-        int x = 3;
-        int y = 40; // dejar este espacio para poner la info del jugador
-
-        for (int row = 0; row < BlockFactory.getRows(); row++) {
-            for (int col = 0; col < BlockFactory.getColumns(); col++) {
-                int type = (int) (Math.random() * 6);
-                Block block = BlockFactory.buildBlock(type, x, y, id);
-                blockList.add(block);
-                root.getChildren().add(block.getShape());
-                x += BlockFactory.getWidth() + 5;
-                block.createRectangleColor(row);
-            }
-            x = 3;
-            y += BlockFactory.getHeight() + 5;
-        }
-    }
-
     /**
      * Crea la lista de bloques de acuerdo a la 
      * matriz que recibe del servidor
      */
-    // public void buildBlockList(){
-    //     ArrayList<int[]> blockAttributesArray = client.get_blocks();
-    //     int x = 3;
-    //     int y = 40;
-    //     int id = 0;
-
-    //     for (int[] blockAttributes : blockAttributesArray){
-    //         int isBroken = blockAttributes[0];
-    //         int row = blockAttributes[0];
-    //         int column = blockAttributes[0];
-    //         int power = blockAttributes[0]; //type?
-    //         System.out.println(Arrays.toString(blockAttributes));
-    //         Block block = BlockFactory.buildBlock(power, x, y, id);
-    //         blockList.add(block);
-    //             root.getChildren().add(block.getShape());
-    //             x += BlockFactory.getWidth() + 5;
-    //             block.createRectangleColor(row);
-    //     }
-    //     x = 3;
-    //     y += BlockFactory.getHeight() + 5;
-    // }
+    public void buildBlockList(){
+        ArrayList<int[]> blockAttributesArray = client.get_blocks();
+        int id = 0;
+        int x = 3;
+        int y = 40;
+        for (int[] blockAttributes : blockAttributesArray){
+            int row = blockAttributes[0];
+            int column = blockAttributes[1];
+            // int pts = blockAttributes[2];
+            int power = blockAttributes[3];
+            Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
+            blockList.add(block);
+            root.getChildren().add(block.getShape());
+            x += BlockFactory.getWidth() + 5;
+            block.createRectangleColor(row);
+            if (column == 7){
+                x = 3;
+                y += BlockFactory.getHeight() + 5;
+            }
+        }
+        // System.out.print("----");
+    }
 
     /**
      * Hace visibles los bloques y, mediante una llamada al server,
@@ -172,7 +152,8 @@ public class GameWindow {
     }
 
     private void buildBallList() {
-        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
+        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this, numBalls);
+        this.numBalls  += 1;
         ballList.add(ball);
         for (Ball element : ballList){
             root.getChildren().add(element.getShape());
@@ -210,7 +191,8 @@ public class GameWindow {
         if (!flag){
             int y = STAGE_HEIGHT/2;
             int x = STAGE_WIDTH/2;
-            Ball ball = new Ball(x, y, this);
+            Ball ball = new Ball(x, y, this, numBalls);
+            this.numBalls += 1;
             ballList.add(ball);
             root.getChildren().add(ball.getShape());
             client.add_ball();
@@ -250,6 +232,19 @@ public class GameWindow {
         client.set_ball_speed_y(ySpeed);
     }
 
+    public void speedDownBalls(){
+        Iterator<Ball> itr = ballList.iterator();
+        while(itr.hasNext()){
+            Ball ball = itr.next();
+            ball.speedDown();
+        }
+        Ball ball = ballList.get(0);
+        float xSpeed = ball.getXSpeed();
+        float ySpeed = ball.getYSpeed();
+        client.set_ball_speed_x(xSpeed);
+        client.set_ball_speed_y(ySpeed);
+    }
+
     public void updatePuntos(){
         int pts = client.get_score();
         String puntaje = Integer.toString(pts);
@@ -262,6 +257,12 @@ public class GameWindow {
         String niv = Integer.toString(lvl);
         level.setText(niv);
         setUpNextLevel();
+    }
+
+    public void sendMovement(Ball ball){
+        int ballId = ball.getId();
+        client.move_ball_x(ballId);
+        client.move_ball_y(ballId);
     }
 
     /**
@@ -296,6 +297,11 @@ public class GameWindow {
         speedUpBalls();
     }
 
+    // public void set(){
+    //     move_ball_x();
+    //     move_ball_y();
+    // }
+
     private void createLabels() {
 
         double fontSize = 15;
@@ -306,7 +312,8 @@ public class GameWindow {
         FontWeight labelFontWeight = FontWeight.BOLD;
         Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
 
-        int pts = client.get_score();
+        // int pts = client.get_score();
+        int pts = 0;
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
         puntos.setX(10);
@@ -320,7 +327,8 @@ public class GameWindow {
         puntosLabel.setFill(Color.SADDLEBROWN);
         puntosLabel.setFont(labelFont);
 
-        int lvl = client.get_level();
+        // int lvl = client.get_level();
+        int lvl = 1;
         String nivelString = Integer.toString(lvl);
         level.setText(nivelString);
         level.setX(100);
@@ -334,7 +342,8 @@ public class GameWindow {
         levelLabel.setFill(Color.SADDLEBROWN);
         levelLabel.setFont(labelFont);
 
-        int life = client.get_lives();
+        // int life = client.get_lives();
+        int life = 3;
         String livesString = Integer.toString(life);
         lives.setText(livesString);
         lives.setX(380);

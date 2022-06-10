@@ -8,8 +8,8 @@ public class SpeedUpBlock extends Block{
     //private final Color stroke = Color.MEDIUMSEAGREEN;
     private final Color stroke = Color.DEEPPINK;
 
-    public SpeedUpBlock(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+    public SpeedUpBlock(int posX, int posY, int width, int height, int row, int colum) {
+        super(posX, posY, width, height, row, colum);
         construct();
     }
 

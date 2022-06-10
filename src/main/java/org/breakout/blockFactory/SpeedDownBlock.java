@@ -8,8 +8,8 @@ public class SpeedDownBlock extends Block{
     final Color color = Color.LEMONCHIFFON;
     private final Color stroke = Color.CHARTREUSE;
 
-    public SpeedDownBlock(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+    public SpeedDownBlock(int posX, int posY, int width, int height, int row, int colum) {
+        super(posX, posY, width, height, row, colum);
         construct();
     }
 

@@ -8,8 +8,8 @@ public class MakeSmallerBlock extends Block{
     //private final Color stroke = Color.INDIANRED;
     private final Color stroke = Color.DEEPSKYBLUE;
 
-    public MakeSmallerBlock(int posX, int posY, int width, int height) {
-        super(posX, posY, width, height);
+    public MakeSmallerBlock(int posX, int posY, int width, int height, int row, int colum) {
+        super(posX, posY, width, height, row, colum);
         construct();
     }
 

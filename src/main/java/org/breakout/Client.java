@@ -50,6 +50,7 @@ public class Client {
             send_message("0\0");
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
+                // System.out.println(block_str);
                 int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
                 blockAttributesArray.add(blockAttributes);
             }
@@ -192,8 +193,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                System.out.println("Posición X de la bola " +
-                        Integer.toString(ball_id) + ": " + pos_x_str);
+                // System.out.println("Posición X de la bola " +
+                //         Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -261,7 +262,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String position_str = input_buffer.readLine();
-                System.out.println("Posición del paddle: " + position_str);
+                // System.out.println("Posición del paddle: " + position_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -298,7 +299,7 @@ public class Client {
 
     public void test_communication() {
         try {
-            // get_blocks();
+            get_blocks();
             // get_balls();
             // get_score();
             // get_lives();
@@ -323,14 +324,14 @@ public class Client {
             // set_ball_speed_x(-20);
             // set_ball_speed_y(-2);
             // get_balls();
-            System.out.println("----------------");
+            // System.out.println("----------------");
             // get_paddle();
-            set_paddle_width(55);
-            set_paddle_position(205);
-            set_paddle_position(150);
-            set_paddle_speed(10);
-            set_paddle_speed(-10);
-            get_paddle();
+            // set_paddle_width(55);
+            // set_paddle_position(205);
+            // set_paddle_position(150);
+            // set_paddle_speed(10);
+            // set_paddle_speed(-10);
+            // get_paddle();
 
         } catch (Exception error) {
             error.printStackTrace();
