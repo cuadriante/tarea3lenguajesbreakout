@@ -35,13 +35,20 @@ public class GameWindow {
     private static final Text level = new Text();
 
     private static final Text lives = new Text();
-    private final PlayerBar playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+    private final PlayerBar playerBar;
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
-    final GameLoop GAME_LOOP = new GameLoop(this, ballList, blockList, playerBar); // creo que esto es un singleton xd // no es
+    final GameLoop GAME_LOOP;
 
 
     GameWindow(Stage Lobby) throws Exception {
+        playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+        GAME_LOOP = new GameLoop(this, ballList, blockList, playerBar); 
+
+        client.set_paddle_width(BlockFactory.getWidth());
+        int paddlePos = (int) playerBar.getShape().getX();
+        client.set_paddle_position(paddlePos);
+        
         Lobby.setTitle("Breakout");
         Lobby.setResizable(false);
         
@@ -95,6 +102,8 @@ public class GameWindow {
                     default:
                         break;
                 }
+                int barPos = (int) playerBar.getShape().getX();
+                client.set_paddle_position(barPos);
             }
         });
 
@@ -188,7 +197,6 @@ public class GameWindow {
 
     /**
      * Agrega una bola al juego
-     * Todo: Enviar la bola al server
      */
     public void newBall() {
         boolean flag = false;
@@ -229,12 +237,17 @@ public class GameWindow {
     /**
      * Aumenta la velocidad de las bolas
      */
-    private void speedUpBalls(){
+    public void speedUpBalls(){
         Iterator<Ball> itr = ballList.iterator();
         while(itr.hasNext()){
             Ball ball = itr.next();
             ball.speedUp();
         }
+        Ball ball = ballList.get(0);
+        float xSpeed = ball.getXSpeed();
+        float ySpeed = ball.getYSpeed();
+        client.set_ball_speed_x(xSpeed);
+        client.set_ball_speed_y(ySpeed);
     }
 
     public void updatePuntos(){
@@ -249,6 +262,24 @@ public class GameWindow {
         String niv = Integer.toString(lvl);
         level.setText(niv);
         setUpNextLevel();
+    }
+
+    /**
+     * Dobla el tamaño de la barra del jugador
+     */
+    public void biggerPlayerbar(){
+        playerBar.makeBigger();
+        int barWidth = (int )playerBar.getShape().getWidth();
+        client.set_paddle_width(barWidth);
+    }
+
+    /**
+     * Reduce a la mitad el tamaño de la barra del jugador
+     */
+    public void smallerPlayerbar(){
+        playerBar.makeSmaller();
+        int barWidth = (int )playerBar.getShape().getWidth();
+        client.set_paddle_width(barWidth);
     }
     public static void terminarJuego(char condicion){
         //Llamar ventana game over

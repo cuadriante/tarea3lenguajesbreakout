@@ -215,13 +215,10 @@ public class Client {
         }
     }
 
-    public void set_ball_speed_x(int speed) {
-        // !!!!!
-        // La velocidad de las bolas ahora es global.
-        // Está en GameData y no en Ball.
+    public void set_ball_speed_x(float speed) {
 
         try {
-            send_message("$4," + Integer.toString(speed) + "\0");
+            send_message("$4," + Float.toString(speed) + "\0");
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
@@ -232,9 +229,9 @@ public class Client {
         }
     }
 
-    public void set_ball_speed_y(int speed) {
+    public void set_ball_speed_y(float speed) {
         try {
-            send_message("$5," + Integer.toString(speed) + "\0");
+            send_message("$5," + Float.toString(speed) + "\0");
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
@@ -317,17 +314,17 @@ public class Client {
             // destroy_block(1, 7);
             // destroy_block(2, 2);
             // get_score();
-            set_ball_speed_x(8);
-            set_ball_speed_y(12);
-            get_balls();
+            // set_ball_speed_x(8);
+            // set_ball_speed_y(12);
+            // get_balls();
+            // System.out.println("----------------");
+            // add_ball();
+            // set_ball_speed_x(-6);
+            // set_ball_speed_x(-20);
+            // set_ball_speed_y(-2);
+            // get_balls();
             System.out.println("----------------");
-            add_ball();
-            set_ball_speed_x(-6);
-            set_ball_speed_x(-20);
-            set_ball_speed_y(-2);
-            get_balls();
-            System.out.println("----------------");
-            get_paddle();
+            // get_paddle();
             set_paddle_width(55);
             set_paddle_position(205);
             set_paddle_position(150);

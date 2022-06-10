@@ -5,13 +5,13 @@
 #include <errno.h>
 
 #include <unistd.h>
-#include <sys/socket.h>
 #include <sys/types.h>
 
-#include <netinet/in.h>
+// #include <sys/socket.h>
+// #include <netinet/in.h>
 
-// #include <winsock2.h> //Para Windows
-// #pragma comment(lib, "ws2_32.lib")
+#include <winsock2.h> //Para Windows
+#pragma comment(lib, "ws2_32.lib")
 
 #include "constants.h"
 #include "GameData.h"

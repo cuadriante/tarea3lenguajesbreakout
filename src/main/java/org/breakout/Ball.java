@@ -13,8 +13,8 @@ import org.breakout.blockFactory.Block;
  */
 public class Ball{
     private Circle circle;
-    private double xSpeed = -10;
-    private double ySpeed = 10;
+    private float xSpeed = -10;
+    private float ySpeed = 10;
     private int xLimit;
     private int yLimit;
     private boolean visibility;
@@ -69,7 +69,7 @@ public class Ball{
     public boolean dropBall() {
         int y = (int)this.circle.getCenterY();
         boolean droped = false;
-        if (y > yLimit ){
+        if (y > yLimit){
             droped = true;
         }
         return droped;
@@ -122,8 +122,8 @@ public class Ball{
      * Aumenta la velocidad de la pelota
      */
     public void speedUp(){
-        xSpeed = 1.2*xSpeed;
-        ySpeed = 1.2*ySpeed;
+        this.xSpeed = (float) (1.2*this.xSpeed);
+        this.ySpeed = (float) (1.2*this.ySpeed);
         //xSpeed = 2*xSpeed;
         //ySpeed = 2*ySpeed;
     }
@@ -131,8 +131,8 @@ public class Ball{
      * Disminuye la velocidad de la pelota
      */
     public void speedDown(){
-        xSpeed = xSpeed/1.2;
-        ySpeed = ySpeed/1.2;
+        xSpeed = (float) (xSpeed/1.2);
+        ySpeed = (float) (ySpeed/1.2);
     }
 
     /**
@@ -146,6 +146,14 @@ public class Ball{
 
     public boolean getVisibility(){
         return this.visibility;
+    }
+
+    public float getXSpeed(){
+        return this.xSpeed;
+    }
+
+    public float getYSpeed(){
+        return this.ySpeed;
     }
     
     public void recycle(int X, int Y){
@@ -182,9 +190,9 @@ public class Ball{
 
     public void activatePower(int type) {
         switch (type) {
-            case (0) -> speedUp();
-            case (1) -> gameWindow.getPlayerBar().makeBigger();
-            case (2) -> gameWindow.getPlayerBar().makeSmaller();
+            case (0) -> gameWindow.speedUpBalls();
+            case (1) -> gameWindow.biggerPlayerbar();
+            case (2) -> gameWindow.smallerPlayerbar();
             case (3) -> speedDown();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();

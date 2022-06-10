@@ -18,11 +18,11 @@ public class Adapter {
         String[] arrOfStr = data.split(",", -2);
 
         int isBreak = Integer.parseInt(arrOfStr[0]);
-        int raw = Integer.parseInt(arrOfStr[1]);
+        int row = Integer.parseInt(arrOfStr[1]);
         int col = Integer.parseInt(arrOfStr[2]);
         int power = Integer.parseInt(arrOfStr[3]);
 
-        int blockAttributes[] = {isBreak, raw, col, power};
+        int blockAttributes[] = {isBreak, row, col, power};
         return  blockAttributes;
     }
 
@@ -52,9 +52,6 @@ public class Adapter {
 
     /**
      * Parsea el dato a un int. Se una para las funciones:
-     * send_score()
-     * send_lives()
-     * send_level()
      * @param data dato
      * @return
      */
@@ -62,4 +59,5 @@ public class Adapter {
         int dato = Integer.parseInt(data);
         return dato;
     }
+
 }
