@@ -47,9 +47,10 @@ public class Client {
     public ArrayList<int[]> get_blocks() {
         ArrayList<int[]> blockAttributesArray = new ArrayList<>();
         try {
-            send_message("1\0");
+            send_message("0\0");
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
+                // System.out.println(block_str);
                 int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
                 blockAttributesArray.add(blockAttributes);
             }
@@ -61,11 +62,24 @@ public class Client {
 
     public void get_balls() {
         try {
-            send_message("2\0");
+            send_message("1\0");
 
             while (input_buffer.ready()) {
                 String ball_str = input_buffer.readLine();
                 System.out.println("Bola: " + ball_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void get_paddle() {
+        try {
+            send_message("2\0");
+
+            while (input_buffer.ready()) {
+                String paddle_str = input_buffer.readLine();
+                System.out.println("Paddle: " + paddle_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -179,8 +193,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                System.out.println("Posición X de la bola " +
-                        Integer.toString(ball_id) + ": " + pos_x_str);
+                // System.out.println("Posición X de la bola " +
+                //         Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -202,13 +216,10 @@ public class Client {
         }
     }
 
-    public void set_ball_speed_x(int speed) {
-        // !!!!!
-        // La velocidad de las bolas ahora es global.
-        // Está en GameData y no en Ball.
+    public void set_ball_speed_x(float speed) {
 
         try {
-            send_message("$4," + Integer.toString(speed) + "\0");
+            send_message("$4," + Float.toString(speed) + "\0");
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
@@ -219,13 +230,52 @@ public class Client {
         }
     }
 
-    public void set_ball_speed_y(int speed) {
+    public void set_ball_speed_y(float speed) {
         try {
-            send_message("$5," + Integer.toString(speed) + "\0");
+            send_message("$5," + Float.toString(speed) + "\0");
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
                 System.out.println("Velocidad Y de las bolas: " + speed_x_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void set_paddle_width(int width) {
+        try {
+            send_message("$6," + Integer.toString(width) + "\0");
+
+            while (input_buffer.ready()) {
+                String width_str = input_buffer.readLine();
+                System.out.println("Ancho del paddle: " + width_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void set_paddle_position(int position) {
+        try {
+            send_message("$7," + Integer.toString(position) + "\0");
+
+            while (input_buffer.ready()) {
+                String position_str = input_buffer.readLine();
+                // System.out.println("Posición del paddle: " + position_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
+    public void set_paddle_speed(int speed) {
+        try {
+            send_message("$8," + Integer.toString(speed) + "\0");
+
+            while (input_buffer.ready()) {
+                String speed_str = input_buffer.readLine();
+                System.out.println("Velocidad del paddle: " + speed_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -247,9 +297,23 @@ public class Client {
         }
     }
 
+    public void hide_ball(int id) {
+        try {
+            send_message("$9,"
+                    + Integer.toString(id) + "\0");
+
+            while (input_buffer.ready()) {
+                String position_str = input_buffer.readLine();
+                System.out.println("Bola escondida: " + position_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void test_communication() {
         try {
-            // get_blocks();
+            get_blocks();
             // get_balls();
             // get_score();
             // get_lives();
@@ -265,15 +329,28 @@ public class Client {
             // destroy_block(1, 7);
             // destroy_block(2, 2);
             // get_score();
-            set_ball_speed_x(8);
-            set_ball_speed_y(12);
-            get_balls();
-            System.out.println("----------------");
+            // set_ball_speed_x(8);
+            // set_ball_speed_y(12);
+            // get_balls();
+            // System.out.println("----------------");
+            // add_ball();
+            // set_ball_speed_x(-6);
+            // set_ball_speed_x(-20);
+            // set_ball_speed_y(-2);
+            // get_balls();
+            // System.out.println("----------------");
+            // get_paddle();
+            // set_paddle_width(55);
+            // set_paddle_position(205);
+            // set_paddle_position(150);
+            // set_paddle_speed(10);
+            // set_paddle_speed(-10);
+            // get_paddle();
             add_ball();
-            set_ball_speed_x(-6);
-            set_ball_speed_x(-20);
-            set_ball_speed_y(-2);
-            get_balls();
+            move_ball_x(1);
+            hide_ball(1);
+            add_ball();
+
         } catch (Exception error) {
             error.printStackTrace();
         }

@@ -6,17 +6,22 @@ GameData *start_game()
 
     srand(time(0));
 
-    game_data->score = DEFAULT_SCORE;
-    game_data->lives = DEFAULT_LIVES;
-    game_data->level = DEFAULT_LEVEL;
+    game_data->score = INITIAL_SCORE;
+    game_data->lives = INITIAL_LIVES;
+    game_data->level = INITIAL_LEVEL;
 
-    game_data->ball_speed_x = DEFAULT_SPEED_X;
-    game_data->ball_speed_y = DEFAULT_SPEED_Y;
+    game_data->ball_speed_x = INITIAL_SPEED_X;
+    game_data->ball_speed_y = INITIAL_SPEED_Y;
 
-    game_data->existing_balls = DEFAULT_BALL_QUANTITY;
+    game_data->existing_balls = INITIAL_BALL_QUANTITY;
 
-    create_new_ball(game_data);
     generate_blocks(game_data);
+    create_new_ball(game_data);
+
+    game_data->paddle = malloc(sizeof(Paddle));
+    *(game_data->paddle) = (Paddle){.width = INITIAL_PADDLE_WIDTH,
+                                    .position = INITIAL_PADDLE_POSITION,
+                                    .speed = INITIAL_PADDLE_SPEED};
 
     return game_data;
 }
@@ -30,7 +35,7 @@ void generate_blocks(GameData *game_data)
         block_level = get_block_level(i);
         for (int j = 0; j < BLOCK_COLUMNS; j++)
         {
-            block_power_up = generate_random_powerup(1, 6);
+            block_power_up = generate_random_powerup(0, 5);
 
             game_data->blocks[i][j] = malloc(sizeof(Block));
             *(game_data->blocks[i][j]) = (Block){.row = i,
@@ -76,19 +81,25 @@ int generate_random_powerup(const int min_number, const int max_number)
 }
 
 void create_new_ball(GameData *game_data)
-
 {
     for (int i = 0; i < MAX_BALLS; i++)
     {
-        if (i == (game_data->existing_balls))
+        Ball *ball;
+        if (i == game_data->existing_balls)
         {
             game_data->balls[i] = malloc(sizeof(Ball));
             game_data->balls[i]->id = i + 1;
-            game_data->balls[i]->pos_x = DEFAULT_POS_X;
-            game_data->balls[i]->pos_y = DEFAULT_POS_Y;
+            game_data->balls[i]->pos_x = INITIAL_POS_X;
+            game_data->balls[i]->pos_y = INITIAL_POS_Y;
+            game_data->balls[i]->hidden = false;
 
             game_data->existing_balls += 1;
 
+            break;
+        }
+        else if (game_data->balls[i]->hidden)
+        {
+            game_data->balls[i]->hidden = false;
             break;
         }
     }

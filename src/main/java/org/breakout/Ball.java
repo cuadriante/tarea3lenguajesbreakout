@@ -13,8 +13,9 @@ import org.breakout.blockFactory.Block;
  */
 public class Ball{
     private Circle circle;
-    private double xSpeed = -10;
-    private double ySpeed = 10;
+    private int id;
+    private float xSpeed = -10;
+    private float ySpeed = 10;
     private int xLimit;
     private int yLimit;
     private boolean visibility;
@@ -30,7 +31,7 @@ public class Ball{
  * @param centerY Posición en el eje Y de la bola
  * @param gw
  */
-    public Ball(int centerX, int centerY, GameWindow gw){
+    public Ball(int centerX, int centerY, GameWindow gw, int id){
         this.circle = new Circle(centerX, centerY, RADIUS);
         circle.setFill(Color.OLIVE);
         circle.setStrokeWidth(2);
@@ -38,6 +39,7 @@ public class Ball{
         this.xLimit = 400;
         this.yLimit = 400;
         this.visibility = true;
+        this.id = id;
         gameWindow = gw;
     }
 
@@ -134,8 +136,8 @@ public class Ball{
      * Aumenta la velocidad de la pelota
      */
     public void speedUp(){
-        xSpeed = 1.2*xSpeed;
-        ySpeed = 1.2*ySpeed;
+        this.xSpeed = (float) (1.2*this.xSpeed);
+        this.ySpeed = (float) (1.2*this.ySpeed);
         //xSpeed = 2*xSpeed;
         //ySpeed = 2*ySpeed;
     }
@@ -143,8 +145,8 @@ public class Ball{
      * Disminuye la velocidad de la pelota
      */
     public void speedDown(){
-        xSpeed = xSpeed/1.2;
-        ySpeed = ySpeed/1.2;
+        xSpeed = (float) (xSpeed/1.2);
+        ySpeed = (float) (ySpeed/1.2);
     }
 
     /**
@@ -159,7 +161,15 @@ public class Ball{
     public boolean getVisibility(){
         return this.visibility;
     }
-    
+
+    public float getXSpeed(){
+        return this.xSpeed;
+    }
+
+    public float getYSpeed(){
+        return this.ySpeed;
+    }
+
     public void recycle(int X, int Y){
         System.out.println("se esta reciclando la bolita");
         xSpeed = -10;

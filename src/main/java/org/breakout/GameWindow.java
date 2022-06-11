@@ -21,18 +21,7 @@ public class GameWindow {
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    public static int pts = 0;
-    public static int lvl = 0;
-
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
-        GameWindow.life = life;
-    }
-
-    public static int life = 3;
+    private int numBalls = 1;
 
     Client client = new Client(8080);
 
@@ -44,16 +33,23 @@ public class GameWindow {
     private static final Text level = new Text();
 
     private static final Text lives = new Text();
-    private final PlayerBar playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+    private final PlayerBar playerBar;
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
-    final GameLoop gameLoop = new GameLoop(this, ballList, blockList, playerBar); // creo que esto es un singleton xd // no es
+    final GameLoop gameLoop;
 
     public GameLoop getGameLoop() {
         return gameLoop;
     }
 
     GameWindow(Stage Lobby) throws Exception {
+        playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+        gameLoop = new GameLoop(this, ballList, blockList, playerBar);
+
+        client.set_paddle_width(BlockFactory.getWidth());
+        int paddlePos = (int) playerBar.getShape().getX();
+        client.set_paddle_position(paddlePos);
+        
         Lobby.setTitle("Breakout");
         Lobby.setResizable(false);
         
@@ -107,6 +103,8 @@ public class GameWindow {
                     default:
                         break;
                 }
+                int barPos = (int) playerBar.getShape().getX();
+                client.set_paddle_position(barPos);
             }
         });
 
@@ -114,23 +112,31 @@ public class GameWindow {
         Lobby.show();
     }
 
-    public void buildBlockList() { // esto se hace con la matriz del server
+    /**
+     * Crea la lista de bloques de acuerdo a la 
+     * matriz que recibe del servidor
+     */
+    public void buildBlockList(){
+        ArrayList<int[]> blockAttributesArray = client.get_blocks();
         int id = 0;
         int x = 3;
-        int y = 40; // dejar este espacio para poner la info del jugador
-
-        for (int row = 0; row < BlockFactory.getRows(); row++) {
-            for (int col = 0; col < BlockFactory.getColumns(); col++) {
-                int type = (int) (Math.random() * 6);
-                Block block = BlockFactory.buildBlock(type, x, y, id);
-                blockList.add(block);
-                root.getChildren().add(block.getShape());
-                x += BlockFactory.getWidth() + 5;
-                block.createRectangleColor(row);
+        int y = 40;
+        for (int[] blockAttributes : blockAttributesArray){
+            int row = blockAttributes[0];
+            int column = blockAttributes[1];
+            // int pts = blockAttributes[2];
+            int power = blockAttributes[3];
+            Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
+            blockList.add(block);
+            root.getChildren().add(block.getShape());
+            x += BlockFactory.getWidth() + 5;
+            block.createRectangleColor(row);
+            if (column == 7){
+                x = 3;
+                y += BlockFactory.getHeight() + 5;
             }
-            x = 3;
-            y += BlockFactory.getHeight() + 5;
         }
+        // System.out.print("----");
     }
 
     /**
@@ -175,7 +181,8 @@ public class GameWindow {
     }
 
     private void buildBallList() {
-        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this);
+        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this, numBalls);
+        this.numBalls  += 1;
         ballList.add(ball);
         for (Ball element : ballList){
             root.getChildren().add(element.getShape());
@@ -218,10 +225,12 @@ public class GameWindow {
         System.out.println("creando nueva bolita");
             int y = STAGE_HEIGHT/2;
             int x = STAGE_WIDTH/2;
-            Ball ball = new Ball(x, y, this);
+            Ball ball = new Ball(x, y, this, numBalls);
+            this.numBalls += 1;
             ballList.add(ball);
             root.getChildren().add(ball.getShape());
             client.add_ball();
+        }
     }
 
     /**
@@ -229,7 +238,7 @@ public class GameWindow {
      */
     public void newLife() {
         client.add_life();
-        int life = get_lives();
+        int life = client.get_lives();
         String vidas = Integer.toString(life);
         lives.setText(vidas);
     }
@@ -248,12 +257,30 @@ public class GameWindow {
     /**
      * Aumenta la velocidad de las bolas
      */
-    private void speedUpBalls(){
+    public void speedUpBalls(){
         Iterator<Ball> itr = ballList.iterator();
         while(itr.hasNext()){
             Ball ball = itr.next();
             ball.speedUp();
         }
+        Ball ball = ballList.get(0);
+        float xSpeed = ball.getXSpeed();
+        float ySpeed = ball.getYSpeed();
+        client.set_ball_speed_x(xSpeed);
+        client.set_ball_speed_y(ySpeed);
+    }
+
+    public void speedDownBalls(){
+        Iterator<Ball> itr = ballList.iterator();
+        while(itr.hasNext()){
+            Ball ball = itr.next();
+            ball.speedDown();
+        }
+        Ball ball = ballList.get(0);
+        float xSpeed = ball.getXSpeed();
+        float ySpeed = ball.getYSpeed();
+        client.set_ball_speed_x(xSpeed);
+        client.set_ball_speed_y(ySpeed);
     }
 
     public void updatePuntos(){
@@ -268,6 +295,30 @@ public class GameWindow {
         String niv = Integer.toString(lvl);
         level.setText(niv);
         setUpNextLevel();
+    }
+
+    public void sendMovement(Ball ball){
+        int ballId = ball.getId();
+        client.move_ball_x(ballId);
+        client.move_ball_y(ballId);
+    }
+
+    /**
+     * Dobla el tamaño de la barra del jugador
+     */
+    public void biggerPlayerbar(){
+        playerBar.makeBigger();
+        int barWidth = (int )playerBar.getShape().getWidth();
+        client.set_paddle_width(barWidth);
+    }
+
+    /**
+     * Reduce a la mitad el tamaño de la barra del jugador
+     */
+    public void smallerPlayerbar(){
+        playerBar.makeSmaller();
+        int barWidth = (int )playerBar.getShape().getWidth();
+        client.set_paddle_width(barWidth);
     }
     public static void terminarJuego(char condicion){
         //Llamar ventana game over
@@ -284,6 +335,11 @@ public class GameWindow {
         speedUpBalls();
     }
 
+    // public void set(){
+    //     move_ball_x();
+    //     move_ball_y();
+    // }
+
     private void createLabels() {
 
         double fontSize = 15;
@@ -294,7 +350,8 @@ public class GameWindow {
         FontWeight labelFontWeight = FontWeight.BOLD;
         Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
 
-        int pts = client.get_score();
+        // int pts = client.get_score();
+        int pts = 0;
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
         puntos.setX(10);
@@ -308,7 +365,8 @@ public class GameWindow {
         puntosLabel.setFill(Color.SADDLEBROWN);
         puntosLabel.setFont(labelFont);
 
-        int lvl = client.get_level();
+        // int lvl = client.get_level();
+        int lvl = 1;
         String nivelString = Integer.toString(lvl);
         level.setText(nivelString);
         level.setX(100);
@@ -322,7 +380,8 @@ public class GameWindow {
         levelLabel.setFill(Color.SADDLEBROWN);
         levelLabel.setFont(labelFont);
 
-        int life = client.get_lives();
+        // int life = client.get_lives();
+        int life = 3;
         String livesString = Integer.toString(life);
         lives.setText(livesString);
         lives.setX(380);

@@ -1,5 +1,6 @@
 package org.breakout;
 
+import javafx.concurrent.Task;
 import javafx.application.Platform;
 import java.util.*;
 import java.util.ArrayList;
@@ -112,20 +113,10 @@ public class GameLoop {
         Iterator<Ball> itr = ballList.iterator();
         while (itr.hasNext()) {
             Ball ball = itr.next();
-            if (ball.getVisibility()){
+            if (ball.getVisibility()) {
                 ball.move();
-                //System.out.println("se movio la bola");
-                //ball.checkCollision();
-                //if (ball.isOutOfBounds()) {
-                 //   System.out.println("se cayo la bola");
-                 //   ball.setInvisible();
-                    //ball.setBallXandY(200, 200);
-                    //atLeastOneBall();
-               // }
+                gameWindow.sendMovement(ball);
             }
-
         }
-       // atLeastOneBall();
     }
-
 }

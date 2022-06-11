@@ -18,7 +18,15 @@ typedef struct
     int id;
     int pos_x;
     int pos_y;
+    int hidden;
 } Ball;
+
+typedef struct
+{
+    int width;
+    int position;
+    int speed;
+} Paddle;
 
 typedef struct
 {
@@ -31,8 +39,9 @@ typedef struct
 
     int existing_balls;
 
-    Ball *balls[MAX_BALLS];
     Block *blocks[BLOCK_ROWS][BLOCK_COLUMNS];
+    Ball *balls[MAX_BALLS];
+    Paddle *paddle;
 } GameData;
 
 GameData *start_game();
