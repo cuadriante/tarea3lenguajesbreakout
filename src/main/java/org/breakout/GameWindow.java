@@ -21,9 +21,18 @@ public class GameWindow {
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    // public static int pts = 0;
-    // public static int lvl = 0;
-    // public static int life = 3;
+    public static int pts = 0;
+    public static int lvl = 0;
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        GameWindow.life = life;
+    }
+
+    public static int life = 3;
 
     Client client = new Client(8080);
 
@@ -38,8 +47,11 @@ public class GameWindow {
     private final PlayerBar playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
-    final GameLoop GAME_LOOP = new GameLoop(this, ballList, blockList, playerBar); // creo que esto es un singleton xd // no es
+    final GameLoop gameLoop = new GameLoop(this, ballList, blockList, playerBar); // creo que esto es un singleton xd // no es
 
+    public GameLoop getGameLoop() {
+        return gameLoop;
+    }
 
     GameWindow(Stage Lobby) throws Exception {
         Lobby.setTitle("Breakout");
@@ -53,7 +65,7 @@ public class GameWindow {
 
 
     private void connectToClient() {
-        GAME_LOOP.ballAnimationLoop();
+        gameLoop.ballAnimationLoop();
         //GAME_LOOP.loop();
         //Client* client = new Client();
         //if (client->connectSocket()) {
@@ -186,27 +198,30 @@ public class GameWindow {
         return this;
     }
 
+    public boolean ballRecycle(){
+        for(Ball ball : ballList ){
+            if (!ball.getVisibility()){
+                ball.recycle(this.STAGE_WIDTH/2, this.STAGE_HEIGHT/2);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     /**
      * Agrega una bola al juego
      * Todo: Enviar la bola al server
      */
     public void newBall() {
-        boolean flag = false;
-        for(Ball ball : ballList ){
-            if (ball.getVisibility() == false){
-                ball.recycle(this.STAGE_WIDTH/2, this.STAGE_HEIGHT/2);
-                flag = true;
-                break;
-            }
-        }
-        if (!flag){
+        System.out.println("creando nueva bolita");
             int y = STAGE_HEIGHT/2;
             int x = STAGE_WIDTH/2;
             Ball ball = new Ball(x, y, this);
             ballList.add(ball);
             root.getChildren().add(ball.getShape());
             client.add_ball();
-        }
     }
 
     /**
@@ -214,9 +229,13 @@ public class GameWindow {
      */
     public void newLife() {
         client.add_life();
-        int life = client.get_lives();
+        int life = get_lives();
         String vidas = Integer.toString(life);
         lives.setText(vidas);
+    }
+
+    public int get_lives(){
+        return client.get_lives();
     }
 
     public void minusOneLife(){
@@ -324,5 +343,8 @@ public class GameWindow {
         root.getChildren().add(puntosLabel);
         root.getChildren().add(levelLabel);
     }
+
+
+
 
 }

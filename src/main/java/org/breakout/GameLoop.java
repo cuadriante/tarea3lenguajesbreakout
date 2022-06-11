@@ -1,6 +1,5 @@
 package org.breakout;
 
-import javafx.concurrent.Task;
 import javafx.application.Platform;
 import java.util.*;
 import java.util.ArrayList;
@@ -9,12 +8,11 @@ import java.util.Iterator;
 import org.breakout.blockFactory.Block;
 
 public class GameLoop {
-    private boolean LOOP = true;
-    private boolean gameStatus = true;
+    private boolean gameIsRunning = true;
     Client client;
-    private final GameWindow gameWindow;
-    private ArrayList<Block> blockList;
-    private ArrayList<Ball> ballList;
+    private GameWindow gameWindow;
+    List<Block> blockList = Collections.synchronizedList(new ArrayList<Block>());
+    List<Ball> ballList = Collections.synchronizedList(new ArrayList<Ball>());
     private final PlayerBar playerBar;
 
     GameLoop(GameWindow gw, ArrayList<Ball> bl, ArrayList<Block> blockLst, PlayerBar pb){
@@ -27,24 +25,6 @@ public class GameLoop {
 
     //void receiveClient(Client client);
 
-    void loop(){
-        // *COMENTÉ ESTO JEJE
-        // gameWindow.getBall().move();
-        while(LOOP) {
-            //
-            try {
-                System.out.println("wowo");
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            LOOP = false;
-        }
-        //gameWindow.getBall().move();
-        //}
-        // move ball
-        // loop. por ahora
-    }
 
     public void ballAnimationLoop(){
         new Timer().schedule(
@@ -53,10 +33,13 @@ public class GameLoop {
                     public void run() {
                         Platform.runLater(new Runnable() {
                             @Override public void run() {
-                                if (gameStatus) {
+                                if (gameIsRunning) {
                                     isLevelComplete(); // !Creo que esto va a dar error por editar el hilo principal
                                     // Animacion de bola
                                     moveBalls();
+                                    //checkAllBallCollisions();
+                                    //checkAllBallsOutOfBounds();
+                                    atLeastOneBall();
                                 } else{
                                     gameWindow.endGame();
                                 }
@@ -67,22 +50,25 @@ public class GameLoop {
                 }, 0, 100);
     }
 
-    private void atLeastOneBall() {
+    public void atLeastOneBall() {
+        boolean noBallsVisible = true;
         for(Ball b : ballList){
             if (b.getShape().isVisible()){
-                gameStatus = true;
+                gameIsRunning = true;
+                noBallsVisible = false;
                 break;
             }
         }
-        gameStatus = false;
-        //newBall();
-    }
+        if (gameWindow.getLife() > 0){
+            if (noBallsVisible){
+                if (!gameWindow.ballRecycle()){
+                    gameWindow.newBall();
+                }
+            }
 
-    /**
-     * Crea una bola nueva en el juego
-     */
-    private void newBall(){
-        gameWindow.newBall();
+        } else {
+          //  gameIsRunning = false;
+        }
     }
 
     /**
@@ -102,17 +88,44 @@ public class GameLoop {
         }
     }
 
+
+    public void checkAllBallsOutOfBounds(){
+        Iterator<Ball> itr = ballList.iterator();
+        while (itr.hasNext()) {
+            Ball ball = itr.next();
+            if (ball.isOutOfBounds()) {
+               //System.out.println("se cayo la bola");
+               ball.setInvisible();
+             }
+        }
+    }
+
+    public void checkAllBallCollisions(){
+        Iterator<Ball> itr = ballList.iterator();
+        while (itr.hasNext()) {
+            Ball ball = itr.next();
+            ball.checkCollision();
+        }
+    }
+
     public void moveBalls() {
         Iterator<Ball> itr = ballList.iterator();
         while (itr.hasNext()) {
             Ball ball = itr.next();
-            ball.move();
-            ball.checkCollision();
-            if (ball.dropBall()) {
-                ball.setInvisible();
-                atLeastOneBall();
+            if (ball.getVisibility()){
+                ball.move();
+                //System.out.println("se movio la bola");
+                //ball.checkCollision();
+                //if (ball.isOutOfBounds()) {
+                 //   System.out.println("se cayo la bola");
+                 //   ball.setInvisible();
+                    //ball.setBallXandY(200, 200);
+                    //atLeastOneBall();
+               // }
             }
+
         }
+       // atLeastOneBall();
     }
 
 }
