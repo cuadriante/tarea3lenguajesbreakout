@@ -226,5 +226,7 @@ public class Ball{
     }
 
 
-
+    public int getId() {
+        return id;
+    }
 }

@@ -60,7 +60,7 @@ public class GameLoop {
                 break;
             }
         }
-        if (gameWindow.getLife() > 0){
+        if (gameWindow.get_lives() > 0){
             if (noBallsVisible){
                 if (!gameWindow.ballRecycle()){
                     gameWindow.newBall();

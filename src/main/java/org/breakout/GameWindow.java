@@ -230,7 +230,6 @@ public class GameWindow {
             ballList.add(ball);
             root.getChildren().add(ball.getShape());
             client.add_ball();
-        }
     }
 
     /**
