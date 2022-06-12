@@ -13,6 +13,7 @@ import org.breakout.blockFactory.BlockFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import javafx.scene.paint.Color;
 
@@ -139,31 +140,21 @@ public class GameWindow {
         // System.out.print("----");
     }
 
-    /**
-     * Crea la lista de bloques de acuerdo a la 
-     * matriz que recibe del servidor
-     */
-    // public void buildBlockList(){
-    //     ArrayList<int[]> blockAttributesArray = client.get_blocks();
-    //     int x = 3;
-    //     int y = 40;
-    //     int id = 0;
+    public void noBalls(){
+        if (get_lives() > 0){
+            minusOneLife();
+            // try {
+            //     TimeUnit.SECONDS.sleep(2);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
+            newBall();
+        }else {
+            gameLoop.stopGame();
+        }
+        
+    }
 
-    //     for (int[] blockAttributes : blockAttributesArray){
-    //         int isBroken = blockAttributes[0];
-    //         int row = blockAttributes[0];
-    //         int column = blockAttributes[0];
-    //         int power = blockAttributes[0]; //type?
-    //         System.out.println(Arrays.toString(blockAttributes));
-    //         Block block = BlockFactory.buildBlock(power, x, y, id);
-    //         blockList.add(block);
-    //             root.getChildren().add(block.getShape());
-    //             x += BlockFactory.getWidth() + 5;
-    //             block.createRectangleColor(row);
-    //     }
-    //     x = 3;
-    //     y += BlockFactory.getHeight() + 5;
-    // }
 
     /**
      * Hace visibles los bloques y, mediante una llamada al server,
@@ -181,8 +172,7 @@ public class GameWindow {
     }
 
     private void buildBallList() {
-        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this, numBalls);
-        this.numBalls  += 1;
+        Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
         ballList.add(ball);
         for (Ball element : ballList){
             root.getChildren().add(element.getShape());
@@ -205,25 +195,6 @@ public class GameWindow {
         return this;
     }
 
-    public boolean ballRecycle(){
-        for(Ball ball : ballList ){
-            if (!ball.getVisibility()){
-                ball.recycle(this.STAGE_WIDTH/2, this.STAGE_HEIGHT/2);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Retorna una bola y lleva la cuenta de las bolas 
-     * @return
-     */
-    public Ball buildBall(int x, int y){
-        Ball ball = new Ball(x, y, this, this.numBalls);
-        this.numBalls += 1;
-        return ball;
-    }
 
     /**
      * Hace que aparezca una bola nueva al juego. Ya sea reciclando una bola
@@ -251,7 +222,16 @@ public class GameWindow {
             client.add_ball();
         }
     }
-
+    
+    /**
+     * Retorna una bola y lleva la cuenta de las bolas 
+     * @return
+     */
+    public Ball buildBall(int x, int y){
+        Ball ball = new Ball(x, y, this, this.numBalls);
+        this.numBalls += 1;
+        return ball;
+    }
     /**
      * Agrega una vida al jugadoor
      */
@@ -266,6 +246,7 @@ public class GameWindow {
         return client.get_lives();
     }
 
+
     public void minusOneLife(){
         client.take_life();
         int life = client.get_lives();
@@ -274,7 +255,7 @@ public class GameWindow {
     }
 
     /**
-     * Aumenta la velocidad de las bolas
+     * Aumenta la velocidad de las bolas y envia el dato al server
      */
     public void speedUpBalls(){
         Iterator<Ball> itr = ballList.iterator();
@@ -289,6 +270,9 @@ public class GameWindow {
         client.set_ball_speed_y(ySpeed);
     }
 
+    /**
+     * Reduce la velocidad de las bolas y envia el dato al server
+     */
     public void speedDownBalls(){
         Iterator<Ball> itr = ballList.iterator();
         while(itr.hasNext()){

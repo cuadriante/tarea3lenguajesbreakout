@@ -35,12 +35,15 @@ public class GameLoop {
                         Platform.runLater(new Runnable() {
                             @Override public void run() {
                                 if (gameIsRunning) {
-                                    isLevelComplete(); // !Creo que esto va a dar error por editar el hilo principal
+                                    isLevelComplete();
                                     // Animacion de bola
                                     moveBalls();
                                     //checkAllBallCollisions();
                                     //checkAllBallsOutOfBounds();
-                                    atLeastOneBall();
+                                    if (!atLeastOneBall()){
+                                        System.out.println("No hay al menos una bola");
+                                        gameWindow.noBalls();
+                                    }
                                 } else{
                                     gameWindow.endGame();
                                 }
@@ -51,23 +54,21 @@ public class GameLoop {
                 }, 0, 100);
     }
 
-    public void atLeastOneBall() {
-        boolean noBallsVisible = true;
+    /**
+     * Retorna true si al menos hay una bola en juego, retorna false
+     * si no hay bolas en juego.
+     * @return valor de verdad
+     */
+    public boolean atLeastOneBall() {
+        boolean isBallVisible = false;
         for(Ball b : ballList){
             if (b.getShape().isVisible()){
                 gameIsRunning = true;
-                noBallsVisible = false;
+                isBallVisible = true;
                 break;
             }
         }
-        if (gameWindow.get_lives() > 0){
-            if (noBallsVisible){
-                gameWindow.newBall();
-                gameWindow.minusOneLife();
-            }
-        } else {
-          //  gameIsRunning = false;
-        }
+        return isBallVisible;
     }
 
     /**
@@ -116,5 +117,9 @@ public class GameLoop {
                 gameWindow.sendMovement(ball);
             }
         }
+    }
+
+    public void stopGame() {
+        this.gameIsRunning = false;
     }
 }

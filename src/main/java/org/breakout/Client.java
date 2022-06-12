@@ -110,7 +110,7 @@ public class Client {
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
                 returned = adapter.singleDatatoInt(lives_str);
-                System.out.println("Vidas: " + lives_str);
+                // System.out.println("Vidas: " + lives_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -140,7 +140,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
-                System.out.println("Ahora tiene " + lives_str + " vidas");
+                // System.out.println("Ahora tiene " + lives_str + " vidas");
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -153,7 +153,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
-                System.out.println("Ahora tiene " + lives_str + " vidas");
+                // System.out.println("Ahora tiene " + lives_str + " vidas");
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -208,8 +208,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                System.out.println("Posición Y de la bola " +
-                        Integer.toString(ball_id) + ": " + pos_x_str);
+                // System.out.println("Posición Y de la bola " +
+                //         Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -223,7 +223,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
-                System.out.println("Velocidad X de las bolas: " + speed_x_str);
+                // System.out.println("Velocidad X de las bolas: " + speed_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -236,7 +236,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String speed_x_str = input_buffer.readLine();
-                System.out.println("Velocidad Y de las bolas: " + speed_x_str);
+                // System.out.println("Velocidad Y de las bolas: " + speed_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
