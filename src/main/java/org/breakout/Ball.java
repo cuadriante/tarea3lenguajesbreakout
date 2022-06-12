@@ -172,8 +172,8 @@ public class Ball{
 
     public void recycle(int X, int Y){
         System.out.println("se esta reciclando la bolita");
-        xSpeed = -10;
-        ySpeed = 10;
+        this.xSpeed = -10;
+        this.ySpeed = 10;
         this.circle.setCenterX(X);
         this.circle.setCenterY(Y);
         System.out.println(X + " " + Y );
@@ -208,18 +208,13 @@ public class Ball{
 
     public void activatePower(int type) {
         switch (type) {
-            case (-1) -> {
-            }
+            case (-1) -> {}
             case (0) -> speedUp();
             case (1) -> gameWindow.getPlayerBar().makeBigger();
             case (2) -> gameWindow.getPlayerBar().makeSmaller();
             case (3) -> speedDown();
             case (4) -> gameWindow.newLife();
-            case (5) ->{
-                if (!gameWindow.ballRecycle()) {
-                    gameWindow.newBall();
-                }
-            }
+            case (5) -> gameWindow.newBall();
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
 
