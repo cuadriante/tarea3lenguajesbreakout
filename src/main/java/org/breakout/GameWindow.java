@@ -13,7 +13,6 @@ import org.breakout.blockFactory.BlockFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 import javafx.scene.paint.Color;
 
@@ -140,9 +139,12 @@ public class GameWindow {
         // System.out.print("----");
     }
 
+    /**
+     * Si el jugador tiene vidas, se crea una nueva bola. Si no, se detiene el juego
+     */
     public void noBalls(){
         if (get_lives() > 0){
-            minusOneLife();
+            minusOneLife(); //! Esta verga arruina el recuperar bolas
             // try {
             //     TimeUnit.SECONDS.sleep(2);
             // } catch (InterruptedException e) {
@@ -171,6 +173,9 @@ public class GameWindow {
 
     }
 
+    /**
+     * Construye la lista de bolas
+     */
     private void buildBallList() {
         Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
         ballList.add(ball);
@@ -178,6 +183,7 @@ public class GameWindow {
             root.getChildren().add(element.getShape());
         }
     }
+
 
     public PlayerBar getPlayerBar() {
         return playerBar;
@@ -188,7 +194,6 @@ public class GameWindow {
     }
 
     public void endGame(){
-
     }
 
     public GameWindow getGameWindow(){
@@ -246,7 +251,9 @@ public class GameWindow {
         return client.get_lives();
     }
 
-
+    /**
+     * Resta una vida y actualiza el servidor
+     */
     public void minusOneLife(){
         client.take_life();
         int life = client.get_lives();
@@ -328,6 +335,7 @@ public class GameWindow {
         //GameStage.close();
         //stagePrincipal.show();
     }
+
 
     private void setUpNextLevel(){
         resetBlocks();
