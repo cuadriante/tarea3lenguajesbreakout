@@ -21,6 +21,8 @@ public class Ball{
     private boolean visibility;
     private final int RADIUS = 5;
 
+    private boolean isMoving = false;
+
     private GameWindow gameWindow;
 /**
  * Constructor de la clasa Ball
@@ -55,6 +57,7 @@ public class Ball{
         }else if(y - radius < 0){
             this.changeDirectionY();
         }else if(y + radius> yLimit){ //Falta poner el tamaño de la ventana
+            setInvisible();
             // this.changeDirectionY();
             // this.removeBall();
         }
@@ -68,13 +71,15 @@ public class Ball{
      * Verifica si la bola toca la parte inferior de la ventana
      * @return true si la bola toca la parte inferior, false si no
      */
-    public boolean dropBall() {
+    public boolean isOutOfBounds() {
         int y = (int)this.circle.getCenterY();
-        boolean droped = false;
-        if (y > yLimit){
-            droped = true;
+        boolean dropped = false;
+        if (y > yLimit ){ //ylimit
+            dropped = true;
+            //setInvisible();
+            //setBallXandY(200, 200);
         }
-        return droped;
+        return dropped;
     }
 
     /**
@@ -85,9 +90,16 @@ public class Ball{
             int x = (int)this.circle.getCenterX();
             int y = (int)this.circle.getCenterY();
             checkParameters(x, y);
+
             setBallXandY(x, y);
             this.circle.setCenterY(y + ySpeed);
-            Timeline ballMovement = new Timeline(new KeyFrame(Duration.millis(25), mover -> setBallXandY(x, y)));
+            Timeline ballMovement = new Timeline(new KeyFrame(Duration.millis(25), mover -> {
+                setBallXandY(x, y);
+                checkCollision();
+                if (isOutOfBounds()){
+                    setInvisible();
+                }
+            }));
             ballMovement.setCycleCount(1);
             ballMovement.play();
         }
@@ -118,10 +130,6 @@ public class Ball{
     */
     public Circle getShape(){
         return this.circle;
-    }
-
-    public int getId(){
-        return this.id;
     }
 
     /**
@@ -161,10 +169,14 @@ public class Ball{
     public float getYSpeed(){
         return this.ySpeed;
     }
-    
+
     public void recycle(int X, int Y){
+        System.out.println("se esta reciclando la bolita");
+        this.xSpeed = -10;
+        this.ySpeed = 10;
         this.circle.setCenterX(X);
         this.circle.setCenterY(Y);
+        System.out.println(X + " " + Y );
         this.circle.setVisible(true);
         this.visibility = true;
 
@@ -196,11 +208,11 @@ public class Ball{
 
     public void activatePower(int type) {
         switch (type) {
-            // case (-1) -> gameWindow.speedUpBalls(); // Temporal
-            case (0) -> gameWindow.speedUpBalls();
-            case (1) -> gameWindow.biggerPlayerbar();
-            case (2) -> gameWindow.smallerPlayerbar();
-            case (3) -> gameWindow.speedDownBalls();
+            case (-1) -> {}
+            case (0) -> speedUp();
+            case (1) -> gameWindow.getPlayerBar().makeBigger();
+            case (2) -> gameWindow.getPlayerBar().makeSmaller();
+            case (3) -> speedDown();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();
             default -> throw new IllegalStateException("Unexpected value: " + type);
@@ -209,5 +221,7 @@ public class Ball{
     }
 
 
-
+    public int getId() {
+        return id;
+    }
 }

@@ -36,12 +36,15 @@ public class GameWindow {
     private final PlayerBar playerBar;
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
-    final GameLoop GAME_LOOP;
+    final GameLoop gameLoop;
 
+    public GameLoop getGameLoop() {
+        return gameLoop;
+    }
 
     GameWindow(Stage Lobby) throws Exception {
         playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
-        GAME_LOOP = new GameLoop(this, ballList, blockList, playerBar); 
+        gameLoop = new GameLoop(this, ballList, blockList, playerBar);
 
         client.set_paddle_width(BlockFactory.getWidth());
         int paddlePos = (int) playerBar.getShape().getX();
@@ -58,7 +61,7 @@ public class GameWindow {
 
 
     private void connectToClient() {
-        GAME_LOOP.ballAnimationLoop();
+        gameLoop.ballAnimationLoop();
         //GAME_LOOP.loop();
         //Client* client = new Client();
         //if (client->connectSocket()) {
@@ -137,6 +140,25 @@ public class GameWindow {
     }
 
     /**
+     * Si el jugador tiene vidas, se crea una nueva bola. Si no, se detiene el juego
+     */
+    public void noBalls(){
+        if (get_lives() > 0){
+            minusOneLife(); //! Esta verga arruina el recuperar bolas
+            // try {
+            //     TimeUnit.SECONDS.sleep(2);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
+            newBall();
+        }else {
+            gameLoop.stopGame();
+        }
+        
+    }
+
+
+    /**
      * Hace visibles los bloques y, mediante una llamada al server,
      * determina y asigna los atributos de los bloques del siguiente nivel.
      * TODO: llamar al server y cambiar el poder de los bloques
@@ -151,14 +173,17 @@ public class GameWindow {
 
     }
 
+    /**
+     * Construye la lista de bolas
+     */
     private void buildBallList() {
-        Ball ball = new Ball(STAGE_WIDTH - 100, STAGE_HEIGHT - 180, this, numBalls);
-        this.numBalls  += 1;
+        Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
         ballList.add(ball);
         for (Ball element : ballList){
             root.getChildren().add(element.getShape());
         }
     }
+
 
     public PlayerBar getPlayerBar() {
         return playerBar;
@@ -169,36 +194,49 @@ public class GameWindow {
     }
 
     public void endGame(){
-
     }
 
     public GameWindow getGameWindow(){
         return this;
     }
 
+
     /**
-     * Agrega una bola al juego
+     * Hace que aparezca una bola nueva al juego. Ya sea reciclando una bola
+     * que desactivada o creando una nueva.
+     * TODO: ENVIAR AL SERVER UN MENSAJE CON LA BOLA QUE HORA ESTÁ ACTIVA
      */
     public void newBall() {
+        System.out.println("creando nueva bolita");
+        int y = STAGE_HEIGHT/2;
+        int x = STAGE_WIDTH/2;
+
         boolean flag = false;
         for(Ball ball : ballList ){
-            if (ball.getVisibility() == false){
-                ball.recycle(this.STAGE_WIDTH/2, this.STAGE_HEIGHT/2);
+            if (!ball.getVisibility()){
+                ball.recycle(x, y);
+                // Avisar que ahora la bola está disponible
                 flag = true;
                 break;
             }
         }
         if (!flag){
-            int y = STAGE_HEIGHT/2;
-            int x = STAGE_WIDTH/2;
-            Ball ball = new Ball(x, y, this, numBalls);
-            this.numBalls += 1;
-            ballList.add(ball);
-            root.getChildren().add(ball.getShape());
+            Ball newBall = buildBall(x, y);
+            ballList.add(newBall);
+            root.getChildren().add(newBall.getShape());
             client.add_ball();
         }
     }
-
+    
+    /**
+     * Retorna una bola y lleva la cuenta de las bolas 
+     * @return
+     */
+    public Ball buildBall(int x, int y){
+        Ball ball = new Ball(x, y, this, this.numBalls);
+        this.numBalls += 1;
+        return ball;
+    }
     /**
      * Agrega una vida al jugadoor
      */
@@ -209,6 +247,13 @@ public class GameWindow {
         lives.setText(vidas);
     }
 
+    public int get_lives(){
+        return client.get_lives();
+    }
+
+    /**
+     * Resta una vida y actualiza el servidor
+     */
     public void minusOneLife(){
         client.take_life();
         int life = client.get_lives();
@@ -217,7 +262,7 @@ public class GameWindow {
     }
 
     /**
-     * Aumenta la velocidad de las bolas
+     * Aumenta la velocidad de las bolas y envia el dato al server
      */
     public void speedUpBalls(){
         Iterator<Ball> itr = ballList.iterator();
@@ -232,6 +277,9 @@ public class GameWindow {
         client.set_ball_speed_y(ySpeed);
     }
 
+    /**
+     * Reduce la velocidad de las bolas y envia el dato al server
+     */
     public void speedDownBalls(){
         Iterator<Ball> itr = ballList.iterator();
         while(itr.hasNext()){
@@ -287,6 +335,7 @@ public class GameWindow {
         //GameStage.close();
         //stagePrincipal.show();
     }
+
 
     private void setUpNextLevel(){
         resetBlocks();
@@ -364,5 +413,8 @@ public class GameWindow {
         root.getChildren().add(puntosLabel);
         root.getChildren().add(levelLabel);
     }
+
+
+
 
 }
