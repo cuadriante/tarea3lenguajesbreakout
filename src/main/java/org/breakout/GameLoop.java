@@ -62,11 +62,9 @@ public class GameLoop {
         }
         if (gameWindow.get_lives() > 0){
             if (noBallsVisible){
-                if (!gameWindow.ballRecycle()){
-                    gameWindow.newBall();
-                }
+                gameWindow.newBall();
+                gameWindow.minusOneLife();
             }
-
         } else {
           //  gameIsRunning = false;
         }

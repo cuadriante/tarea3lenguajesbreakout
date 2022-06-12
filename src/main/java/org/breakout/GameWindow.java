@@ -215,21 +215,41 @@ public class GameWindow {
         return false;
     }
 
-
+    /**
+     * Retorna una bola y lleva la cuenta de las bolas 
+     * @return
+     */
+    public Ball buildBall(int x, int y){
+        Ball ball = new Ball(x, y, this, this.numBalls);
+        this.numBalls += 1;
+        return ball;
+    }
 
     /**
-     * Agrega una bola al juego
-     * Todo: Enviar la bola al server
+     * Hace que aparezca una bola nueva al juego. Ya sea reciclando una bola
+     * que desactivada o creando una nueva.
+     * TODO: ENVIAR AL SERVER UN MENSAJE CON LA BOLA QUE HORA ESTÁ ACTIVA
      */
     public void newBall() {
         System.out.println("creando nueva bolita");
-            int y = STAGE_HEIGHT/2;
-            int x = STAGE_WIDTH/2;
-            Ball ball = new Ball(x, y, this, numBalls);
-            this.numBalls += 1;
-            ballList.add(ball);
-            root.getChildren().add(ball.getShape());
+        int y = STAGE_HEIGHT/2;
+        int x = STAGE_WIDTH/2;
+
+        boolean flag = false;
+        for(Ball ball : ballList ){
+            if (!ball.getVisibility()){
+                ball.recycle(x, y);
+                // Avisar que ahora la bola está disponible
+                flag = true;
+                break;
+            }
+        }
+        if (!flag){
+            Ball newBall = buildBall(x, y);
+            ballList.add(newBall);
+            root.getChildren().add(newBall.getShape());
             client.add_ball();
+        }
     }
 
     /**
