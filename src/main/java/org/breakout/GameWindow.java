@@ -45,7 +45,8 @@ public class GameWindow {
     }
 
     GameWindow(Stage Lobby) throws Exception {
-        // playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+        // playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(),
+        // BlockFactory.getHeight());
         playerBar = new PlayerBar(200, 350, PLAYER_BAR_WIDTH, BlockFactory.getHeight());
         gameLoop = new GameLoop(this, ballList, blockList, playerBar);
 
@@ -143,16 +144,16 @@ public class GameWindow {
      * Hace visibles los bloques y, mediante una llamada al server,
      * determina y asigna los atributos de los bloques del siguiente nivel.
      */
-    private void resetBlocks(){
+    private void resetBlocks() {
         ArrayList<int[]> blockAttributesArray = client.get_blocks();
-        for(int i = 0; i < blockList.size(); i++){
-                Block block = blockList.get(i);
-                int blockAttributes[] = blockAttributesArray.get(i);
-                int power = blockAttributes[3];
-                block.setType(power);
-                block.getShape().setVisible(true);
-            }
+        for (int i = 0; i < blockList.size(); i++) {
+            Block block = blockList.get(i);
+            int blockAttributes[] = blockAttributesArray.get(i);
+            int power = blockAttributes[3];
+            block.setType(power);
+            block.getShape().setVisible(true);
         }
+    }
 
     /**
      * Si el jugador tiene vidas, se crea una nueva bola. Si no, se detiene el juego
@@ -230,12 +231,12 @@ public class GameWindow {
      * 
      * @return
      */
-    public Ball buildBall(int x, int y){
+    public Ball buildBall(int x, int y) {
         Ball ball = new Ball(x, y, this.ballSpeed, this, this.numBalls);
         this.numBalls += 1;
         return ball;
     }
-    
+
     /**
      * Agrega una vida al jugadoor
      */
@@ -285,8 +286,8 @@ public class GameWindow {
         Ball ball = ballList.get(0);
         float xSpeed = ball.getXSpeed();
         float ySpeed = ball.getYSpeed();
-        client.set_ball_speed_x(xSpeed);
-        client.set_ball_speed_y(ySpeed);
+        // client.set_ball_speed_x(xSpeed);
+        // client.set_ball_speed_y(ySpeed);
     }
 
     public void updatePuntos() {
@@ -303,7 +304,7 @@ public class GameWindow {
         setUpNextLevel();
     }
 
-    public void sendPosBalls(int ballId, int xPos, int yPos){
+    public void sendPosBalls(int ballId, int xPos, int yPos) {
         client.setPosX(ballId, xPos);
         client.setPosX(ballId, yPos);
     }
@@ -417,11 +418,11 @@ public class GameWindow {
         client.destroy_block(row, column);
     }
 
-    public float getBallSpeed(){
+    public float getBallSpeed() {
         return ballSpeed;
     }
 
-    public void setBallSpeed(float speed){
+    public void setBallSpeed(float speed) {
         this.ballSpeed = speed;
     }
 

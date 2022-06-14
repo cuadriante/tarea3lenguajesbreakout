@@ -25,7 +25,6 @@ typedef struct
 {
     int width;
     int position;
-    int speed;
 } Paddle;
 
 typedef struct

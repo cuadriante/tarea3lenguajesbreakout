@@ -20,7 +20,6 @@ public class Client {
 
     public Client(int PORT) {
         try {
-            // this.id = id;
             this.socket = new Socket("localhost", PORT);
 
             this.reader = new InputStreamReader(socket.getInputStream());
@@ -195,8 +194,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                // System.out.println("Posición X de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
+                System.out.println("Posición X de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -211,35 +210,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                // System.out.println("Posición Y de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    public void set_ball_speed_x(float speed) {
-
-        try {
-            send_message("$4," + Float.toString(speed) + "\0");
-
-            while (input_buffer.ready()) {
-                String speed_x_str = input_buffer.readLine();
-                // System.out.println("Velocidad X de las bolas: " + speed_x_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    public void set_ball_speed_y(float speed) {
-        try {
-            send_message("$5," + Float.toString(speed) + "\0");
-
-            while (input_buffer.ready()) {
-                String speed_x_str = input_buffer.readLine();
-                // System.out.println("Velocidad Y de las bolas: " + speed_x_str);
+                System.out.println("Posición Y de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -248,7 +220,7 @@ public class Client {
 
     public void set_paddle_width(int width) {
         try {
-            send_message("$6," + Integer.toString(width) + "\0");
+            send_message("$4," + Integer.toString(width) + "\0");
 
             while (input_buffer.ready()) {
                 String width_str = input_buffer.readLine();
@@ -261,24 +233,11 @@ public class Client {
 
     public void set_paddle_position(int position) {
         try {
-            send_message("$7," + Integer.toString(position) + "\0");
+            send_message("$5," + Integer.toString(position) + "\0");
 
             while (input_buffer.ready()) {
                 String position_str = input_buffer.readLine();
                 // System.out.println("Posición del paddle: " + position_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    public void set_paddle_speed(int speed) {
-        try {
-            send_message("$8," + Integer.toString(speed) + "\0");
-
-            while (input_buffer.ready()) {
-                String speed_str = input_buffer.readLine();
-                // System.out.println("Velocidad del paddle: " + speed_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -302,7 +261,7 @@ public class Client {
 
     public void hide_ball(int id) {
         try {
-            send_message("$9,"
+            send_message("$6,"
                     + Integer.toString(id) + "\0");
 
             while (input_buffer.ready()) {
@@ -316,8 +275,13 @@ public class Client {
 
     public void test_communication() {
         try {
-            setPosX(1, 200);
-            setPosY(1, 132);
+            int i = 0;
+            while (true) {
+                setPosX(1, i);
+                setPosY(1, i);
+                i += 1;
+                Thread.sleep(300);
+            }
 
             // get_balls();
         } catch (Exception error) {

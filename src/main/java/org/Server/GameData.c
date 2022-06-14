@@ -17,8 +17,7 @@ GameData *start_game()
 
     game_data->paddle = malloc(sizeof(Paddle));
     *(game_data->paddle) = (Paddle){.width = INITIAL_PADDLE_WIDTH,
-                                    .position = INITIAL_PADDLE_POSITION,
-                                    .speed = INITIAL_PADDLE_SPEED};
+                                    .position = INITIAL_PADDLE_POSITION};
 
     return game_data;
 }

@@ -1,4 +1,5 @@
 package org.breakout.spectator;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.breakout.GameWindow;
@@ -12,15 +13,15 @@ public class SpectatorMain extends Application {
     final int STAGE_HEIGHT = 400;
 
     public static void main(String[] args) {
-        // Client client = new Client(8080);
-        // client.test_communication();
+        SpectatorClient client = new SpectatorClient(8080);
+        client.test_communication();
         System.out.println("piplup");
-       // launch(args);
+        // launch(args);
     }
 
     @Override
     public void start(Stage Lobby) throws Exception {
-       // GameWindow gw = new GameWindow(Lobby);
+        // GameWindow gw = new GameWindow(Lobby);
     }
 
 }

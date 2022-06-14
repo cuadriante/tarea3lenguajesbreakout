@@ -21,10 +21,13 @@ public class SpectatorClient {
 
     public SpectatorClient(int PORT) {
         try {
-            this.socket = new Socket("localhost", 8081);
+            this.socket = new Socket("localhost", PORT);
 
             this.reader = new InputStreamReader(socket.getInputStream());
+            this.writer = new OutputStreamWriter(socket.getOutputStream());
+
             this.input_buffer = new BufferedReader(reader);
+            this.output_buffer = new BufferedWriter(writer);
         } catch (Exception error) {
             error.printStackTrace();
         }
@@ -48,7 +51,7 @@ public class SpectatorClient {
             send_message("0\0");
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
-                // System.out.println(block_str);
+                System.out.println(block_str);
                 int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
                 blockAttributesArray.add(blockAttributes);
             }
@@ -164,39 +167,11 @@ public class SpectatorClient {
     public void test_communication() {
         try {
             get_blocks();
-            // get_balls();
-            // get_score();
-            // get_lives();
-            // get_level();
-            // add_life();
-            // add_life();
-            // take_life();
-            // level_up();
-            // add_ball();
-            // send_message("ola\0");
-            // System.out.println("Error: " + input_buffer.readLine());
-            // destroy_block(7, 5);
-            // destroy_block(1, 7);
-            // destroy_block(2, 2);
-            // get_score();
-            // set_ball_speed_x(8);
-            // set_ball_speed_y(12);
-            // get_balls();
-            // System.out.println("----------------");
-            // add_ball();
-            // set_ball_speed_x(-6);
-            // set_ball_speed_x(-20);
-            // set_ball_speed_y(-2);
-            // get_balls();
-            // System.out.println("----------------");
-            // get_paddle();
-            // set_paddle_width(55);
-            // set_paddle_position(205);
-            // set_paddle_position(150);
-            // set_paddle_speed(10);
-            // set_paddle_speed(-10);
-            // get_paddle();
-
+            while (true) {
+                if (input_buffer.ready()) {
+                    System.out.println(input_buffer.readLine());
+                }
+            }
         } catch (Exception error) {
             error.printStackTrace();
         }
