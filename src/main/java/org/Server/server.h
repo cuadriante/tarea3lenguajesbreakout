@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <pthread.h>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -17,6 +18,8 @@
 #include "GameData.h"
 
 int stop_on_error(const int returned_value);
+
+void *test();
 
 void receive_message(const int client_socket);
 void send_message(const char *message, const int client_socket);

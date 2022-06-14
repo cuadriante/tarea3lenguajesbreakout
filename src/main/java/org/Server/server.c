@@ -23,18 +23,29 @@ int main()
     server_address.sin_addr.s_addr = INADDR_ANY;
 
     stop_on_error(bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address)));
-
     stop_on_error(listen(server_socket, 2));
 
-    while (true)
-    {
-        int client_socket = stop_on_error(accept(server_socket, NULL, NULL));
-        receive_message(client_socket);
-    }
+    pthread_t client_thread;
+    pthread_create(&client_thread, NULL, test, NULL);
+
+    pthread_t spectator_thread;
+    pthread_create(&spectator_thread, NULL, test, NULL);
+
+    pthread_join(client_thread, NULL);
+    pthread_join(spectator_thread, NULL);
 
     close(server_socket);
 
     return 0;
+}
+
+void *test()
+{
+    int client_socket = stop_on_error(accept(server_socket, NULL, NULL));
+    while (true)
+    {
+        receive_message(client_socket);
+    }
 }
 
 int stop_on_error(const int returned_value)
