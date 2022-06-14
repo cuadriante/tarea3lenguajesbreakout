@@ -10,9 +10,6 @@ GameData *start_game()
     game_data->lives = INITIAL_LIVES;
     game_data->level = INITIAL_LEVEL;
 
-    game_data->ball_speed_x = INITIAL_SPEED_X;
-    game_data->ball_speed_y = INITIAL_SPEED_Y;
-
     game_data->existing_balls = INITIAL_BALL_QUANTITY;
 
     generate_blocks(game_data);

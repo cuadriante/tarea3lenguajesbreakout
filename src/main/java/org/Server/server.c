@@ -1,7 +1,7 @@
 #include "server.h"
 
 int server_socket;
-int client_socket;
+// int client_socket;
 
 struct sockaddr_in server_address;
 
@@ -26,11 +26,10 @@ int main()
 
     stop_on_error(listen(server_socket, 2));
 
-    client_socket = stop_on_error(accept(server_socket, NULL, NULL));
-
     while (true)
     {
-        receive_message();
+        int client_socket = stop_on_error(accept(server_socket, NULL, NULL));
+        receive_message(client_socket);
     }
 
     close(server_socket);
@@ -52,95 +51,83 @@ int stop_on_error(const int returned_value)
     }
 }
 
-void receive_message()
+void receive_message(const int client_socket)
 {
     char received_message[INPUT_BUFFER_SIZE];
     stop_on_error(recv(client_socket, received_message, INPUT_BUFFER_SIZE, 0));
 
     if (strcmp(received_message, "0") == 0)
-        send_blocks();
+        send_blocks(client_socket);
     else if (strcmp(received_message, "1") == 0)
-        send_balls();
+        send_balls(client_socket);
     else if (strcmp(received_message, "2") == 0)
-        send_paddle();
+        send_paddle(client_socket);
     else if (strcmp(received_message, "3") == 0)
-        send_score();
+        send_score(client_socket);
     else if (strcmp(received_message, "4") == 0)
-        send_lives();
+        send_lives(client_socket);
     else if (strcmp(received_message, "5") == 0)
-        send_level();
+        send_level(client_socket);
     else if (strcmp(received_message, "6") == 0)
-        add_life();
+        add_life(client_socket);
     else if (strcmp(received_message, "7") == 0)
-        take_life();
+        take_life(client_socket);
     else if (strcmp(received_message, "8") == 0)
-        level_up();
+        level_up(client_socket);
     else if (strcmp(received_message, "9") == 0)
-        add_ball();
+        add_ball(client_socket);
     else if (received_message[0] == '$')
-        process_message(received_message);
+        process_message(received_message, client_socket);
     else
-        send_message("Mensaje no reconocido\n");
+        send_message("Mensaje no reconocido\n", client_socket);
 }
 
-void process_message(const char *received_message)
+void process_message(const char *received_message, const int client_socket)
 {
     if (received_message[1] == '1')
     {
         int block_position[10];
         separate_parameters(received_message, block_position);
-        destroy_block(block_position[0], block_position[1]);
+        destroy_block(block_position[0], block_position[1], client_socket);
     }
     else if (received_message[1] == '2')
     {
         int ball_info[2];
         separate_parameters(received_message, ball_info);
-        move_ball_x(ball_info[0], ball_info[1]);
+        move_ball_x(ball_info[0], ball_info[1], client_socket);
     }
     else if (received_message[1] == '3')
     {
         int ball_info[2];
         separate_parameters(received_message, ball_info);
-        move_ball_y(ball_info[0], ball_info[1]);
-    }
-    else if (received_message[1] == '4')
-    {
-        int speed[1];
-        separate_parameters(received_message, speed);
-        set_ball_speed_x(speed[0]);
-    }
-    else if (received_message[1] == '5')
-    {
-        int speed[1];
-        separate_parameters(received_message, speed);
-        set_ball_speed_y(speed[0]);
+        move_ball_y(ball_info[0], ball_info[1], client_socket);
     }
     else if (received_message[1] == '6')
     {
         int width[1];
         separate_parameters(received_message, width);
-        set_paddle_width(width[0]);
+        set_paddle_width(width[0], client_socket);
     }
     else if (received_message[1] == '7')
     {
         int position[1];
         separate_parameters(received_message, position);
-        set_paddle_position(position[0]);
+        set_paddle_position(position[0], client_socket);
     }
     else if (received_message[1] == '8')
     {
         int speed[1];
         separate_parameters(received_message, speed);
-        set_paddle_speed(speed[0]);
+        set_paddle_speed(speed[0], client_socket);
     }
     else if (received_message[1] == '9')
     {
         int id[1];
         separate_parameters(received_message, id);
-        hide_ball(id[0]);
+        hide_ball(id[0], client_socket);
     }
     else
-        send_message("Mensaje no reconocido\n");
+        send_message("Mensaje no reconocido\n", client_socket);
 }
 
 void separate_parameters(const char *string, int *parameters)
@@ -167,29 +154,27 @@ void separate_parameters(const char *string, int *parameters)
     parameters[parameter_index] = atoi(parameter);
 }
 
-void send_message(const char *message)
+void send_message(const char *message, const int client_socket)
 {
     int message_size = strlen(message);
     stop_on_error(send(client_socket, message, message_size, 0));
 }
 
-void send_balls()
+void send_balls(const int client_socket)
 {
     char ball_str[55];
     for (int i = 0; i < game_data->existing_balls; i++)
     {
-        sprintf(ball_str, "%d,%d,%d,%d,%d\n",
+        sprintf(ball_str, "%d,%d,%d\n",
                 game_data->balls[i]->id,
                 game_data->balls[i]->pos_x,
-                game_data->balls[i]->pos_y,
-                game_data->ball_speed_x,
-                game_data->ball_speed_y);
+                game_data->balls[i]->pos_y);
 
-        send_message(ball_str);
+        send_message(ball_str, client_socket);
     }
 }
 
-void send_blocks()
+void send_blocks(const int client_socket)
 {
     char block_str[12];
     for (int i = 0; i < BLOCK_ROWS; i++)
@@ -202,12 +187,12 @@ void send_blocks()
                     game_data->blocks[i][j]->level,
                     game_data->blocks[i][j]->power_up);
 
-            send_message(block_str);
+            send_message(block_str, client_socket);
         }
     }
 }
 
-void send_paddle()
+void send_paddle(const int client_socket)
 {
     char paddle_str[15];
     sprintf(paddle_str, "%d,%d,%d\n",
@@ -215,62 +200,62 @@ void send_paddle()
             game_data->paddle->position,
             game_data->paddle->speed);
 
-    send_message(paddle_str);
+    send_message(paddle_str, client_socket);
 }
 
-void send_score()
+void send_score(const int client_socket)
 {
     char score_str[10];
     sprintf(score_str, "%d\n", game_data->score);
 
-    send_message(score_str);
+    send_message(score_str, client_socket);
 }
 
-void send_lives()
+void send_lives(const int client_socket)
 {
     char lives_str[10];
     sprintf(lives_str, "%d\n", game_data->lives);
 
-    send_message(lives_str);
+    send_message(lives_str, client_socket);
 }
 
-void send_level()
+void send_level(const int client_socket)
 {
     char level_str[10];
     sprintf(level_str, "%d\n", game_data->level);
 
-    send_message(level_str);
+    send_message(level_str, client_socket);
 }
 
-void add_life()
+void add_life(const int client_socket)
 {
     game_data->lives += 1;
 
-    send_lives();
+    send_lives(client_socket);
 }
 
-void take_life()
+void take_life(const int client_socket)
 {
     game_data->lives -= 1;
 
-    send_lives();
+    send_lives(client_socket);
 }
 
-void level_up()
+void level_up(const int client_socket)
 {
     game_data->level += 1;
 
-    send_level();
+    send_level(client_socket);
 }
 
-void add_ball()
+void add_ball(const int client_socket)
 {
     create_new_ball(game_data);
 
-    send_balls();
+    send_balls(client_socket);
 }
 
-void move_ball_x(const int id, const int pos_x)
+void move_ball_x(const int id, const int pos_x, const int client_socket)
 {
     Ball *ball = get_ball_by_id(game_data, id);
     ball->pos_x = pos_x;
@@ -278,10 +263,10 @@ void move_ball_x(const int id, const int pos_x)
     char pos_x_str[6];
     sprintf(pos_x_str, "%d\n", ball->pos_x);
 
-    send_message(pos_x_str);
+    send_message(pos_x_str, client_socket);
 }
 
-void move_ball_y(const int id, const int pos_y)
+void move_ball_y(const int id, const int pos_y, const int client_socket)
 {
     Ball *ball = get_ball_by_id(game_data, id);
     ball->pos_y = pos_y;
@@ -289,60 +274,40 @@ void move_ball_y(const int id, const int pos_y)
     char pos_y_str[6];
     sprintf(pos_y_str, "%d\n", ball->pos_y);
 
-    send_message(pos_y_str);
+    send_message(pos_y_str, client_socket);
 }
 
-void set_ball_speed_x(const int speed)
-{
-    game_data->ball_speed_x = speed;
-
-    char speed_x_str[6];
-    sprintf(speed_x_str, "%d\n", game_data->ball_speed_x);
-
-    send_message(speed_x_str);
-}
-
-void set_ball_speed_y(const int speed)
-{
-    game_data->ball_speed_y = speed;
-
-    char speed_y_str[6];
-    sprintf(speed_y_str, "%d\n", game_data->ball_speed_y);
-
-    send_message(speed_y_str);
-}
-
-void set_paddle_width(const int width)
+void set_paddle_width(const int width, const int client_socket)
 {
     game_data->paddle->width = width;
 
     char width_str[6];
     sprintf(width_str, "%d\n", game_data->paddle->width);
 
-    send_message(width_str);
+    send_message(width_str, client_socket);
 }
 
-void set_paddle_position(const int position)
+void set_paddle_position(const int position, const int client_socket)
 {
     game_data->paddle->position = position;
 
     char position_str[6];
     sprintf(position_str, "%d\n", game_data->paddle->position);
 
-    send_message(position_str);
+    send_message(position_str, client_socket);
 }
 
-void set_paddle_speed(const int speed)
+void set_paddle_speed(const int speed, const int client_socket)
 {
     game_data->paddle->speed = speed;
 
     char speed_str[6];
     sprintf(speed_str, "%d\n", game_data->paddle->speed);
 
-    send_message(speed_str);
+    send_message(speed_str, client_socket);
 }
 
-void destroy_block(const int row, const int column)
+void destroy_block(const int row, const int column, const int client_socket)
 {
     Block *block = game_data->blocks[row][column];
     game_data->score += block->level * game_data->level * BASE_POINTS;
@@ -352,10 +317,10 @@ void destroy_block(const int row, const int column)
 
     free(block);
 
-    send_message(position_str);
+    send_message(position_str, client_socket);
 }
 
-void hide_ball(const int id)
+void hide_ball(const int id, const int client_socket)
 {
     Ball *ball = get_ball_by_id(game_data, id);
     ball->pos_x = INITIAL_POS_X;
@@ -368,5 +333,5 @@ void hide_ball(const int id)
             ball->pos_x,
             ball->pos_y);
 
-    send_message(hidden_str);
+    send_message(hidden_str, client_socket);
 }

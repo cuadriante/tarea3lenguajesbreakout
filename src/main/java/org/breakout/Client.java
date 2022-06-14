@@ -20,7 +20,8 @@ public class Client {
 
     public Client(int PORT) {
         try {
-            this.socket = new Socket("localhost", 8080);
+            // this.id = id;
+            this.socket = new Socket("localhost", PORT);
 
             this.reader = new InputStreamReader(socket.getInputStream());
             this.writer = new OutputStreamWriter(socket.getOutputStream());
@@ -315,9 +316,10 @@ public class Client {
 
     public void test_communication() {
         try {
-            move_ball_x(1, 200);
+            move_ball_x(1, -1029);
             move_ball_y(1, 132);
 
+            // get_balls();
         } catch (Exception error) {
             error.printStackTrace();
         }

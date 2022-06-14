@@ -34,9 +34,6 @@ typedef struct
     int lives;
     int level;
 
-    int ball_speed_x;
-    int ball_speed_y;
-
     int existing_balls;
 
     Block *blocks[BLOCK_ROWS][BLOCK_COLUMNS];

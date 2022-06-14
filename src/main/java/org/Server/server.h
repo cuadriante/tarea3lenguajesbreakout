@@ -18,34 +18,31 @@
 
 int stop_on_error(const int returned_value);
 
-void receive_message();
-void send_message(const char *message);
+void receive_message(const int client_socket);
+void send_message(const char *message, const int client_socket);
 
-void process_message(const char *received_message);
+void process_message(const char *received_message, const int client_socket);
 void separate_parameters(const char *string, int *parameters);
 
-void send_balls();
-void send_blocks();
-void send_paddle();
+void send_balls(const int client_socket);
+void send_blocks(const int client_socket);
+void send_paddle(const int client_socket);
 
-void send_score();
-void send_lives();
-void send_level();
+void send_score(const int client_socket);
+void send_lives(const int client_socket);
+void send_level(const int client_socket);
 
-void add_life();
-void take_life();
-void level_up();
-void add_ball();
+void add_life(const int client_socket);
+void take_life(const int client_socket);
+void level_up(const int client_socket);
+void add_ball(const int client_socket);
 
-void move_ball_x(const int id, const int pos_x);
-void move_ball_y(const int id, const int pos_y);
+void move_ball_x(const int id, const int pos_x, const int client_socket);
+void move_ball_y(const int id, const int pos_y, const int client_socket);
 
-void set_ball_speed_x(const int speed);
-void set_ball_speed_y(const int speed);
+void set_paddle_width(const int width, const int client_socket);
+void set_paddle_position(const int position, const int client_socket);
+void set_paddle_speed(const int speed, const int client_socket);
 
-void set_paddle_width(const int width);
-void set_paddle_position(const int position);
-void set_paddle_speed(const int speed);
-
-void destroy_block(const int pos_x, const int pos_y);
-void hide_ball(const int id);
+void destroy_block(const int pos_x, const int pos_y, const int client_socket);
+void hide_ball(const int id, const int client_socket);

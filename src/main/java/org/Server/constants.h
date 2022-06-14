@@ -1,6 +1,7 @@
 #pragma once
 
 #define PORT 8080
+#define MAX_CLIENTS 2
 #define INPUT_BUFFER_SIZE 256
 
 #define INITIAL_SCORE 0
@@ -11,8 +12,6 @@
 #define MAX_BALLS 10
 #define INITIAL_POS_X 200;
 #define INITIAL_POS_Y 200;
-#define INITIAL_SPEED_X -10;
-#define INITIAL_SPEED_Y 10;
 
 #define BLOCK_ROWS 8
 #define BLOCK_COLUMNS 8
