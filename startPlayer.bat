@@ -1,0 +1,1 @@
+gradlew -PmainClass=org.breakout.Main run
