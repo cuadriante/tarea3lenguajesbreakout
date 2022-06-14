@@ -10,6 +10,7 @@ import org.breakout.blockFactory.Block;
 
 public class GameLoop {
     private boolean gameIsRunning = true;
+    private boolean moveBalls = false;
     Client client;
     private GameWindow gameWindow;
     List<Block> blockList = Collections.synchronizedList(new ArrayList<Block>());
@@ -37,7 +38,9 @@ public class GameLoop {
                                 if (gameIsRunning) {
                                     isLevelComplete();
                                     // Animacion de bola
-                                    // moveBalls();
+                                    if(moveBalls){
+                                        moveBalls();
+                                    }
                                     //checkAllBallCollisions();
                                     //checkAllBallsOutOfBounds();
                                     if (!atLeastOneBall()){
@@ -109,13 +112,17 @@ public class GameLoop {
     }
 
     public void moveBalls() {
-        Iterator<Ball> itr = ballList.iterator();
-        while (itr.hasNext()) {
-            Ball ball = itr.next();
-            if (ball.getVisibility()) {
-                ball.move();
+        if(moveBalls){
+            for(Ball ball : ballList){
+                if(ball.getVisibility()){
+                    ball.move();
+                }
             }
         }
+    }
+
+    public void toggleMoveBalls(){
+        moveBalls = !moveBalls;
     }
 
     public void stopGame() {

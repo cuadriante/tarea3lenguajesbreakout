@@ -227,6 +227,7 @@ public class Ball{
                 gameWindow.breakBlock(b);
                 b.getShape().setVisible(false);
                 activatePower(b.getType());
+                gameWindow.updatePuntos();
             }
         }
         if(this.circle.getBoundsInParent().intersects(gameWindow.getPlayerBar().getShape().getBoundsInParent()) ){

@@ -95,6 +95,9 @@ public class GameWindow {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
+                    case ENTER:
+                        gameLoop.toggleMoveBalls();
+                        break;
                     case LEFT:
                         playerBar.moveLeft();
                         break;
@@ -337,11 +340,6 @@ public class GameWindow {
         speedUpBalls();
         resetBlocks();
     }
-
-    // public void set(){
-    // move_ball_x();
-    // move_ball_y();
-    // }
 
     private void createLabels() {
 
