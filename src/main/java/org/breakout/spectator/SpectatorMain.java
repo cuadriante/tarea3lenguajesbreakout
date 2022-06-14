@@ -15,7 +15,7 @@ public class SpectatorMain extends Application {
     public static void main(String[] args) {
         SpectatorClient client = new SpectatorClient(8080);
         client.test_communication();
-        System.out.println("piplup");
+        // System.out.println("piplup");
         // launch(args);
     }
 

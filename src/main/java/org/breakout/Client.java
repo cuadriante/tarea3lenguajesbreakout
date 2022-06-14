@@ -60,19 +60,6 @@ public class Client {
         return blockAttributesArray;
     }
 
-    public void get_balls() {
-        try {
-            send_message("1\0");
-
-            while (input_buffer.ready()) {
-                String ball_str = input_buffer.readLine();
-                // System.out.println("Bola: " + ball_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
     public void get_paddle() {
         try {
             send_message("2\0");
@@ -179,7 +166,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String ball_str = input_buffer.readLine();
-                // System.out.println("Bola: " + ball_str);
+                System.out.println("Bola: " + ball_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -195,7 +182,7 @@ public class Client {
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
                 // System.out.println("Posición X de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
+                // Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -211,7 +198,7 @@ public class Client {
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
                 // System.out.println("Posición Y de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
+                // Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -259,6 +246,19 @@ public class Client {
         }
     }
 
+    public void get_ball(int ball_id) {
+        try {
+            send_message("$7," + Integer.toString(ball_id) + "\0");
+
+            while (input_buffer.ready()) {
+                String ball_str = input_buffer.readLine();
+                System.out.println("Bola: " + ball_str);
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+
     public void hide_ball(int id) {
         try {
             send_message("$6,"
@@ -266,7 +266,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String position_str = input_buffer.readLine();
-                // System.out.println("Bola escondida: " + position_str);
+                System.out.println("Bola escondida: " + position_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -283,6 +283,10 @@ public class Client {
                 level_up();
                 setPosX(1, i);
                 setPosY(1, i);
+                // get_ball(1);
+                // get_ball(2);
+                add_ball();
+                hide_ball(1);
                 destroy_block(7, i);
                 set_paddle_position(i);
                 set_paddle_width(i);

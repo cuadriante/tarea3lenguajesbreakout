@@ -27,7 +27,6 @@ void send_message(const char *message, const int socket);
 void process_message(const char *received_message);
 void separate_parameters(const char *string, int *parameters);
 
-void send_balls();
 void send_blocks();
 void send_paddle();
 
@@ -40,6 +39,7 @@ void take_life();
 void level_up();
 void add_ball();
 
+void send_ball(const int ball_id);
 void move_ball_x(const int id, const int pos_x);
 void move_ball_y(const int id, const int pos_y);
 
