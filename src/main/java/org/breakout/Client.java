@@ -186,30 +186,32 @@ public class Client {
         }
     }
 
-    public void move_ball_x(int ball_id) {
+    public void move_ball_x(int ball_id, int pos_x) {
         try {
             send_message("$2,"
-                    + Integer.toString(ball_id) + "\0");
+                    + Integer.toString(ball_id) + ","
+                    + Integer.toString(pos_x) + "\0");
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                // System.out.println("Posición X de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
+                System.out.println("Posición X de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
         }
     }
 
-    public void move_ball_y(int ball_id) {
+    public void move_ball_y(int ball_id, int pos_y) {
         try {
             send_message("$3,"
-                    + Integer.toString(ball_id) + "\0");
+                    + Integer.toString(ball_id) + ","
+                    + Integer.toString(pos_y) + "\0");
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                // System.out.println("Posición Y de la bola " +
-                //         Integer.toString(ball_id) + ": " + pos_x_str);
+                System.out.println("Posición Y de la bola " +
+                        Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -313,43 +315,8 @@ public class Client {
 
     public void test_communication() {
         try {
-            get_blocks();
-            // get_balls();
-            // get_score();
-            // get_lives();
-            // get_level();
-            // add_life();
-            // add_life();
-            // take_life();
-            // level_up();
-            // add_ball();
-            // send_message("ola\0");
-            // System.out.println("Error: " + input_buffer.readLine());
-            // destroy_block(7, 5);
-            // destroy_block(1, 7);
-            // destroy_block(2, 2);
-            // get_score();
-            // set_ball_speed_x(8);
-            // set_ball_speed_y(12);
-            // get_balls();
-            // System.out.println("----------------");
-            // add_ball();
-            // set_ball_speed_x(-6);
-            // set_ball_speed_x(-20);
-            // set_ball_speed_y(-2);
-            // get_balls();
-            // System.out.println("----------------");
-            // get_paddle();
-            // set_paddle_width(55);
-            // set_paddle_position(205);
-            // set_paddle_position(150);
-            // set_paddle_speed(10);
-            // set_paddle_speed(-10);
-            // get_paddle();
-            add_ball();
-            move_ball_x(1);
-            hide_ball(1);
-            add_ball();
+            move_ball_x(1, 200);
+            move_ball_y(1, 132);
 
         } catch (Exception error) {
             error.printStackTrace();

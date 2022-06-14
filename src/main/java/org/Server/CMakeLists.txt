@@ -4,7 +4,7 @@ project(Server C)
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.)
-link_libraries(ws2_32 wsock32) #Para que reconozca las funciones de sockets (Windows)
+# link_libraries(ws2_32 wsock32) #Para que reconozca las funciones de sockets (Windows)
 
 add_executable(Server
         constants.h
