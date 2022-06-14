@@ -93,7 +93,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String score_str = input_buffer.readLine();
-                // System.out.println("Puntuación: " + score_str);
+                System.out.println("Puntuación: " + score_str);
                 returned = adapter.singleDatatoInt(score_str);
             }
         } catch (Exception error) {
@@ -140,7 +140,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
-                // System.out.println("Ahora tiene " + lives_str + " vidas");
+                System.out.println("Ahora tiene " + lives_str + " vidas");
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -153,7 +153,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String lives_str = input_buffer.readLine();
-                // System.out.println("Ahora tiene " + lives_str + " vidas");
+                System.out.println("Ahora tiene " + lives_str + " vidas");
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -166,7 +166,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String level_str = input_buffer.readLine();
-                // System.out.println("Subió al nivel: " + level_str);
+                System.out.println("Subió al nivel: " + level_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -224,7 +224,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String width_str = input_buffer.readLine();
-                // System.out.println("Ancho del paddle: " + width_str);
+                System.out.println("Ancho del paddle: " + width_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -237,7 +237,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String position_str = input_buffer.readLine();
-                // System.out.println("Posición del paddle: " + position_str);
+                System.out.println("Posición del paddle: " + position_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -252,7 +252,7 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String position_str = input_buffer.readLine();
-                // System.out.println("Posición del bloque eliminado: " + position_str);
+                System.out.println("Posición del bloque eliminado: " + position_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -277,13 +277,18 @@ public class Client {
         try {
             int i = 0;
             while (true) {
+                get_score();
+                add_life();
+                take_life();
+                level_up();
                 setPosX(1, i);
                 setPosY(1, i);
+                destroy_block(7, i);
+                set_paddle_position(i);
+                set_paddle_width(i);
                 i += 1;
-                Thread.sleep(300);
+                Thread.sleep(3000);
             }
-
-            // get_balls();
         } catch (Exception error) {
             error.printStackTrace();
         }
