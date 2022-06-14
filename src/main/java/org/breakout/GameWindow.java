@@ -204,7 +204,7 @@ public class GameWindow {
     /**
      * Hace que aparezca una bola nueva al juego. Ya sea reciclando una bola
      * que desactivada o creando una nueva.
-     * TODO: ENVIAR AL SERVER UN MENSAJE CON LA BOLA QUE HORA ESTÁ ACTIVA
+     * TODO: ENVIAR AL SERVER UN MENSAJE CON LA BOLA QUE HORA ESTa ACTIVA
      */
     public void newBall() {
         System.out.println("creando nueva bolita");
