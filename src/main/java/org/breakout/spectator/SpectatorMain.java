@@ -13,9 +13,9 @@ public class SpectatorMain extends Application {
     final int STAGE_HEIGHT = 400;
 
     public static void main(String[] args) {
-        SpectatorClient client = new SpectatorClient(8080);
-        client.test_communication();
-        System.out.println("piplup");
+        // SpectatorClient client = new SpectatorClient(8080);
+        // client.test_communication();
+        // System.out.println("piplup");
         launch(args);
     }
 

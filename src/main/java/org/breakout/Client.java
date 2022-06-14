@@ -194,8 +194,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                System.out.println("Posición X de la bola " +
-                        Integer.toString(ball_id) + ": " + pos_x_str);
+                // System.out.println("Posición X de la bola " +
+                //         Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -210,8 +210,8 @@ public class Client {
 
             while (input_buffer.ready()) {
                 String pos_x_str = input_buffer.readLine();
-                System.out.println("Posición Y de la bola " +
-                        Integer.toString(ball_id) + ": " + pos_x_str);
+                // System.out.println("Posición Y de la bola " +
+                //         Integer.toString(ball_id) + ": " + pos_x_str);
             }
         } catch (Exception error) {
             error.printStackTrace();

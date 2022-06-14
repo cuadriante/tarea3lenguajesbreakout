@@ -37,7 +37,7 @@ public class GameLoop {
                                 if (gameIsRunning) {
                                     isLevelComplete();
                                     // Animacion de bola
-                                    moveBalls();
+                                    // moveBalls();
                                     //checkAllBallCollisions();
                                     //checkAllBallsOutOfBounds();
                                     if (!atLeastOneBall()){

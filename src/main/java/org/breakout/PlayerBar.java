@@ -36,6 +36,12 @@ public class PlayerBar {
         this.center = (float) (this.rectangle.getX() + this.rectangle.getWidth()/2);
     }
 
+    public void setPos(int x, int y){
+        this.rectangle.setX(x);
+        this.rectangle.setY(y);
+        setCenter();
+    }
+
     /**
      * Retorna el atributo rectangulo
      * @return rectangulo
