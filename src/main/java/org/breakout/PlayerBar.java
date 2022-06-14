@@ -10,8 +10,7 @@ import javafx.scene.shape.Rectangle;
 public class PlayerBar {
     private Rectangle rectangle;
     float center;
-    // private PhysicsEntity prueba;
-    private final int SPEED = 5;
+    private final int SPEED = 10;
 
     /**
      * Constructor de la barra de juego
@@ -70,14 +69,18 @@ public class PlayerBar {
      * Hace la raqueta de juego más ancha
      */
     public void makeBigger(){
-        int extraWidth = (int)(rectangle.getWidth()*0.2);
+        if (this.rectangle.getWidth() < 200){
+        int extraWidth = (int)(rectangle.getWidth()*0.4);
         rectangle.setWidth(rectangle.getWidth() + extraWidth);
+        }
     }
     /**
      * Hace la barra de juego más angosta
      */
     public void makeSmaller(){
-        int extraWidth = (int)(rectangle.getWidth()*0.2);
-        rectangle.setWidth(rectangle.getWidth() - extraWidth);
+        if ( this.rectangle.getWidth() > 50){
+            int extraWidth = (int)(rectangle.getWidth()*0.4);
+            rectangle.setWidth(rectangle.getWidth() - extraWidth);
+        }
     }
 }

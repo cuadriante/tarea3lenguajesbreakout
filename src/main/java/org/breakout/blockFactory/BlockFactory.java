@@ -9,8 +9,7 @@ public class BlockFactory {
     public static Block buildBlock(int type, int x, int y, int id, int row, int colum){
         Block block = null;
         if (type == -1){
-            // System.out.println("Loxo"); 
-            block = new SpeedUpBlock(x, y, width, height, row, colum); // Temporal
+            block = new NoPowerBlock(x, y, width, height, row, colum); 
             return block;
         }
         switch (type)
