@@ -16,12 +16,12 @@ public class SpectatorMain extends Application {
         SpectatorClient client = new SpectatorClient(8080);
         client.test_communication();
         System.out.println("piplup");
-        // launch(args);
+        launch(args);
     }
 
     @Override
     public void start(Stage Lobby) throws Exception {
-        // GameWindow gw = new GameWindow(Lobby);
+        SpectatorWindow gw = new SpectatorWindow(Lobby);
     }
 
 }
