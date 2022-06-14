@@ -7,11 +7,11 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-// #include <sys/socket.h>
-// #include <netinet/in.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
-#include <winsock2.h> //Para Windows
-#pragma comment(lib, "ws2_32.lib")
+// #include <winsock2.h> //Para Windows
+// #pragma comment(lib, "ws2_32.lib")
 
 #include "constants.h"
 #include "GameData.h"
@@ -37,8 +37,8 @@ void take_life();
 void level_up();
 void add_ball();
 
-void move_ball_x(const int id);
-void move_ball_y(const int id);
+void move_ball_x(const int id, const int pos_x);
+void move_ball_y(const int id, const int pos_y);
 
 void set_ball_speed_x(const int speed);
 void set_ball_speed_y(const int speed);
