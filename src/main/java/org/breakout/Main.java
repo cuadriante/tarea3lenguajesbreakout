@@ -12,8 +12,8 @@ public class Main extends Application {
   final int STAGE_HEIGHT = 400;
 
   public static void main(String[] args) {
-    // Client client = new Client(8080);
-    // client.test_communication();
+    Client client = new Client(8080);
+    client.test_communication();
 
     launch(args);
   }

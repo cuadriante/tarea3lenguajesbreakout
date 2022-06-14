@@ -11,11 +11,11 @@ GameData *game_data;
 int main()
 {
     // Varas de los sockets de Windows
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-    {
-        return 1;
-    }
+    // WSADATA wsa;
+    // if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    // {
+    //     return 1;
+    // }
     game_data = start_game();
 
     client_socket = malloc(sizeof(int));
