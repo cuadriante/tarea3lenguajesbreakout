@@ -95,6 +95,9 @@ public class GameWindow {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
+                    case ENTER:
+                        gameLoop.toggleMoveBalls();
+                        break;
                     case LEFT:
                         playerBar.moveLeft();
                         break;
@@ -141,16 +144,10 @@ public class GameWindow {
     }
 
     /**
-     * Hace visibles los bloques y, mediante una llamada al server,
-     * determina y asigna los atributos de los bloques del siguiente nivel.
+     * Hace visibles los bloques.
      */
     private void resetBlocks() {
-        ArrayList<int[]> blockAttributesArray = client.get_blocks();
-        for (int i = 0; i < blockList.size(); i++) {
-            Block block = blockList.get(i);
-            int blockAttributes[] = blockAttributesArray.get(i);
-            int power = blockAttributes[3];
-            block.setType(power);
+        for (Block block : blockList) {
             block.getShape().setVisible(true);
         }
     }
@@ -166,6 +163,7 @@ public class GameWindow {
             // } catch (InterruptedException e) {
             // e.printStackTrace();
             // }
+            this.ballSpeed = 6;
             newBall();
         } else {
             gameLoop.stopGame();
@@ -213,7 +211,6 @@ public class GameWindow {
         for (Ball ball : ballList) {
             if (!ball.getVisibility()) {
                 ball.recycle(x, y);
-                // Avisar que ahora la bola está disponible
                 flag = true;
                 break;
             }
@@ -228,7 +225,7 @@ public class GameWindow {
 
     /**
      * Retorna una bola y lleva la cuenta de las bolas
-     * 
+     *
      * @return
      */
     public Ball buildBall(int x, int y) {
@@ -334,7 +331,6 @@ public class GameWindow {
     }
 
     private void setUpNextLevel() {
-        resetBlocks();
         for (Ball ball : ballList) {
             ball.setInvisible();
             int id = ball.getId();
@@ -342,12 +338,8 @@ public class GameWindow {
         }
         newBall();
         speedUpBalls();
+        resetBlocks();
     }
-
-    // public void set(){
-    // move_ball_x();
-    // move_ball_y();
-    // }
 
     private void createLabels() {
 
