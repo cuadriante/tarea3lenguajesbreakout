@@ -14,8 +14,8 @@ import org.breakout.blockFactory.Block;
 public class Ball{
     private Circle circle;
     private int id;
-    private float xSpeed = -10;
-    private float ySpeed = 10;
+    private float xSpeed;
+    private float ySpeed;
     private int xLimit;
     private int yLimit;
     private boolean visibility;
@@ -31,11 +31,13 @@ public class Ball{
  * @param centerY Posición en el eje Y de la bola
  * @param gw
  */
-    public Ball(int centerX, int centerY, GameWindow gw, int id){
+    public Ball(int centerX, int centerY, float speed, GameWindow gw, int id){
         this.circle = new Circle(centerX, centerY, RADIUS);
         circle.setFill(Color.OLIVE);
         circle.setStrokeWidth(2);
         circle.setStroke(Color.DARKOLIVEGREEN);
+        this.xSpeed = speed;
+        this.ySpeed = speed;
         this.xLimit = 400;
         this.yLimit = 400;
         this.visibility = true;
@@ -90,6 +92,7 @@ public class Ball{
             int x = (int)this.circle.getCenterX();
             int y = (int)this.circle.getCenterY();
             checkParameters(x, y);
+            System.out.println(xSpeed);
 
             setBallXandY(x, y);
             this.circle.setCenterY(y + ySpeed);
@@ -102,6 +105,7 @@ public class Ball{
             }));
             ballMovement.setCycleCount(1);
             ballMovement.play();
+            gameWindow.sendPosBalls(id, x, y);
         }
     }
 
@@ -132,22 +136,35 @@ public class Ball{
         return this.circle;
     }
 
+    public float getSpeed(){
+        return Math.abs(this.xSpeed);
+    }
+
     /**
      * Aumenta la velocidad de la pelota
      */
     public void speedUp(){
-        this.xSpeed = (float) (1.2*this.xSpeed);
-        this.ySpeed = (float) (1.2*this.ySpeed);
-        //xSpeed = 2*xSpeed;
-        //ySpeed = 2*ySpeed;
+        float speed = gameWindow.getBallSpeed();
+        if (Math.abs(speed) < 10){
+            speed = (float) (speed*1.2);
+            this.xSpeed = speed;
+            this.ySpeed = speed;
+        }
     }
+
     /**
      * Disminuye la velocidad de la pelota
      */
     public void speedDown(){
-        xSpeed = (float) (xSpeed/1.2);
-        ySpeed = (float) (ySpeed/1.2);
+        float speed = Math.abs(gameWindow.getBallSpeed());
+        if (Math.abs(speed) > 2){
+            speed = (float) (speed/1.2);
+            this.xSpeed = speed;
+            this.ySpeed = speed;
+        }
     }
+
+
 
     /**
      * Establece el atributo de visibilidad a falso
@@ -172,14 +189,15 @@ public class Ball{
 
     public void recycle(int X, int Y){
         System.out.println("se esta reciclando la bolita");
-        this.xSpeed = -10;
-        this.ySpeed = 10;
+        float speed = gameWindow.getBallSpeed();
+        this.xSpeed = speed;
+        this.ySpeed = speed;
         this.circle.setCenterX(X);
         this.circle.setCenterY(Y);
         System.out.println(X + " " + Y );
         this.circle.setVisible(true);
+        gameWindow.client.add_ball();
         this.visibility = true;
-
     }
 
     /**
@@ -197,6 +215,7 @@ public class Ball{
         for(Block b : gameWindow.getBlockList()){
             if(b.getShape().isVisible() && this.circle.getBoundsInParent().intersects(b.getShape().getBoundsInParent()) ){
                 this.changeDirectionY();
+                gameWindow.breakBlock(b);
                 b.getShape().setVisible(false);
                 activatePower(b.getType());
             }
@@ -207,12 +226,13 @@ public class Ball{
     }
 
     public void activatePower(int type) {
+        // System.out.println(type);
         switch (type) {
             case (-1) -> {}
-            case (0) -> speedUp();
+            case (0) -> gameWindow.speedUpBalls();
             case (1) -> gameWindow.getPlayerBar().makeBigger();
             case (2) -> gameWindow.getPlayerBar().makeSmaller();
-            case (3) -> speedDown();
+            case (3) -> gameWindow.speedDownBalls();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();
             default -> throw new IllegalStateException("Unexpected value: " + type);
@@ -220,6 +240,10 @@ public class Ball{
 
     }
 
+    public void setInitialSpeed(float speed){
+        this.xSpeed = speed;
+        this.ySpeed = speed;
+    }
 
     public int getId() {
         return id;

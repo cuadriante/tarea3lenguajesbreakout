@@ -114,7 +114,6 @@ public class GameLoop {
             Ball ball = itr.next();
             if (ball.getVisibility()) {
                 ball.move();
-                gameWindow.sendMovement(ball);
             }
         }
     }
