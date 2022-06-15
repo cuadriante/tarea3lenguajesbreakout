@@ -173,11 +173,22 @@ public class GameWindow {
      * Construye la lista de bolas
      */
     private void buildBallList() {
-        Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
-        ballList.add(ball);
+        for(int i = 0; i < 5; i++){
+            Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
+            ball.setInvisible();
+            ballList.add(ball);
+        }
+        Ball ball = ballList.get(0);
+        ball.setVisible();
         for (Ball element : ballList) {
             root.getChildren().add(element.getShape());
         }
+
+        // Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
+        // ballList.add(ball);
+        // for (Ball element : ballList) {
+        //     root.getChildren().add(element.getShape());
+        // }
     }
 
     /**
@@ -338,7 +349,7 @@ public class GameWindow {
      */
     public void sendPosBalls(int ballId, int xPos, int yPos) {
         client.setPosX(ballId, xPos);
-        client.setPosX(ballId, yPos);
+        client.setPosY(ballId, yPos);
     }
 
     /**

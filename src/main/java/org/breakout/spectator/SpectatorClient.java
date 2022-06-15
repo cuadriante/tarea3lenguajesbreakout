@@ -181,10 +181,10 @@ public class SpectatorClient extends Thread{
             while(true){
                 if (input_buffer.ready()) {
                     String message = input_buffer.readLine();
-                    System.out.println(message);
+                    // System.out.println(message);
                     int id = adapter.processId(message);
                     String data = adapter.processData(message);
-                    processMesage(id, data);
+                    processMessage(id, data);
                 }
             }
         }catch (Exception error) {
@@ -193,15 +193,41 @@ public class SpectatorClient extends Thread{
     }
     
 
-    private void processMesage(int id, String data) {
+    private void processMessage(int id, String data) {
         switch(id){
+            case(3)->{
+                int dataArray[] =adapter.splitData(data);
+                int ballId = dataArray[0];
+                spectatorWindow.addBall(ballId);
+            }
+            case(4)->{
+                int dataArray[] =adapter.splitData(data);
+                int ballId = dataArray[0];
+                int posX = dataArray[1];
+                spectatorWindow.setBallPosX(ballId, posX);
+            }
+            case(5)->{
+                int dataArray[] =adapter.splitData(data);
+                int ballId = dataArray[0];
+                int posY = dataArray[1];
+                spectatorWindow.setBallPosY(ballId, posY);
+            }
+            case(6)->{
+                System.out.println("cambiar ancho");
+                int width = adapter.singleDatatoInt(data);
+                spectatorWindow.setPlayerBarWidth(width);
+            }
             case(7)->{
-                System.out.println("MoverBola");
                 int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarPos(xPos);
             }
+            case(9)->{
+                int ballId = adapter.singleDatatoInt(data);
+                spectatorWindow.hideBall(ballId);
+            }
+
             default->{
-                System.out.println("Mensaje no procesado");
+                // System.out.println("Mensaje no procesado");
             }
         }
     }
