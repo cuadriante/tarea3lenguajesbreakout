@@ -264,8 +264,8 @@ public class Ball{
         switch (type) {
             case (-1) -> {}
             case (0) -> gameWindow.speedUpBalls();
-            case (1) -> gameWindow.getPlayerBar().makeBigger();
-            case (2) -> gameWindow.getPlayerBar().makeSmaller();
+            case (1) -> gameWindow.biggerPlayerbar();
+            case (2) -> gameWindow.smallerPlayerbar();
             case (3) -> gameWindow.speedDownBalls();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();

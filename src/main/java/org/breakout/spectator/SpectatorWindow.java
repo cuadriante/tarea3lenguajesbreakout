@@ -1,23 +1,17 @@
 package org.breakout.spectator;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.breakout.Ball;
-import org.breakout.Client;
-import org.breakout.GameLoop;
 import org.breakout.PlayerBar;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javafx.scene.paint.Color;
 
-import org.breakout.PlayerBar;
 
 /**
  * Ventana de espectador.
@@ -45,7 +39,7 @@ public class SpectatorWindow {
      * @throws Exception
      */
     public SpectatorWindow(Stage Lobby) throws Exception {
-        playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
+        playerBar = new PlayerBar(200, 350, 100, BlockFactory.getHeight());
 
         Lobby.setTitle("Breakout: Spectator");
         Lobby.setResizable(false);

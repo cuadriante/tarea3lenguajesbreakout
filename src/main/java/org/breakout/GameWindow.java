@@ -155,7 +155,7 @@ public class GameWindow {
      */
     public void noBalls() {
         if (get_lives() > 0) {
-            minusOneLife(); // ! Esta verga arruina el recuperar bolas
+            minusOneLife();
             // try {
             // TimeUnit.SECONDS.sleep(2);
             // } catch (InterruptedException e) {
