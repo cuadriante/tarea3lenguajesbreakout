@@ -18,4 +18,3 @@
 
 #define INITIAL_PADDLE_WIDTH 45     // Ancho inicial del paddle
 #define INITIAL_PADDLE_POSITION 200 // Posición inicial del paddle
-#define INITIAL_PADDLE_SPEED 5      // Velocidad inicial del paddle

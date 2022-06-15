@@ -67,6 +67,7 @@ public class SpectatorClient extends Thread {
     /**
      * Recibe desde el server un mensaje con los
      * bloques que se deben dibujar en la pantalla
+     * 
      * @return el mensaje recibido del server
      */
     public ArrayList<int[]> get_blocks() {
@@ -84,124 +85,6 @@ public class SpectatorClient extends Thread {
             error.printStackTrace();
         }
         return blockAttributesArray;
-    }
-
-    public void get_balls() {
-        try {
-            send_message("1\0");
-
-            while (input_buffer.ready()) {
-                String ball_str = input_buffer.readLine();
-                System.out.println("Bola: " + ball_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    /**
-     * da la barra de juego
-     */
-    public void get_paddle() {
-        try {
-            send_message("2\0");
-
-            while (input_buffer.ready()) {
-                String paddle_str = input_buffer.readLine();
-                System.out.println("Paddle: " + paddle_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    public int get_score() {
-        int returned = -1;
-        try {
-            send_message("3\0");
-
-            while (input_buffer.ready()) {
-                String score_str = input_buffer.readLine();
-                System.out.println("Puntuación: " + score_str);
-                returned = adapter.singleDatatoInt(score_str);
-                spectatorWindow.updatePuntos(score_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return returned;
-    }
-
-    public int get_lives() {
-        int returned = -1;
-        try {
-            send_message("4\0");
-
-            while (input_buffer.ready()) {
-                String lives_str = input_buffer.readLine();
-                returned = adapter.singleDatatoInt(lives_str);
-                // System.out.println("Vidas: " + lives_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return returned;
-    }
-
-    public int get_level() {
-        int returned = -1;
-        try {
-            send_message("5\0");
-
-            while (input_buffer.ready()) {
-                String level_str = input_buffer.readLine();
-                returned = adapter.singleDatatoInt(level_str);
-                System.out.println("Nivel: " + level_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return returned;
-    }
-
-    /**
-     * Recibe del servidor una bola segun su id
-     * 
-     * @param row    fila
-     * @param column columna
-     */
-    public void destroy_block(int row, int column) {
-        try {
-            send_message("$1,"
-                    + Integer.toString(row) + ","
-                    + Integer.toString(column) + "\0");
-
-            while (input_buffer.ready()) {
-                String position_str = input_buffer.readLine();
-                System.out.println("Posición del bloque eliminado: " + position_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-    }
-
-    /**
-     * Envia al servidor la bola que debe de esconder segun su id
-     * 
-     * @param id id de la bola
-     */
-    public void hide_ball(int id) {
-        try {
-            send_message("$9,"
-                    + Integer.toString(id) + "\0");
-
-            while (input_buffer.ready()) {
-                String position_str = input_buffer.readLine();
-                System.out.println("Bola escondida: " + position_str);
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
     }
 
     /**
@@ -227,14 +110,14 @@ public class SpectatorClient extends Thread {
     /**
      * Procesa los mensajes recibidos del servidor y los aplica
      * al juego
-     * @param id id del mensaje
+     * 
+     * @param id   id del mensaje
      * @param data datos
      */
     private void processMessage(int id, String data) {
         switch (id) {
             case (0) -> { // PUNTAJE
                 System.out.println("CambiarPuntaje");
-                int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.updatePuntos(data);
             }
             case (1) -> { // VIDAS
@@ -249,7 +132,6 @@ public class SpectatorClient extends Thread {
             case (2) -> { // NIVEL
                 System.out.println("CambiarNivel");
                 spectatorWindow.nextLevel(data);
-                int xPos = adapter.singleDatatoInt(data);
             }
             case (3) -> {
                 int dataArray[] = adapter.splitData(data);
