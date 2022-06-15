@@ -9,6 +9,9 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Cliente del espectador
+ */
 public class SpectatorClient {
     private Socket socket;
     private InputStreamReader reader;
@@ -77,6 +80,9 @@ public class SpectatorClient {
         }
     }
 
+    /**
+     * da la barra de juego
+     */
     public void get_paddle() {
         try {
             send_message("2\0");

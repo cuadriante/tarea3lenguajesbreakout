@@ -8,6 +8,9 @@ import java.util.Iterator;
 
 import org.breakout.blockFactory.Block;
 
+/**
+ * Loop de juego
+ */
 public class GameLoop {
     private boolean gameIsRunning = true;
     private boolean moveBalls = false;
@@ -17,6 +20,14 @@ public class GameLoop {
     List<Ball> ballList = Collections.synchronizedList(new ArrayList<Ball>());
     private final PlayerBar playerBar;
 
+    /**
+     * Constructor que recibe la ventana de juego, la lista de bolas,
+     * la lista de bloques y la barra de jugador
+     * @param gw ventana de juego
+     * @param bl lista de bolas
+     * @param blockLst lista de bloques
+     * @param pb barra de jugador
+     */
     GameLoop(GameWindow gw, ArrayList<Ball> bl, ArrayList<Block> blockLst, PlayerBar pb){
         gameWindow = gw;
         ballList = bl;
@@ -28,6 +39,10 @@ public class GameLoop {
     //void receiveClient(Client client);
 
 
+    /**
+     * Loop que se encarga de enviar a la funcion de movimiento
+     * de bola o de complecion de nivel
+     */
     public void ballAnimationLoop(){
         new Timer().schedule(
                 new TimerTask() {
@@ -91,7 +106,10 @@ public class GameLoop {
         }
     }
 
-
+    /**
+     * Verifica para todas las bolas en la lista
+     * si se encuentran fuera de la ventana de juego
+     */
     public void checkAllBallsOutOfBounds(){
         Iterator<Ball> itr = ballList.iterator();
         while (itr.hasNext()) {
@@ -103,6 +121,10 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Verifica para todas las bolas en la lista
+     * si han colisionado
+     */
     public void checkAllBallCollisions(){
         Iterator<Ball> itr = ballList.iterator();
         while (itr.hasNext()) {
@@ -111,6 +133,9 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Mueve todas las bolas que sean visibles en el momento de ejecucion de la funcion
+     */
     public void moveBalls() {
         if(moveBalls){
             for(Ball ball : ballList){
@@ -121,10 +146,16 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Toggle para el manejo del movimiento de las bolas
+     */
     public void toggleMoveBalls(){
         moveBalls = !moveBalls;
     }
 
+    /**
+     * Cambia el estado de juego a falso.
+     */
     public void stopGame() {
         this.gameIsRunning = false;
     }

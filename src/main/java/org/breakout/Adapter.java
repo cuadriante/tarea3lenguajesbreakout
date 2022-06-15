@@ -2,6 +2,9 @@ package org.breakout;
 
 import java.io.BufferedReader;
 
+/**
+ * Adaptador de datos de servidor a interfaz de juego.
+ */
 public class Adapter {
     
     /**
@@ -30,13 +33,18 @@ public class Adapter {
     /**
      * Parsea el dato a un int. Se una para las funciones:
      * @param data dato
-     * @return
+     * @return dato
      */
     public int singleDatatoInt(String data){
         int dato = Integer.parseInt(data);
         return dato;
     }
 
+    /**
+     * Procesa el id segun el mensaje recibido
+     * @param message mensaje
+     * @return id
+     */
     public int processId(String message) {
         String[] arrOfStr = message.split("$", -2);
         String idStr = arrOfStr[0];

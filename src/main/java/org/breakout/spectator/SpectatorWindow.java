@@ -19,6 +19,9 @@ import javafx.scene.paint.Color;
 
 import org.breakout.PlayerBar;
 
+/**
+ * Ventana de espectador.
+ */
 public class SpectatorWindow {
 
     final int STAGE_WIDTH = 400;
@@ -35,7 +38,11 @@ public class SpectatorWindow {
     private ArrayList<Ball> ballList = new ArrayList<Ball>();
     private ArrayList<Block> blockList = new ArrayList<Block>();
 
-
+    /**
+     * Constructor de la ventana de espectador
+     * @param Lobby stage de la aplicacion
+     * @throws Exception
+     */
     public SpectatorWindow(Stage Lobby) throws Exception {
         playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
 
@@ -51,14 +58,26 @@ public class SpectatorWindow {
         connectToClient();
     }
 
+    /**
+     * cambia la posicion de la barra de juego
+     * @param xPos posicion en x
+     */
     public void setPlayerBarPos(int xPos){
         playerBar.setPos(xPos);
     }
 
+    /**
+     * conecta con el cliente
+     */
     private void connectToClient() {
         // client.test_communication();
     }
 
+    /**
+     * Inicializa la barra del jugador y el movimiento de la misma con
+     * las teclas de izquierda y derecha del teclado del jugador.
+     * @param Lobby Stage primario para la aplicacion
+     */
     private void start(Stage Lobby) {
         root = new Pane();
         root.getChildren().add(playerBar.getShape());
@@ -77,6 +96,9 @@ public class SpectatorWindow {
         Lobby.show();
     }
 
+    /**
+     * Crea los labels de puntaje, nivel y vidas que aparecen en la interfaz.
+     */
     private void createLabels() {
 
         double fontSize = 15;
