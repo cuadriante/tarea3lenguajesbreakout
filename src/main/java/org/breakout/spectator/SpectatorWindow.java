@@ -52,10 +52,12 @@ public class SpectatorWindow {
         connectToClient();
     }
 
-
+    public void setPlayerBarPos(int xPos){
+        playerBar.setPos(xPos);
+    }
 
     private void connectToClient() {
-
+        client.test_communication();
     }
 
     private void start(Stage Lobby) {

@@ -1,5 +1,6 @@
 package org.breakout;
 
+import java.io.BufferedReader;
 
 public class Adapter {
     
@@ -36,4 +37,11 @@ public class Adapter {
         return dato;
     }
 
+    public int processId(String message) {
+        String[] arrOfStr = message.split("$", -2);
+        String idStr = arrOfStr[0];
+        int id = Integer.valueOf(idStr);
+
+        return id;
+    }
 }

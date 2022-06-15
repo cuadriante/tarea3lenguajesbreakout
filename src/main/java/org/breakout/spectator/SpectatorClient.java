@@ -18,6 +18,7 @@ public class SpectatorClient {
     private BufferedWriter output_buffer;
 
     private Adapter adapter = new Adapter();
+    // private SpectatorWindow spectatorWindow = new SpectatorWindow(Lobby);
 
     public SpectatorClient(int PORT) {
         try {
@@ -169,11 +170,22 @@ public class SpectatorClient {
             get_blocks();
             while (true) {
                 if (input_buffer.ready()) {
-                    System.out.println(input_buffer.readLine());
+                    String message = input_buffer.readLine();
+                    int id = adapter.processId(message);
+                    processMesage(id, message);
                 }
             }
         } catch (Exception error) {
             error.printStackTrace();
+        }
+    }
+
+    private void processMesage(int id, String message) {
+        switch(id){
+            case(5)->{
+                int xPos = adapter.singleDatatoInt(message);
+                // spectatorWindow.setPlayerBarPos(xPos);
+            }
         }
     }
 }
