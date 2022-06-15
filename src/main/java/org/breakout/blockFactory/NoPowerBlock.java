@@ -6,18 +6,19 @@ import javafx.scene.paint.Color;
  * Bloque sin poder.
  */
 public class NoPowerBlock extends Block {
-    //private final Color stroke = Color.GOLDENROD;
+    // private final Color stroke = Color.GOLDENROD;
     final Color color = Color.LEMONCHIFFON;
     private final Color stroke = Color.WHITE;
 
     /**
      * Constructor del bloque que no tiene poder
-     * @param posX posicion en X
-     * @param posY posicion en Y
-     * @param width anchura
+     * 
+     * @param posX   posicion en X
+     * @param posY   posicion en Y
+     * @param width  anchura
      * @param height altura
-     * @param row fila
-     * @param colum columna
+     * @param row    fila
+     * @param colum  columna
      */
     public NoPowerBlock(int posX, int posY, int width, int height, int row, int colum) {
         super(posX, posY, width, height, row, colum);
@@ -35,6 +36,7 @@ public class NoPowerBlock extends Block {
 
     /**
      * Retorna el color
+     * 
      * @return color
      */
     public Color getColor() {
@@ -43,8 +45,10 @@ public class NoPowerBlock extends Block {
 
     /**
      * Retorna el borde
+     * 
      * @return borde
      */
+    @Override
     public Color getStroke() {
         return stroke;
     }

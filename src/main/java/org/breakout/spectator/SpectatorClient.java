@@ -27,9 +27,10 @@ public class SpectatorClient extends Thread {
 
     /**
      * Constructor del cliente espectador, recibe el puerto al que conectarse
+     * 
      * @param PORT puerto al que conectarse
      */
-    public SpectatorClient(int PORT, SpectatorWindow sw){
+    public SpectatorClient(int PORT, SpectatorWindow sw) {
         try {
             this.spectatorWindow = sw;
 
@@ -47,6 +48,7 @@ public class SpectatorClient extends Thread {
 
     /**
      * Envia un mensaje al server
+     * 
      * @param message mensaje a enviar
      */
     public void send_message(String message) {
@@ -158,7 +160,8 @@ public class SpectatorClient extends Thread {
 
     /**
      * Recibe del servidor una bola segun su id
-     * @param row fila
+     * 
+     * @param row    fila
      * @param column columna
      */
     public void destroy_block(int row, int column) {
@@ -178,6 +181,7 @@ public class SpectatorClient extends Thread {
 
     /**
      * Envia al servidor la bola que debe de esconder segun su id
+     * 
      * @param id id de la bola
      */
     public void hide_ball(int id) {
@@ -212,54 +216,54 @@ public class SpectatorClient extends Thread {
     }
 
     private void processMessage(int id, String data) {
-        switch(id){
-            case(0)->{ // PUNTAJE
+        switch (id) {
+            case (0) -> { // PUNTAJE
                 System.out.println("CambiarPuntaje");
                 int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.updatePuntos(data);
             }
-            case(1)->{ // VIDAS
+            case (1) -> { // VIDAS
                 System.out.println("CambiarVidas");
                 spectatorWindow.newLife(data);
                 int xPos = adapter.singleDatatoInt(data);
             }
-            case(2)->{ // NIVEL
+            case (2) -> { // NIVEL
                 System.out.println("CambiarNivel");
                 spectatorWindow.nextLevel(data);
                 int xPos = adapter.singleDatatoInt(data);
             }
-            case(3)->{
-                int dataArray[] =adapter.splitData(data);
+            case (3) -> {
+                int dataArray[] = adapter.splitData(data);
                 int ballId = dataArray[0];
                 spectatorWindow.addBall(ballId);
             }
-            case(4)->{
-                int dataArray[] =adapter.splitData(data);
+            case (4) -> {
+                int dataArray[] = adapter.splitData(data);
                 int ballId = dataArray[0];
                 int posX = dataArray[1];
                 spectatorWindow.setBallPosX(ballId, posX);
             }
-            case(5)->{
-                int dataArray[] =adapter.splitData(data);
+            case (5) -> {
+                int dataArray[] = adapter.splitData(data);
                 int ballId = dataArray[0];
                 int posY = dataArray[1];
                 spectatorWindow.setBallPosY(ballId, posY);
             }
-            case(6)->{
+            case (6) -> {
                 System.out.println("cambiar ancho");
                 int width = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarWidth(width);
             }
-            case(7)->{
+            case (7) -> {
                 int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarPos(xPos);
             }
-            case(9)->{
+            case (9) -> {
                 int ballId = adapter.singleDatatoInt(data);
                 spectatorWindow.hideBall(ballId);
             }
 
-            default->{
+            default -> {
                 // System.out.println("Mensaje no procesado");
             }
         }

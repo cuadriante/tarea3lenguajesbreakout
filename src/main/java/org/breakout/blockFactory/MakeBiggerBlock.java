@@ -5,20 +5,21 @@ import javafx.scene.paint.Color;
 /**
  * Bloque ed aumento de tamano de barra de juego.
  */
-public class MakeBiggerBlock extends Block{
+public class MakeBiggerBlock extends Block {
 
     private final Color color = Color.ORANGE;
-    //private final Color stroke = Color.ORANGERED;
+    // private final Color stroke = Color.ORANGERED;
     private final Color stroke = Color.CYAN;
 
     /**
      * Constructor del bloque que hace la barra de jugador mas grande
-     * @param posX posicion en X
-     * @param posY posicion en Y
-     * @param width anchura
+     * 
+     * @param posX   posicion en X
+     * @param posY   posicion en Y
+     * @param width  anchura
      * @param height altura
-     * @param row fila
-     * @param colum columna
+     * @param row    fila
+     * @param colum  columna
      */
     public MakeBiggerBlock(int posX, int posY, int width, int height, int row, int colum) {
         super(posX, posY, width, height, row, colum);
@@ -36,6 +37,7 @@ public class MakeBiggerBlock extends Block{
 
     /**
      * Retorna el color
+     * 
      * @return color
      */
     public Color getColor() {
@@ -44,8 +46,10 @@ public class MakeBiggerBlock extends Block{
 
     /**
      * Retorna el borde
+     * 
      * @return borde
      */
+    @Override
     public Color getStroke() {
         return stroke;
     }

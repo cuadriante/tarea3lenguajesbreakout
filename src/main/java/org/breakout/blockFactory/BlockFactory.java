@@ -1,5 +1,7 @@
 package org.breakout.blockFactory;
 
+import javafx.scene.paint.Color;
+
 /**
  * Fabrica de bloques de juego.
  */
@@ -11,22 +13,22 @@ public class BlockFactory {
 
     /**
      * Construtor de la fabrica de bloques
-     * @param type tipo
-     * @param x x
-     * @param y y
-     * @param id id
-     * @param row fila
+     * 
+     * @param type  tipo
+     * @param x     x
+     * @param y     y
+     * @param id    id
+     * @param row   fila
      * @param colum columna
      * @return bloque
      */
-    public static Block buildBlock(int type, int x, int y, int id, int row, int colum){
+    public static Block buildBlock(int type, int x, int y, int id, int row, int colum) {
         Block block = null;
-        if (type == -1){
-            block = new NoPowerBlock(x, y, width, height, row, colum); 
+        if (type == -1) {
+            block = new NoPowerBlock(x, y, width, height, row, colum);
             return block;
         }
-        switch (type)
-        {
+        switch (type) {
             case 0 -> block = new SpeedUpBlock(x, y, width, height, row, colum);
             case 1 -> block = new MakeSmallerBlock(x, y, width, height, row, colum);
             case 2 -> block = new MakeBiggerBlock(x, y, width, height, row, colum);
@@ -40,10 +42,11 @@ public class BlockFactory {
 
     /**
      * Retorna el color segun el tipo
+     * 
      * @param type tipo
      * @return color
      */
-    public static col getColorByType(int type){ // esto se puede hacer mas mejor
+    public static col getColorByType(int type) { // esto se puede hacer mas mejor
         return switch (type) {
             case (0) -> col.GREEN;
             case (1) -> col.YELLOW;
@@ -53,8 +56,22 @@ public class BlockFactory {
         };
     }
 
+    public static Color getStrokeByType(int type) { // esto se puede hacer mas mejor
+        return switch (type) {
+            case (-1) -> Color.WHITE;
+            case (0) -> Color.DEEPPINK;
+            case (1) -> Color.CYAN;
+            case (2) -> Color.DEEPSKYBLUE;
+            case (3) -> Color.CHARTREUSE;
+            case (4) -> Color.CHOCOLATE;
+            case (5) -> Color.VIOLET;
+            default -> null;
+        };
+    }
+
     /**
      * Retorna las filas
+     * 
      * @return filas
      */
     public static int getRows() {
@@ -63,6 +80,7 @@ public class BlockFactory {
 
     /**
      * Retorna las columnas
+     * 
      * @return columnas
      */
     public static int getColumns() {
@@ -71,6 +89,7 @@ public class BlockFactory {
 
     /**
      * Retorna el ancho
+     * 
      * @return ancho
      */
     public static int getWidth() {
@@ -79,11 +98,10 @@ public class BlockFactory {
 
     /**
      * Retorna la altura
+     * 
      * @return altura
      */
     public static int getHeight() {
         return height;
     }
 }
-
-

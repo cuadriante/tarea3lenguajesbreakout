@@ -1,4 +1,5 @@
 package org.breakout.spectator;
+
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -11,7 +12,6 @@ import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
-
 
 /**
  * Ventana de espectador.
@@ -35,6 +35,7 @@ public class SpectatorWindow {
 
     /**
      * Constructor de la ventana de espectador
+     * 
      * @param Lobby stage de la aplicacion
      * @throws Exception
      */
@@ -45,11 +46,13 @@ public class SpectatorWindow {
         Lobby.setResizable(false);
 
         start(Lobby);
+
         createLabels();
     }
 
     /**
      * Retorna una bola y lleva la cuenta de las bolas
+     * 
      * @param x x
      * @param y y
      * @return bola
@@ -61,7 +64,7 @@ public class SpectatorWindow {
     }
 
     private void buildBallList() {
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
             ball.setInvisible();
             ballList.add(ball);
@@ -73,51 +76,39 @@ public class SpectatorWindow {
         }
     }
 
-    public void setBallPosX(int id, int posX){
-        for(Ball ball : ballList){
-            if(ball.getId() == id){
+    public void setBallPosX(int id, int posX) {
+        for (Ball ball : ballList) {
+            if (ball.getId() == id) {
                 ball.getShape().setCenterX(posX);
             }
         }
     }
 
-    public void setBallPosY(int id, int posY){
-        for(Ball ball : ballList){
-            if(ball.getId() == id){
+    public void setBallPosY(int id, int posY) {
+        for (Ball ball : ballList) {
+            if (ball.getId() == id) {
                 ball.getShape().setCenterY(posY);
             }
         }
     }
 
-    public void hideBall(int ballId){
-        for(Ball ball : ballList){
-            if(ball.getId() == ballId){
+    public void hideBall(int ballId) {
+        for (Ball ball : ballList) {
+            if (ball.getId() == ballId) {
                 ball.setInvisible();
             }
         }
     }
 
-    public void buildBlockList( ArrayList<int[]> blockAttributesArray) {
-
-        int id = 0;
-        int x = 3;
-        int y = 40;
-        for (int[] blockAttributes : blockAttributesArray) {
-            int row = blockAttributes[0];
-            int column = blockAttributes[1];
-            // int pts = blockAttributes[2];
+    public void buildBlockList(ArrayList<int[]> blockAttributesArray) {
+        for (int i = 0; i < blockAttributesArray.size(); i++) {
+            int[] blockAttributes = blockAttributesArray.get(i);
             int power = blockAttributes[3];
-            Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
-            blockList.add(block);
-            root.getChildren().add(block.getShape());
-            x += BlockFactory.getWidth() + 5;
-            block.createRectangleColor(row);
-            if (column == 7) {
-                x = 3;
-                y += BlockFactory.getHeight() + 5;
-            }
+
+            Block block = this.blockList.get(i);
+            block.setType(power);
+            block.setRectangleStroke(BlockFactory.getStrokeByType(power));
         }
-        // System.out.print("----");
     }
 
     public void newLife(String l) {
@@ -135,16 +126,17 @@ public class SpectatorWindow {
 
     /**
      * cambia la posicion de la barra de juego
+     * 
      * @param xPos posicion en x
      */
-    public void setPlayerBarPos(int xPos){
+    public void setPlayerBarPos(int xPos) {
         playerBar.setPos(xPos);
     }
 
-    public void addBall(int id){
+    public void addBall(int id) {
         System.out.println(id);
-        for(Ball ball : ballList){
-            if(ball.getId() == id){
+        for (Ball ball : ballList) {
+            if (ball.getId() == id) {
                 ball.setVisible();
                 ball.setBallXandY(200, 200);
             }
@@ -154,19 +146,38 @@ public class SpectatorWindow {
     /**
      * Inicializa la barra del jugador y el movimiento de la misma con
      * las teclas de izquierda y derecha del teclado del jugador.
+     * 
      * @param Lobby Stage primario para la aplicacion
      */
     private void start(Stage Lobby) {
         root = new Pane();
 
         root.getChildren().add(playerBar.getShape());
-        buildBallList();
 
+        // buildBlockList(blockAttributesArray);
+        int id = 0;
+        int x = 3;
+        int y = 40; // dejar este espacio para poner la info del jugador
+
+        for (int row = 0; row < BlockFactory.getRows(); row++) {
+            for (int col = 0; col < BlockFactory.getColumns(); col++) {
+                int type = (int) (Math.random() * 4);
+                Block block = BlockFactory.buildBlock(type, x, y, id, row, col);
+                blockList.add(block);
+                root.getChildren().add(block.getShape());
+                x += BlockFactory.getWidth() + 5;
+                block.createRectangleColor(row);
+            }
+            x = 3;
+            y += BlockFactory.getHeight() + 5;
+        }
+
+        buildBallList();
 
         // root.getChildren().addAll(playerBar.getShape(), ball.getShape());
         root.setPrefSize(STAGE_WIDTH, STAGE_HEIGHT);
 
-        Scene scene = new Scene(root); //se liga scene al root
+        Scene scene = new Scene(root); // se liga scene al root
         scene.setFill(Color.BURLYWOOD);
 
         int barPos = (int) playerBar.getShape().getX();
@@ -183,11 +194,11 @@ public class SpectatorWindow {
 
         double fontSize = 15;
         FontWeight fontWeight = FontWeight.BOLD;
-        Font numberFont = Font.font("Biome", fontWeight,fontSize);
+        Font numberFont = Font.font("Biome", fontWeight, fontSize);
 
         double labelFontSize = 10;
         FontWeight labelFontWeight = FontWeight.BOLD;
-        Font labelFont = Font.font("Biome", labelFontWeight,labelFontSize);
+        Font labelFont = Font.font("Biome", labelFontWeight, labelFontSize);
 
         // int pts = client.get_score();
         int pts = 0;
@@ -245,8 +256,5 @@ public class SpectatorWindow {
     public void setPlayerBarWidth(int width) {
         playerBar.getShape().setWidth(width);
     }
-
-
-
 
 }

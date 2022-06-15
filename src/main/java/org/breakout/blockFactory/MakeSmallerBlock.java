@@ -5,20 +5,21 @@ import javafx.scene.paint.Color;
 /**
  * Bloque de disminucion de tamano de barra de juego.
  */
-public class MakeSmallerBlock extends Block{
+public class MakeSmallerBlock extends Block {
 
     private final Color color = Color.FIREBRICK;
-    //private final Color stroke = Color.INDIANRED;
+    // private final Color stroke = Color.INDIANRED;
     private final Color stroke = Color.DEEPSKYBLUE;
 
     /**
      * Constructor de bloque que disminuye el tamano de la barra
-     * @param posX posicion en X
-     * @param posY posicion en Y
-     * @param width anchura
+     * 
+     * @param posX   posicion en X
+     * @param posY   posicion en Y
+     * @param width  anchura
      * @param height altura
-     * @param row fila
-     * @param colum columna
+     * @param row    fila
+     * @param colum  columna
      */
     public MakeSmallerBlock(int posX, int posY, int width, int height, int row, int colum) {
         super(posX, posY, width, height, row, colum);
@@ -36,6 +37,7 @@ public class MakeSmallerBlock extends Block{
 
     /**
      * Retorna el color
+     * 
      * @return color
      */
     public Color getColor() {
@@ -44,8 +46,10 @@ public class MakeSmallerBlock extends Block{
 
     /**
      * Retorna el borde
+     * 
      * @return borde
      */
+    @Override
     public Color getStroke() {
         return stroke;
     }
