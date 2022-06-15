@@ -47,6 +47,14 @@ public class Ball{
         gameWindow = gw;
     }
 
+    public Ball(int centerX, int centerY, int id){
+        this.circle = new Circle(centerX, centerY, RADIUS);
+        circle.setStrokeWidth(2);
+        circle.setStroke(Color.DARKOLIVEGREEN);
+        this.visibility = true;
+        this.id = id;
+    }
+
     /**
      * Verifica que la posición de ball se encuentre entre los limites del juego
      * @param x Posición de la bola en el eje X
@@ -90,7 +98,7 @@ public class Ball{
             int x = (int)this.circle.getCenterX();
             int y = (int)this.circle.getCenterY();
             checkParameters(x, y);
-            System.out.println(xSpeed);
+            // System.out.println(xSpeed);
 
             setBallXandY(x, y);
             this.circle.setCenterY(y + ySpeed);
@@ -103,7 +111,7 @@ public class Ball{
             }));
             ballMovement.setCycleCount(1);
             ballMovement.play();
-            gameWindow.sendPosBalls(id, x, y);
+            gameWindow.sendPosBalls(id, (int)this.circle.getCenterX(), (int)this.circle.getCenterY());
         }
     }
 
@@ -211,7 +219,7 @@ public class Ball{
      * @param Y posicion en el eje y en la cual aparecera la bola
      */
     public void recycle(int X, int Y){
-        System.out.println("se esta reciclando la bolita");
+        // System.out.println("se esta reciclando la bolita");
         float speed = gameWindow.getBallSpeed();
         this.xSpeed = speed;
         this.ySpeed = speed;
@@ -223,6 +231,10 @@ public class Ball{
         this.visibility = true;
     }
 
+    public void setVisible(){
+        this.circle.setVisible(true);
+        this.visibility = true;
+    }
 
     /**
      * Verifica si la bola colisiona con la barra del jugador o con un bloque. Si
@@ -252,8 +264,8 @@ public class Ball{
         switch (type) {
             case (-1) -> {}
             case (0) -> gameWindow.speedUpBalls();
-            case (1) -> gameWindow.getPlayerBar().makeBigger();
-            case (2) -> gameWindow.getPlayerBar().makeSmaller();
+            case (1) -> gameWindow.biggerPlayerbar();
+            case (2) -> gameWindow.smallerPlayerbar();
             case (3) -> gameWindow.speedDownBalls();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();

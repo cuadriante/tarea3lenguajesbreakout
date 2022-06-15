@@ -1,23 +1,17 @@
 package org.breakout.spectator;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.breakout.Ball;
-import org.breakout.Client;
-import org.breakout.GameLoop;
 import org.breakout.PlayerBar;
 import org.breakout.blockFactory.Block;
 import org.breakout.blockFactory.BlockFactory;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javafx.scene.paint.Color;
 
-import org.breakout.PlayerBar;
 
 /**
  * Ventana de espectador.
@@ -45,18 +39,98 @@ public class SpectatorWindow {
      * @throws Exception
      */
     public SpectatorWindow(Stage Lobby) throws Exception {
-        playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
-
-        // client.set_paddle_width(BlockFactory.getWidth());
-        // int paddlePos = (int) playerBar.getShape().getX();
-        // client.set_paddle_position(paddlePos);
+        playerBar = new PlayerBar(200, 350, 100, BlockFactory.getHeight());
 
         Lobby.setTitle("Breakout: Spectator");
         Lobby.setResizable(false);
 
         start(Lobby);
         createLabels();
-        connectToClient();
+    }
+
+    /**
+     * Retorna una bola y lleva la cuenta de las bolas
+     * @param x x
+     * @param y y
+     * @return bola
+     */
+    public Ball buildBall(int x, int y) {
+        Ball ball = new Ball(x, y, numBalls);
+        this.numBalls += 1;
+        return ball;
+    }
+
+    private void buildBallList() {
+        for(int i = 0; i < 5; i++){
+            Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
+            ball.setInvisible();
+            ballList.add(ball);
+        }
+        Ball ball = ballList.get(0);
+        ball.setVisible();
+        for (Ball element : ballList) {
+            root.getChildren().add(element.getShape());
+        }
+    }
+
+    public void setBallPosX(int id, int posX){
+        for(Ball ball : ballList){
+            if(ball.getId() == id){
+                ball.getShape().setCenterX(posX);
+            }
+        }
+    }
+
+    public void setBallPosY(int id, int posY){
+        for(Ball ball : ballList){
+            if(ball.getId() == id){
+                ball.getShape().setCenterY(posY);
+            }
+        }
+    }
+
+    public void hideBall(int ballId){
+        for(Ball ball : ballList){
+            if(ball.getId() == ballId){
+                ball.setInvisible();
+            }
+        }
+    }
+
+    public void buildBlockList( ArrayList<int[]> blockAttributesArray) {
+
+        int id = 0;
+        int x = 3;
+        int y = 40;
+        for (int[] blockAttributes : blockAttributesArray) {
+            int row = blockAttributes[0];
+            int column = blockAttributes[1];
+            // int pts = blockAttributes[2];
+            int power = blockAttributes[3];
+            Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
+            blockList.add(block);
+            root.getChildren().add(block.getShape());
+            x += BlockFactory.getWidth() + 5;
+            block.createRectangleColor(row);
+            if (column == 7) {
+                x = 3;
+                y += BlockFactory.getHeight() + 5;
+            }
+        }
+        // System.out.print("----");
+    }
+
+    public void newLife(String l) {
+        lives.setText(l);
+    }
+
+    public void updatePuntos(String pts) {
+        puntos.setText(pts);
+    }
+
+    public void nextLevel(String lvl) {
+        level.setText(lvl);
+
     }
 
     /**
@@ -67,11 +141,14 @@ public class SpectatorWindow {
         playerBar.setPos(xPos);
     }
 
-    /**
-     * conecta con el cliente
-     */
-    private void connectToClient() {
-        // client.test_communication();
+    public void addBall(int id){
+        System.out.println(id);
+        for(Ball ball : ballList){
+            if(ball.getId() == id){
+                ball.setVisible();
+                ball.setBallXandY(200, 200);
+            }
+        }
     }
 
     /**
@@ -81,7 +158,9 @@ public class SpectatorWindow {
      */
     private void start(Stage Lobby) {
         root = new Pane();
+
         root.getChildren().add(playerBar.getShape());
+        buildBallList();
 
 
         // root.getChildren().addAll(playerBar.getShape(), ball.getShape());
@@ -161,6 +240,10 @@ public class SpectatorWindow {
         root.getChildren().add(livesLabel);
         root.getChildren().add(puntosLabel);
         root.getChildren().add(levelLabel);
+    }
+
+    public void setPlayerBarWidth(int width) {
+        playerBar.getShape().setWidth(width);
     }
 
 

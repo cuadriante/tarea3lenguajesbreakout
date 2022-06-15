@@ -63,4 +63,13 @@ public class Adapter {
 
         return data;
     }
+
+    public int[] splitData(String data){
+        String[] arrOfStr = data.split(",", -2);
+        int[] splitData = new int[arrOfStr.length];
+        for (int i = 0; i < arrOfStr.length; i++) {
+            splitData[i] = Integer.parseInt(arrOfStr[i]);
+        }
+        return splitData;
+    }
 }
