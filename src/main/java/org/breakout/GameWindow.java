@@ -45,6 +45,7 @@ public class GameWindow {
 
     /**
      * Retorna el loop de juego
+     * 
      * @return game loop
      */
     public GameLoop getGameLoop() {
@@ -52,15 +53,17 @@ public class GameWindow {
     }
 
     /**
-     * Constructor de la ventana de juego. Crea la barra del jugador,el loop de juego,
+     * Constructor de la ventana de juego. Crea la barra del jugador,el loop de
+     * juego,
      * la ventana, los labels.
+     * 
      * @param Lobby
      * @throws Exception
      */
     GameWindow(Stage Lobby) throws Exception {
-        
+
         playerBar = buildPlayerBar();
-    
+
         gameLoop = new GameLoop(this, ballList, blockList, playerBar);
 
         Lobby.setTitle("Breakout");
@@ -74,6 +77,7 @@ public class GameWindow {
     /**
      * Inicializa la barra del jugador y el movimiento de la misma con
      * las teclas de izquierda y derecha del teclado del jugador.
+     * 
      * @param Lobby Stage primario para la aplicacion
      */
     private void start(Stage Lobby) {
@@ -173,7 +177,7 @@ public class GameWindow {
      * Construye la lista de bolas
      */
     private void buildBallList() {
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
             ball.setInvisible();
             ballList.add(ball);
@@ -187,12 +191,13 @@ public class GameWindow {
         // Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
         // ballList.add(ball);
         // for (Ball element : ballList) {
-        //     root.getChildren().add(element.getShape());
+        // root.getChildren().add(element.getShape());
         // }
     }
 
     /**
      * Retorna la barra del jugador
+     * 
      * @return barra del jugador
      */
     public PlayerBar getPlayerBar() {
@@ -201,6 +206,7 @@ public class GameWindow {
 
     /**
      * Retorna la lista de bloques
+     * 
      * @return lista de bloques
      */
     public ArrayList<Block> getBlockList() {
@@ -211,6 +217,7 @@ public class GameWindow {
      * Finaliza el juego cuando no quedan mas vidas
      */
     public void endGame() {
+        System.exit(0);
     }
 
     /**
@@ -241,6 +248,7 @@ public class GameWindow {
 
     /**
      * Retorna una bola y lleva la cuenta de las bolas
+     * 
      * @param x x
      * @param y y
      * @return bola
@@ -253,6 +261,7 @@ public class GameWindow {
 
     /**
      * Crea la barra de jugador
+     * 
      * @return barra de jugador
      */
     public PlayerBar buildPlayerBar() {
@@ -275,6 +284,7 @@ public class GameWindow {
 
     /**
      * Retorna las vidas actuales mediante el servidor
+     * 
      * @return vidas
      */
     public int get_lives() {
@@ -343,9 +353,10 @@ public class GameWindow {
 
     /**
      * Envia la posicion de la bola al servidor
+     * 
      * @param ballId id de la bola
-     * @param xPos posicion en el eje x de la bola
-     * @param yPos posicion en el eje y de la bola
+     * @param xPos   posicion en el eje x de la bola
+     * @param yPos   posicion en el eje y de la bola
      */
     public void sendPosBalls(int ballId, int xPos, int yPos) {
         client.setPosX(ballId, xPos);
@@ -460,6 +471,7 @@ public class GameWindow {
 
     /**
      * Destruye el bloque indicado.
+     * 
      * @param b bloque a destruir
      */
     public void breakBlock(Block b) {
@@ -470,6 +482,7 @@ public class GameWindow {
 
     /**
      * Retorna la velocidad actual de la bola
+     * 
      * @return velocidad de la bola
      */
     public float getBallSpeed() {
@@ -478,6 +491,7 @@ public class GameWindow {
 
     /**
      * Cambia el valor de la velocidad de la bola al especificado
+     * 
      * @param speed nuevo valor de velocidad de la bola
      */
     public void setBallSpeed(float speed) {

@@ -225,8 +225,12 @@ public class SpectatorClient extends Thread {
             }
             case (1) -> { // VIDAS
                 System.out.println("CambiarVidas");
-                spectatorWindow.newLife(data);
-                int xPos = adapter.singleDatatoInt(data);
+                int lives = adapter.singleDatatoInt(data);
+                if (lives == 0) {
+                    System.exit(0);
+                } else {
+                    spectatorWindow.newLife(data);
+                }
             }
             case (2) -> { // NIVEL
                 System.out.println("CambiarNivel");
