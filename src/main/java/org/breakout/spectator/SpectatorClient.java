@@ -25,6 +25,10 @@ public class SpectatorClient extends Thread{
     private Adapter adapter = new Adapter();
     private SpectatorWindow spectatorWindow;
 
+    /**
+     * Constructor del cliente espectador, recibe el puerto al que conectarse
+     * @param PORT puerto al que conectarse
+     */
     public SpectatorClient(int PORT, SpectatorWindow sw){
         try {
             this.spectatorWindow = sw;
@@ -41,6 +45,10 @@ public class SpectatorClient extends Thread{
         }
     }
 
+    /**
+     * Envia un mensaje al server
+     * @param message mensaje a enviar
+     */
     public void send_message(String message) {
         try {
             output_buffer.write(message);
@@ -60,9 +68,10 @@ public class SpectatorClient extends Thread{
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
                 System.out.println(block_str);
-                int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
+                int[] blockAttributes = adapter.stringToBlockAttributes(block_str);
                 blockAttributesArray.add(blockAttributes);
             }
+            spectatorWindow.buildBlockList(blockAttributesArray);
         } catch (Exception error) {
             error.printStackTrace();
         }
@@ -107,6 +116,7 @@ public class SpectatorClient extends Thread{
                 String score_str = input_buffer.readLine();
                 System.out.println("Puntuación: " + score_str);
                 returned = adapter.singleDatatoInt(score_str);
+                spectatorWindow.updatePuntos(score_str);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -146,6 +156,11 @@ public class SpectatorClient extends Thread{
         return returned;
     }
 
+    /**
+     * Recibe del servidor una bola segun su id
+     * @param row fila
+     * @param column columna
+     */
     public void destroy_block(int row, int column) {
         try {
             send_message("$1,"
@@ -161,6 +176,10 @@ public class SpectatorClient extends Thread{
         }
     }
 
+    /**
+     * Envia al servidor la bola que debe de esconder segun su id
+     * @param id id de la bola
+     */
     public void hide_ball(int id) {
         try {
             send_message("$9,"
@@ -195,6 +214,21 @@ public class SpectatorClient extends Thread{
 
     private void processMessage(int id, String data) {
         switch(id){
+            case(0)->{ // PUNTAJE
+                System.out.println("CambiarPuntaje");
+                int xPos = adapter.singleDatatoInt(data);
+                spectatorWindow.updatePuntos(data);
+            }
+            case(1)->{ // VIDAS
+                System.out.println("CambiarVidas");
+                spectatorWindow.newLife(data);
+                int xPos = adapter.singleDatatoInt(data);
+            }
+            case(2)->{ // NIVEL
+                System.out.println("CambiarNivel");
+                spectatorWindow.nextLevel(data);
+                int xPos = adapter.singleDatatoInt(data);
+            }
             case(3)->{
                 int dataArray[] =adapter.splitData(data);
                 int ballId = dataArray[0];
