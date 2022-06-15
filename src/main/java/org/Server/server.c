@@ -207,16 +207,16 @@ void send_ball(const int ball_id)
 
     send_message(ball_str, *client_socket);
 
-    if (*spectator_socket != -1)
-    {
-        char ball_str[55];
-        sprintf(ball_str, "6$%d,%d,%d\n",
-                ball->id,
-                ball->pos_x,
-                ball->pos_y);
+    // if (*spectator_socket != -1)
+    // {
+    //     char ball_str[55];
+    //     sprintf(ball_str, "6_%d,%d,%d\n",
+    //             ball->id,
+    //             ball->pos_x,
+    //             ball->pos_y);
 
-        send_message(ball_str, *spectator_socket);
-    }
+    //     send_message(ball_str, *spectator_socket);
+    // }
 }
 
 void send_blocks()
@@ -257,7 +257,7 @@ void send_score()
     if (*spectator_socket != -1)
     {
         char score_str[10];
-        sprintf(score_str, "0$%d\n", game_data->score);
+        sprintf(score_str, "0_%d\n", game_data->score);
         send_message(score_str, *spectator_socket);
     }
 }
@@ -272,7 +272,7 @@ void send_lives()
     if (*spectator_socket != -1)
     {
         char lives_str[10];
-        sprintf(lives_str, "1$%d\n", game_data->lives);
+        sprintf(lives_str, "1_%d\n", game_data->lives);
         send_message(lives_str, *spectator_socket);
     }
 }
@@ -287,7 +287,7 @@ void send_level()
     if (*spectator_socket != -1)
     {
         char level_str[10];
-        sprintf(level_str, "2$%d\n", game_data->level);
+        sprintf(level_str, "2_%d\n", game_data->level);
         send_message(level_str, *spectator_socket);
     }
 }
@@ -328,7 +328,7 @@ void add_ball()
     if (*spectator_socket != -1)
     {
         char ball_str[55];
-        sprintf(ball_str, "3$%d,%d,%d\n",
+        sprintf(ball_str, "3_%d,%d,%d\n",
                 ball->id,
                 ball->pos_x,
                 ball->pos_y);
@@ -350,7 +350,7 @@ void move_ball_x(const int id, const int pos_x)
     if (*spectator_socket != -1)
     {
         char pos_x_str[12];
-        sprintf(pos_x_str, "4$%d,%d\n", ball->id, ball->pos_x);
+        sprintf(pos_x_str, "4_%d,%d\n", ball->id, ball->pos_x);
         send_message(pos_x_str, *spectator_socket);
     }
 }
@@ -368,7 +368,7 @@ void move_ball_y(const int id, const int pos_y)
     if (*spectator_socket != -1)
     {
         char pos_y_str[12];
-        sprintf(pos_y_str, "5$%d,%d\n", ball->id, ball->pos_y);
+        sprintf(pos_y_str, "5_%d,%d\n", ball->id, ball->pos_y);
         send_message(pos_y_str, *spectator_socket);
     }
 }
@@ -385,7 +385,7 @@ void set_paddle_width(const int width)
     if (*spectator_socket != -1)
     {
         char width_str[10];
-        sprintf(width_str, "6$%d\n", game_data->paddle->width);
+        sprintf(width_str, "6_%d\n", game_data->paddle->width);
         send_message(width_str, *spectator_socket);
     }
 }
@@ -402,7 +402,7 @@ void set_paddle_position(const int position)
     if (*spectator_socket != -1)
     {
         char width_str[10];
-        sprintf(width_str, "7$%d\n", game_data->paddle->position);
+        sprintf(width_str, "7_%d\n", game_data->paddle->position);
         send_message(width_str, *spectator_socket);
     }
 }
@@ -420,7 +420,7 @@ void destroy_block(const int row, const int column)
     if (*spectator_socket != -1)
     {
         char position_str[10];
-        sprintf(position_str, "8$%d,%d\n", block->row, block->column);
+        sprintf(position_str, "8_%d,%d\n", block->row, block->column);
         send_message(position_str, *spectator_socket);
     }
     send_score();
@@ -446,7 +446,7 @@ void hide_ball(const int id)
     if (*spectator_socket != -1)
     {
         char hidden_str[20];
-        sprintf(hidden_str, "9$%d,%d,%d\n",
+        sprintf(hidden_str, "9_%d,%d,%d\n",
                 ball->id,
                 ball->pos_x,
                 ball->pos_y);
