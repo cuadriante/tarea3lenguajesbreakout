@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class Client {
     private Socket socket;
+    private final static int CLIENT_PORT = 8080;
     private InputStreamReader reader;
     private OutputStreamWriter writer;
 
@@ -21,13 +22,24 @@ public class Client {
     private BufferedWriter output_buffer;
 
     private Adapter adapter = new Adapter();
+    private static Client instance = null;
+
+    /**
+     * singleton
+     */
+    public static Client getInstance() {
+        if (instance == null) {
+            instance = new Client(CLIENT_PORT);
+        }
+        return instance;
+    }
 
     /**
      * Constructor del cliente, recibe el puerto al que conectarse
      * 
      * @param PORT puerto al que conectarse
      */
-    public Client(int PORT) {
+    private Client(int PORT) {
         try {
             this.socket = new Socket("localhost", PORT);
 

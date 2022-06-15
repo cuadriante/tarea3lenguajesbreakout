@@ -63,6 +63,9 @@ public class SpectatorWindow {
         return ball;
     }
 
+    /**
+     * Construye la lista de bolas
+     */
     private void buildBallList() {
         for (int i = 0; i < 5; i++) {
             Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
@@ -92,6 +95,10 @@ public class SpectatorWindow {
         }
     }
 
+    /**
+     * Hace que la bola con el id de entrada sea invisible
+     * @param ballId id de la bola
+     */
     public void hideBall(int ballId) {
         for (Ball ball : ballList) {
             if (ball.getId() == ballId) {
@@ -100,6 +107,10 @@ public class SpectatorWindow {
         }
     }
 
+    /**
+     * Recorre blockAttributesArray y crea los bloques
+     * @param blockAttributesArray Array de atributos de bloques
+     */
     public void buildBlockList(ArrayList<int[]> blockAttributesArray) {
         for (int i = 0; i < blockAttributesArray.size(); i++) {
             int[] blockAttributes = blockAttributesArray.get(i);

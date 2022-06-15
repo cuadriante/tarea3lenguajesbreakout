@@ -57,6 +57,11 @@ public class Adapter {
         return id;
     }
 
+    /**
+     * Separa el id de los datos y retorna el dato.
+     * @param message mensaje
+     * @return datos
+     */
     public String processData(String message) {
         String[] arrOfStr = message.split("_");
         String data = arrOfStr[1];
@@ -64,6 +69,12 @@ public class Adapter {
         return data;
     }
 
+    /**
+     * Separa los diferentes parametros del
+     * dato recibido.
+     * @param data
+     * @return un array de ints con los datos
+     */
     public int[] splitData(String data){
         String[] arrOfStr = data.split(",", -2);
         int[] splitData = new int[arrOfStr.length];

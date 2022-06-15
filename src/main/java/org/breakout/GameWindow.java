@@ -28,7 +28,7 @@ public class GameWindow {
     private float ballSpeed = 6;
     private int numBalls = 1;
 
-    Client client = new Client(8080);
+    Client client;
 
     private static final Text puntosLabel = new Text();
     private static final Text levelLabel = new Text();
@@ -62,6 +62,7 @@ public class GameWindow {
      */
     GameWindow(Stage Lobby) throws Exception {
 
+        client = Client.getInstance();
         playerBar = buildPlayerBar();
 
         gameLoop = new GameLoop(this, ballList, blockList, playerBar);
@@ -187,12 +188,6 @@ public class GameWindow {
         for (Ball element : ballList) {
             root.getChildren().add(element.getShape());
         }
-
-        // Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
-        // ballList.add(ball);
-        // for (Ball element : ballList) {
-        // root.getChildren().add(element.getShape());
-        // }
     }
 
     /**
@@ -223,7 +218,6 @@ public class GameWindow {
     /**
      * Hace que aparezca una bola nueva al juego. Ya sea reciclando una bola
      * que desactivada o creando una nueva.
-     * TODO: ENVIAR AL SERVER UN MENSAJE CON LA BOLA QUE HORA ESTa ACTIVA
      */
     public void newBall() {
         System.out.println("creando nueva bolita");

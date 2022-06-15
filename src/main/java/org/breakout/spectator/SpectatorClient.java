@@ -64,6 +64,11 @@ public class SpectatorClient extends Thread {
         }
     }
 
+    /**
+     * Recibe desde el server un mensaje con los
+     * bloques que se deben dibujar en la pantalla
+     * @return el mensaje recibido del server
+     */
     public ArrayList<int[]> get_blocks() {
         ArrayList<int[]> blockAttributesArray = new ArrayList<>();
         try {
@@ -199,6 +204,9 @@ public class SpectatorClient extends Thread {
         }
     }
 
+    /**
+     * Se encarga de recibir los mensajes del servidor
+     */
     public void run() {
         try {
             get_blocks();
@@ -216,6 +224,12 @@ public class SpectatorClient extends Thread {
         }
     }
 
+    /**
+     * Procesa los mensajes recibidos del servidor y los aplica
+     * al juego
+     * @param id id del mensaje
+     * @param data datos
+     */
     private void processMessage(int id, String data) {
         switch (id) {
             case (0) -> { // PUNTAJE
@@ -255,7 +269,6 @@ public class SpectatorClient extends Thread {
                 spectatorWindow.setBallPosY(ballId, posY);
             }
             case (6) -> {
-                System.out.println("cambiar ancho");
                 int width = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarWidth(width);
             }
