@@ -225,7 +225,7 @@ public class GameWindow {
 
     /**
      * Retorna una bola y lleva la cuenta de las bolas
-     * 
+     *
      * @return
      */
     public Ball buildBall(int x, int y) {

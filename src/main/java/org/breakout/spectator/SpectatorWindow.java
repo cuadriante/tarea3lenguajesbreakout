@@ -24,7 +24,8 @@ public class SpectatorWindow {
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
     private Pane root;
-    // SpectatorClient client = new SpectatorClient(8080);
+    private int numBalls = 1;
+    Client client = new Client(8080);
     private static final Text puntosLabel = new Text();
     private static final Text levelLabel = new Text();
     private static final Text livesLabel = new Text();
@@ -37,19 +38,24 @@ public class SpectatorWindow {
 
 
     public SpectatorWindow(Stage Lobby) throws Exception {
+        playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
 
-        playerBar = new PlayerBar(200, 350, 100, BlockFactory.getHeight());
-        buildBallList();
-        // buildBlockList();
-
+        client.set_paddle_width(BlockFactory.getWidth());
         int paddlePos = (int) playerBar.getShape().getX();
+        client.set_paddle_position(paddlePos);
 
         Lobby.setTitle("Breakout: Spectator");
         Lobby.setResizable(false);
 
+        start(Lobby);
         createLabels();
         connectToClient();
-        start(Lobby);
+    }
+
+
+
+    private void connectToClient() {
+
     }
 
     private void start(Stage Lobby) {
@@ -63,55 +69,12 @@ public class SpectatorWindow {
         Scene scene = new Scene(root); //se liga scene al root
         scene.setFill(Color.BURLYWOOD);
 
+        int barPos = (int) playerBar.getShape().getX();
+        client.set_paddle_position(barPos);
+
         Lobby.setScene(scene);
         Lobby.show();
     }
-
-    /**
-     * Retorna una bola y lleva la cuenta de las bolas
-     * 
-     * @return
-     */
-    public Ball buildBall(int x, int y) {
-        SpectatorBall ball = new SpectatorBall(x, y, 0);
-        return ball;
-    }
-    
-    private void buildBallList() {
-        Ball ball = buildBall(STAGE_WIDTH - 100, STAGE_HEIGHT - 180);
-        ballList.add(ball);
-        for (Ball element : ballList) {
-            root.getChildren().add(element.getShape());
-        }
-    }
-
-    // public void buildBlockList() {
-    //     ArrayList<int[]> blockAttributesArray = client.get_blocks();
-    //     int id = 0;
-    //     int x = 3;
-    //     int y = 40;
-    //     for (int[] blockAttributes : blockAttributesArray) {
-    //         int row = blockAttributes[0];
-    //         int column = blockAttributes[1];
-    //         // int pts = blockAttributes[2];
-    //         int power = blockAttributes[3];
-    //         Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
-    //         blockList.add(block);
-    //         root.getChildren().add(block.getShape());
-    //         x += BlockFactory.getWidth() + 5;
-    //         block.createRectangleColor(row);
-    //         if (column == 7) {
-    //             x = 3;
-    //             y += BlockFactory.getHeight() + 5;
-    //         }
-    //     }
-    //     // System.out.print("----");
-    // }
-
-    private void connectToClient() {
-
-    }
-
 
     private void createLabels() {
 

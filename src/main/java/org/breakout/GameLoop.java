@@ -97,7 +97,7 @@ public class GameLoop {
         while (itr.hasNext()) {
             Ball ball = itr.next();
             if (ball.isOutOfBounds()) {
-               //System.out.println("se cayo la bola");
+                //System.out.println("se cayo la bola");
                 ball.setInvisible();
             }
         }

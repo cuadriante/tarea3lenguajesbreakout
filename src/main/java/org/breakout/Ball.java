@@ -20,6 +20,7 @@ public class Ball{
     private int yLimit;
     private boolean visibility;
     private final int RADIUS = 5;
+
     private boolean isMoving = false;
 
     private GameWindow gameWindow;
@@ -44,10 +45,6 @@ public class Ball{
         gameWindow = gw;
     }
 
-    public Ball(){
-
-    }
-
     /**
      * Verifica que la posición de ball se encuentre entre los limites del juego
      * @param x Posición de la bola en el eje X
@@ -55,11 +52,11 @@ public class Ball{
      */
     public void checkParameters(int x, int y){
         int radius = RADIUS + 10; //Por algun motivo si le pongo 10 funciona
-        if (x  < 0){
+        if (x - radius < 0){
             this.changeDirectionX();
         }else if(x + radius > xLimit){ //Falta poner el tamaño de la ventana
             this.changeDirectionX();
-        }else if(y < 0){
+        }else if(y - radius < 0){
             this.changeDirectionY();
         }else if(y + radius> yLimit){ //Falta poner el tamaño de la ventana
             setInvisible();
@@ -68,12 +65,8 @@ public class Ball{
         }
     }
 
-    protected void setCenterX(int x){
-        this.circle.setCenterX(x);
-    }
-
-    protected void setCenterY(int y){
-        this.circle.setCenterY(y);
+    public void collision(){
+       // if (!Game)
     }
 
     /**
@@ -99,7 +92,7 @@ public class Ball{
             int x = (int)this.circle.getCenterX();
             int y = (int)this.circle.getCenterY();
             checkParameters(x, y);
-            // System.out.println(xSpeed);
+            System.out.println(xSpeed);
 
             setBallXandY(x, y);
             this.circle.setCenterY(y + ySpeed);
@@ -153,10 +146,9 @@ public class Ball{
     public void speedUp(){
         float speed = gameWindow.getBallSpeed();
         if (Math.abs(speed) < 10){
-            float newXSpeed = (float) (this.xSpeed*1.5);
-            float newYSpeed = (float) (this.ySpeed*1.5);
-            this.xSpeed = newXSpeed;
-            this.ySpeed = newYSpeed;
+            speed = (float) (speed*1.2);
+            this.xSpeed = speed;
+            this.ySpeed = speed;
         }
     }
 
@@ -166,10 +158,9 @@ public class Ball{
     public void speedDown(){
         float speed = Math.abs(gameWindow.getBallSpeed());
         if (Math.abs(speed) > 2){
-            float newXSpeed = (float) (this.xSpeed/1.5);
-            float newYSpeed = (float) (this.ySpeed/1.5);
-            this.xSpeed = newXSpeed;
-            this.ySpeed = newYSpeed;
+            speed = (float) (speed/1.2);
+            this.xSpeed = speed;
+            this.ySpeed = speed;
         }
     }
 
@@ -197,13 +188,13 @@ public class Ball{
     }
 
     public void recycle(int X, int Y){
-        // System.out.println("se esta reciclando la bolita");
+        System.out.println("se esta reciclando la bolita");
         float speed = gameWindow.getBallSpeed();
         this.xSpeed = speed;
         this.ySpeed = speed;
         this.circle.setCenterX(X);
         this.circle.setCenterY(Y);
-        // System.out.println(X + " " + Y );
+        System.out.println(X + " " + Y );
         this.circle.setVisible(true);
         gameWindow.client.add_ball();
         this.visibility = true;
@@ -240,8 +231,8 @@ public class Ball{
         switch (type) {
             case (-1) -> {}
             case (0) -> gameWindow.speedUpBalls();
-            case (1) -> gameWindow.biggerPlayerbar();
-            case (2) -> gameWindow.smallerPlayerbar();
+            case (1) -> gameWindow.getPlayerBar().makeBigger();
+            case (2) -> gameWindow.getPlayerBar().makeSmaller();
             case (3) -> gameWindow.speedDownBalls();
             case (4) -> gameWindow.newLife();
             case (5) -> gameWindow.newBall();
@@ -257,9 +248,5 @@ public class Ball{
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
