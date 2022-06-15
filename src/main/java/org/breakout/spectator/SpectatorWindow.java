@@ -23,6 +23,7 @@ public class SpectatorWindow {
 
     final int STAGE_WIDTH = 400;
     final int STAGE_HEIGHT = 400;
+    // SpectatorClient client = new SpectatorClient(8080);
     private Pane root;
     private int numBalls = 1;
     private static final Text puntosLabel = new Text();
@@ -40,7 +41,7 @@ public class SpectatorWindow {
         playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
 
         // client.set_paddle_width(BlockFactory.getWidth());
-        int paddlePos = (int) playerBar.getShape().getX();
+        // int paddlePos = (int) playerBar.getShape().getX();
         // client.set_paddle_position(paddlePos);
 
         Lobby.setTitle("Breakout: Spectator");

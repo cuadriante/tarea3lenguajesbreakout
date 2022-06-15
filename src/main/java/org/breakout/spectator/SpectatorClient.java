@@ -2,14 +2,19 @@ package org.breakout.spectator;
 
 import org.breakout.Adapter;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class SpectatorClient {
+public class SpectatorClient extends Thread{
     private Socket socket;
     private InputStreamReader reader;
     private OutputStreamWriter writer;
@@ -20,7 +25,7 @@ public class SpectatorClient {
     private Adapter adapter = new Adapter();
     private SpectatorWindow spectatorWindow;
 
-    public SpectatorClient(int PORT, SpectatorWindow sw) throws Exception {
+    public SpectatorClient(int PORT, SpectatorWindow sw){
         try {
             this.spectatorWindow = sw;
 
@@ -167,26 +172,29 @@ public class SpectatorClient {
         }
     }
 
-    public void test_communication() {
+    public void run() {
         try {
             get_blocks();
-            while (true) {
+            while(true){
                 if (input_buffer.ready()) {
                     String message = input_buffer.readLine();
                     System.out.println(message);
                     int id = adapter.processId(message);
-                    processMesage(id, message);
+                    String data = adapter.processData(message);
+                    processMesage(id, data);
                 }
             }
-        } catch (Exception error) {
+        }catch (Exception error) {
             error.printStackTrace();
         }
     }
+    
 
-    private void processMesage(int id, String message) {
+    private void processMesage(int id, String data) {
         switch(id){
             case(7)->{
-                int xPos = adapter.singleDatatoInt(message);
+                System.out.println("MoverBola");
+                int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarPos(xPos);
             }
             default->{

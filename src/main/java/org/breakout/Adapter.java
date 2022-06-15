@@ -1,6 +1,7 @@
 package org.breakout;
 
 import java.io.BufferedReader;
+import java.util.Arrays;
 
 public class Adapter {
     
@@ -38,11 +39,20 @@ public class Adapter {
     }
 
     public int processId(String message) {
-        String[] arrOfStr = message.split("$", -2);
+        String[] arrOfStr = message.split("_");
+        // System.out.print("array: ");
+        // System.out.println(Arrays.toString(arrOfStr));
         String idStr = arrOfStr[0];
-        System.out.println(idStr);
+        // System.out.println(idStr);
         int id = Integer.valueOf(idStr);
 
         return id;
+    }
+
+    public String processData(String message) {
+        String[] arrOfStr = message.split("_");
+        String data = arrOfStr[1];
+
+        return data;
     }
 }
