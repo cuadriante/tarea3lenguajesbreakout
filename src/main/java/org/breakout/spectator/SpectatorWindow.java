@@ -59,6 +59,42 @@ public class SpectatorWindow {
         connectToClient();
     }
 
+    public void buildBlockList( ArrayList<int[]> blockAttributesArray) {
+
+        int id = 0;
+        int x = 3;
+        int y = 40;
+        for (int[] blockAttributes : blockAttributesArray) {
+            int row = blockAttributes[0];
+            int column = blockAttributes[1];
+            // int pts = blockAttributes[2];
+            int power = blockAttributes[3];
+            Block block = BlockFactory.buildBlock(power, x, y, id, row, column);
+            blockList.add(block);
+            root.getChildren().add(block.getShape());
+            x += BlockFactory.getWidth() + 5;
+            block.createRectangleColor(row);
+            if (column == 7) {
+                x = 3;
+                y += BlockFactory.getHeight() + 5;
+            }
+        }
+        // System.out.print("----");
+    }
+
+    public void newLife(String l) {
+        lives.setText(l);
+    }
+
+    public void updatePuntos(String pts) {
+        puntos.setText(pts);
+    }
+
+    public void nextLevel(String lvl) {
+        level.setText(lvl);
+
+    }
+
     /**
      * cambia la posicion de la barra de juego
      * @param xPos posicion en x
