@@ -1,6 +1,7 @@
 package org.breakout.spectator;
 
 import org.breakout.Adapter;
+import org.breakout.blockFactory.Block;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -257,6 +258,11 @@ public class SpectatorClient extends Thread {
             case (7) -> {
                 int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarPos(xPos);
+            }
+            case (8) -> {
+                int dataArray[] = adapter.splitData(data);
+                Block block = spectatorWindow.getBlock(dataArray[0], dataArray[1]);
+                spectatorWindow.breakBlock(block);
             }
             case (9) -> {
                 int ballId = adapter.singleDatatoInt(data);

@@ -257,4 +257,21 @@ public class SpectatorWindow {
         playerBar.getShape().setWidth(width);
     }
 
+    /**
+     * Destruye el bloque indicado.
+     * 
+     * @param b bloque a destruir
+     */
+    public void breakBlock(Block block) {
+        block.getShape().setVisible(false);
+    }
+
+    public Block getBlock(int row, int column) {
+        for (Block block : blockList) {
+            if (block.getRow() == row && block.getColum() == column) {
+                return block;
+            }
+        }
+        return null;
+    }
 }
