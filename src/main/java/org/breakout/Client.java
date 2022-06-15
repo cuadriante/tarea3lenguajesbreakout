@@ -24,6 +24,7 @@ public class Client {
 
     /**
      * Constructor del cliente, recibe el puerto al que conectarse
+     * 
      * @param PORT puerto al que conectarse
      */
     public Client(int PORT) {
@@ -42,6 +43,7 @@ public class Client {
 
     /**
      * Envia un mensaje al server
+     * 
      * @param message mensaje a enviar
      */
     public void send_message(String message) {
@@ -58,6 +60,7 @@ public class Client {
 
     /**
      * Recibe del server la lista de bloques que desplegar en la interfaz
+     * 
      * @return lista de bloques
      */
     public ArrayList<int[]> get_blocks() {
@@ -94,6 +97,7 @@ public class Client {
 
     /**
      * Recibe del server la puntuacion actual del juego
+     * 
      * @return puntuacion actual
      */
     public int get_score() {
@@ -112,7 +116,9 @@ public class Client {
         return returned;
     }
 
-    /** Recibe del server las vidas actuales disponibles
+    /**
+     * Recibe del server las vidas actuales disponibles
+     * 
      * @return vidas actuales
      */
     public int get_lives() {
@@ -133,6 +139,7 @@ public class Client {
 
     /**
      * Recibe del serber el nivel actual de juego
+     * 
      * @return nivel actual
      */
     public int get_level() {
@@ -184,7 +191,7 @@ public class Client {
     }
 
     /**
-     *  Recibe del servidor la instruccion de cambiar de nivel
+     * Recibe del servidor la instruccion de cambiar de nivel
      */
     public void level_up() {
         try {
@@ -217,8 +224,9 @@ public class Client {
 
     /**
      * Recibe del servidor una nueva posicion para una bola segun su id
+     * 
      * @param ball_id id de la bola
-     * @param pos_x posicion en x de la bola
+     * @param pos_x   posicion en x de la bola
      */
     public void setPosX(int ball_id, int pos_x) {
         try {
@@ -238,8 +246,9 @@ public class Client {
 
     /**
      * Recibe del servidor una nueva posicion para una bola segun su id
+     * 
      * @param ball_id id de la bola
-     * @param pos_y posicion en y de la bola
+     * @param pos_y   posicion en y de la bola
      */
     public void setPosY(int ball_id, int pos_y) {
         try {
@@ -259,6 +268,7 @@ public class Client {
 
     /**
      * Cambia el ancho de la barra de jugador segun lo establecido
+     * 
      * @param width ancho de la barra de jugador
      */
     public void set_paddle_width(int width) {
@@ -276,6 +286,7 @@ public class Client {
 
     /**
      * Cambia la posicion de la barra del jugador a la especificada
+     * 
      * @param position nueva posicion de la barra de jugador
      */
     public void set_paddle_position(int position) {
@@ -293,7 +304,8 @@ public class Client {
 
     /**
      * Envia al servidor el bloque a eliminar
-     * @param row fila del bloque a eliminar
+     * 
+     * @param row    fila del bloque a eliminar
      * @param column columna del bloque a eliminar
      */
     public void destroy_block(int row, int column) {
@@ -313,6 +325,7 @@ public class Client {
 
     /**
      * Recibe del servidor una bola segun su id
+     * 
      * @param ball_id id de la bola
      */
     public void get_ball(int ball_id) {
@@ -330,6 +343,7 @@ public class Client {
 
     /**
      * Envia al servidor la bola que debe de esconder segun su id
+     * 
      * @param id id de la bola
      */
     public void hide_ball(int id) {
@@ -351,24 +365,25 @@ public class Client {
      */
     public void test_communication() {
         try {
-            int i = 0;
-            while (true) {
-                get_score();
-                add_life();
-                take_life();
-                level_up();
-                setPosX(1, i);
-                setPosY(1, i);
-                // get_ball(1);
-                // get_ball(2);
-                add_ball();
-                hide_ball(1);
-                destroy_block(7, i);
-                set_paddle_position(i);
-                set_paddle_width(i);
-                i += 1;
-                Thread.sleep(3000);
-            }
+            get_blocks();
+            // int i = 0;
+            // while (true) {
+            // // get_score();
+            // // add_life();
+            // // take_life();
+            // // level_up();
+            // // setPosX(1, i);
+            // // setPosY(1, i);
+            // // // get_ball(1);
+            // // // get_ball(2);
+            // // add_ball();
+            // // hide_ball(1);
+            // // destroy_block(7, i);
+            // // set_paddle_position(i);
+            // set_paddle_width(i);
+            // i += 1;
+            // Thread.sleep(3000);
+            // }
         } catch (Exception error) {
             error.printStackTrace();
         }

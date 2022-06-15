@@ -11,11 +11,11 @@ GameData *game_data;
 int main()
 {
     // Varas de los sockets de Windows
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-    {
-        return 1;
-    }
+    // WSADATA wsa;
+    // if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    // {
+    //     return 1;
+    // }
     game_data = start_game();
 
     client_socket = malloc(sizeof(int));
@@ -57,8 +57,10 @@ void *set_sockets(int *thread_id)
 
         *spectator_socket = stop_on_error(accept(server_socket, NULL, NULL));
         printf("Espectador conectado en: %d\n", *spectator_socket);
-        receive_message(*spectator_socket);
-        return NULL;
+        while (true)
+        {
+            receive_message(*spectator_socket);
+        }
     }
     else
     {
@@ -67,7 +69,7 @@ void *set_sockets(int *thread_id)
         *client_socket = stop_on_error(accept(server_socket, NULL, NULL));
         while (true)
         {
-            receive_message();
+            receive_message(*client_socket);
         }
     }
 }
@@ -86,10 +88,17 @@ int stop_on_error(const int returned_value)
     }
 }
 
-void receive_message()
+void receive_message(const int socket_id)
 {
     char received_message[INPUT_BUFFER_SIZE];
-    stop_on_error(recv(*client_socket, received_message, INPUT_BUFFER_SIZE, 0));
+    if (socket_id == *spectator_socket)
+    {
+        stop_on_error(recv(*spectator_socket, received_message, INPUT_BUFFER_SIZE, 0));
+    }
+    else
+    {
+        stop_on_error(recv(*client_socket, received_message, INPUT_BUFFER_SIZE, 0));
+    }
 
     if (strcmp(received_message, "0") == 0)
         send_blocks();
@@ -233,6 +242,11 @@ void send_blocks()
                     game_data->blocks[i][j]->power_up);
 
             send_message(block_str, *client_socket);
+
+            if (*spectator_socket != -1)
+            {
+                send_message(block_str, *spectator_socket);
+            }
         }
     }
 }

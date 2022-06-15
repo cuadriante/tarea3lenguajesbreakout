@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SpectatorClient extends Thread{
+public class SpectatorClient extends Thread {
     private Socket socket;
     private InputStreamReader reader;
     private OutputStreamWriter writer;
@@ -25,7 +25,7 @@ public class SpectatorClient extends Thread{
     private Adapter adapter = new Adapter();
     private SpectatorWindow spectatorWindow;
 
-    public SpectatorClient(int PORT, SpectatorWindow sw){
+    public SpectatorClient(int PORT, SpectatorWindow sw) {
         try {
             this.spectatorWindow = sw;
 
@@ -60,8 +60,8 @@ public class SpectatorClient extends Thread{
             while (input_buffer.ready()) {
                 String block_str = input_buffer.readLine();
                 System.out.println(block_str);
-                int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
-                blockAttributesArray.add(blockAttributes);
+                // int blockAttributes[] = adapter.stringToBlockAttributes(block_str);
+                // blockAttributesArray.add(blockAttributes);
             }
         } catch (Exception error) {
             error.printStackTrace();
@@ -178,7 +178,7 @@ public class SpectatorClient extends Thread{
     public void run() {
         try {
             get_blocks();
-            while(true){
+            while (true) {
                 if (input_buffer.ready()) {
                     String message = input_buffer.readLine();
                     System.out.println(message);
@@ -187,21 +187,20 @@ public class SpectatorClient extends Thread{
                     processMesage(id, data);
                 }
             }
-        }catch (Exception error) {
+        } catch (Exception error) {
             error.printStackTrace();
         }
     }
-    
 
     private void processMesage(int id, String data) {
-        switch(id){
-            case(7)->{
-                System.out.println("MoverBola");
+        switch (id) {
+            case (7) -> {
+                // System.out.println("MoverBola");
                 int xPos = adapter.singleDatatoInt(data);
                 spectatorWindow.setPlayerBarPos(xPos);
             }
-            default->{
-                System.out.println("Mensaje no procesado");
+            default -> {
+                // System.out.println("Mensaje no procesado");
             }
         }
     }
