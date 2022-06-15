@@ -82,6 +82,9 @@ public class SpectatorClient extends Thread{
         }
     }
 
+    /**
+     * da la barra de juego
+     */
     public void get_paddle() {
         try {
             send_message("2\0");

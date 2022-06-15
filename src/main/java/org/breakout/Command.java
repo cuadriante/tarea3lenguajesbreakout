@@ -2,35 +2,12 @@ package org.breakout;
 
 // para toda la interacci[on entre el server y el cliente
 
+/**
+ * Comandos de comunicacion
+ */
 public class Command {
-
-    static int ACTION_NONE = 0;
-    // to player
-    static int ACTION_CREATE_PLAYER = 10; // action for player creation
-    static int ACTION_MOVE_PLAYER = 11; // action for player movement
-    static int ACTION_MOVE_BALL = 12; // action for ball movement
-    static int ACTION_MOVE_BLOCK = 13; // action for block movement
-    static int ACTION_DELETE_BLOCK = 14; // action for block deletion
-    static int ACTION_SET_SCORE = 15; // action for score setting
-    static int ACTION_CREATE_BLOCK = 16; // action for block creation
-    static int ACTION_SET_DEPTH_LEVEL = 17; // action for depth level setting
-    static int ACTION_SET_PLAYER_BAR_SIZE = 18; // action for player bar size  setting
-    static int ACTION_MOVE_OTHER_PLAYER = 19; // action for other player movement setting
-    // to server
-    static int ACTION_START_GAME = 20; // action for game start
-    static int ACTION_MOVE_LEFT = 21; // action for player movement to the left
-    static int ACTION_MOVE_RIGHT = 22; // action for player movement to the right
-    static int ACTION_END_GAME = 23; // action for game end
-    static int ACTION_WIN_GAME = 24; // action for game end when won
-    // block types
-    static int BLOCK_TYPE_COMMON = 31; // action for common block
-    static int BLOCK_TYPE_DOUBLE = 32; // action for double block
-    static int BLOCK_TYPE_TRIPLE = 33; // action for triple block
-    static int BLOCK_TYPE_INTERNAL = 34; // action for internal block
-    static int BLOCK_TYPE_DEEP = 35; // action for deep block
-    static int BLOCK_TYPE_SURPRISE = 36; // action for surprise block
-
     public int action;
+
     public int posX;
     public int posY;
     public int type;
@@ -38,60 +15,114 @@ public class Command {
     public int size;
     public String name;
 
-
+    /**
+     * Cambia la accion a la especificada
+     * @param act accion
+     */
     void setAction(int act) {
         action = act;
     }
 
+    /**
+     * Cambia la posicion en X a la especificada
+     * @param newPlayerX posicion en X del jugador
+     */
     void setPosX(int newPlayerX) {
         posX = newPlayerX;
     }
 
+    /**
+     * Retorna accion
+     * @return accion
+     */
     int getAction() {
         return action;
     }
 
+    /**
+     * Retorna posicion en el eje X
+     * @return posicion en el eje X
+     */
     int getPosX() {
         return posX;
     }
 
+    /**
+     * Retorna posicion en el eje Y
+     * @return posicion en el eje Y
+     */
     int getPosY() {
         return posY;
     }
 
+    /**
+     * Cambia la posicion en Y a la especificada
+     * @param y posicion en Y
+     */
     void setPosY(int y) {
         posY = y;
     }
 
+    /**
+     * Retorna el nombre
+     * @return nombre
+     */
     String getName() {
         return name;
     }
 
+    /**
+     * Cambia el nombre al especificado
+     * @param n nombre
+     */
     void setName(String n) {
         name = n;
     }
 
+    /**
+     * Retorna el tipo
+     * @return tipo
+     */
     int getType() {
         return type;
     }
 
+    /**
+     * Retorna el id
+     * @return id
+     */
     int getId() {
         return id;
     }
 
+    /**
+     * Cambia el id
+     * @param i id
+     */
     void setId(int i) {
         id = i;
     }
 
+    /**
+     * Cambia el tipo
+     * @param t tipo
+     */
     void setType(int t) {
         type = t;
     }
 
-
+    /**
+     * retorna el tamano
+     * @return tamano
+     */
     int getSize() {
         return size;
     }
 
+    /**
+     * Cambia el tamano
+     * @param sz tamano
+     */
     void setSize(int sz) {
         size = sz;
     }

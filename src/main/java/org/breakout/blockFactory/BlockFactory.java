@@ -1,11 +1,24 @@
 package org.breakout.blockFactory;
 
+/**
+ * Fabrica de bloques de juego.
+ */
 public class BlockFactory {
     private static final int width = 45;
     private static final int height = 10;
     private static final int rows = 8;
     private static final int columns = 8;
 
+    /**
+     * Construtor de la fabrica de bloques
+     * @param type tipo
+     * @param x x
+     * @param y y
+     * @param id id
+     * @param row fila
+     * @param colum columna
+     * @return bloque
+     */
     public static Block buildBlock(int type, int x, int y, int id, int row, int colum){
         Block block = null;
         if (type == -1){
@@ -25,6 +38,11 @@ public class BlockFactory {
         return block;
     }
 
+    /**
+     * Retorna el color segun el tipo
+     * @param type tipo
+     * @return color
+     */
     public static col getColorByType(int type){ // esto se puede hacer mas mejor
         return switch (type) {
             case (0) -> col.GREEN;
@@ -35,19 +53,34 @@ public class BlockFactory {
         };
     }
 
-
+    /**
+     * Retorna las filas
+     * @return filas
+     */
     public static int getRows() {
         return rows;
     }
 
+    /**
+     * Retorna las columnas
+     * @return columnas
+     */
     public static int getColumns() {
         return columns;
     }
 
+    /**
+     * Retorna el ancho
+     * @return ancho
+     */
     public static int getWidth() {
         return width;
     }
 
+    /**
+     * Retorna la altura
+     * @return altura
+     */
     public static int getHeight() {
         return height;
     }

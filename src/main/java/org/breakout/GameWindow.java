@@ -16,6 +16,9 @@ import java.util.Iterator;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Ventana de juego
+ */
 public class GameWindow {
 
     final int STAGE_WIDTH = 400;
@@ -40,10 +43,20 @@ public class GameWindow {
     private ArrayList<Block> blockList = new ArrayList<Block>();
     final GameLoop gameLoop;
 
+    /**
+     * Retorna el loop de juego
+     * @return game loop
+     */
     public GameLoop getGameLoop() {
         return gameLoop;
     }
 
+    /**
+     * Constructor de la ventana de juego. Crea la barra del jugador,el loop de juego,
+     * la ventana, los labels.
+     * @param Lobby
+     * @throws Exception
+     */
     GameWindow(Stage Lobby) throws Exception {
         
         playerBar = buildPlayerBar();
@@ -55,25 +68,14 @@ public class GameWindow {
 
         start(Lobby);
         createLabels();
-        connectToClient();
-    }
-
-    private void connectToClient() {
         gameLoop.ballAnimationLoop();
-        // GAME_LOOP.loop();
-        // Client* client = new Client();
-        // if (client->connectSocket()) {
-
-        // GameLoop * gameLoop = new GameLoop();
-        // scene->addItem(gameLoop);
-        // playerBar->setClientSocket(client->getClientSocket());
-        // gameLoop->receiveClient(client);
-        // } else {
-        // cout << "Could not connect to server." << endl;
-        // exit;
-        // }
     }
 
+    /**
+     * Inicializa la barra del jugador y el movimiento de la misma con
+     * las teclas de izquierda y derecha del teclado del jugador.
+     * @param Lobby Stage primario para la aplicacion
+     */
     private void start(Stage Lobby) {
         root = new Pane();
 
@@ -178,19 +180,26 @@ public class GameWindow {
         }
     }
 
+    /**
+     * Retorna la barra del jugador
+     * @return barra del jugador
+     */
     public PlayerBar getPlayerBar() {
         return playerBar;
     }
 
+    /**
+     * Retorna la lista de bloques
+     * @return lista de bloques
+     */
     public ArrayList<Block> getBlockList() {
         return blockList;
     }
 
+    /**
+     * Finaliza el juego cuando no quedan mas vidas
+     */
     public void endGame() {
-    }
-
-    public GameWindow getGameWindow() {
-        return this;
     }
 
     /**
@@ -221,8 +230,9 @@ public class GameWindow {
 
     /**
      * Retorna una bola y lleva la cuenta de las bolas
-     *
-     * @return
+     * @param x x
+     * @param y y
+     * @return bola
      */
     public Ball buildBall(int x, int y) {
         Ball ball = new Ball(x, y, this.ballSpeed, this, this.numBalls);
@@ -230,6 +240,10 @@ public class GameWindow {
         return ball;
     }
 
+    /**
+     * Crea la barra de jugador
+     * @return barra de jugador
+     */
     public PlayerBar buildPlayerBar() {
         int xPos = 200;
         PlayerBar playerBar = new PlayerBar(xPos, 350, PLAYER_BAR_WIDTH, BlockFactory.getHeight());
@@ -248,6 +262,10 @@ public class GameWindow {
         lives.setText(vidas);
     }
 
+    /**
+     * Retorna las vidas actuales mediante el servidor
+     * @return vidas
+     */
     public int get_lives() {
         return client.get_lives();
     }
@@ -291,12 +309,19 @@ public class GameWindow {
         // client.set_ball_speed_y(ySpeed);
     }
 
+    /**
+     * Actualiza el puntaje mediante el servidor
+     * y lo despliega en la interfaz
+     */
     public void updatePuntos() {
         int pts = client.get_score();
         String puntaje = Integer.toString(pts);
         puntos.setText(puntaje);
     }
 
+    /**
+     * Pasa al siguiente nivel cuando el cliente lo indica
+     */
     public void nextLevel() {
         client.level_up();
         int lvl = client.get_level();
@@ -305,13 +330,19 @@ public class GameWindow {
         setUpNextLevel();
     }
 
+    /**
+     * Envia la posicion de la bola al servidor
+     * @param ballId id de la bola
+     * @param xPos posicion en el eje x de la bola
+     * @param yPos posicion en el eje y de la bola
+     */
     public void sendPosBalls(int ballId, int xPos, int yPos) {
         client.setPosX(ballId, xPos);
         client.setPosX(ballId, yPos);
     }
 
     /**
-     * Dobla el tamaño de la barra del jugador
+     * Duplica el tamaño de la barra del jugador
      */
     public void biggerPlayerbar() {
         playerBar.makeBigger();
@@ -334,6 +365,11 @@ public class GameWindow {
         // stagePrincipal.show();
     }
 
+    /**
+     * Elimina todas las bola y vuelve a crear la matriz de bloques
+     * y una unica bola para pasar al siguiente nivel de
+     * juego
+     */
     private void setUpNextLevel() {
         for (Ball ball : ballList) {
             ball.setInvisible();
@@ -345,6 +381,9 @@ public class GameWindow {
         resetBlocks();
     }
 
+    /**
+     * Crea los labels de puntaje, nivel y vidas que aparecen en la interfaz.
+     */
     private void createLabels() {
 
         double fontSize = 15;
@@ -408,16 +447,28 @@ public class GameWindow {
         root.getChildren().add(levelLabel);
     }
 
+    /**
+     * Destruye el bloque indicado.
+     * @param b bloque a destruir
+     */
     public void breakBlock(Block b) {
         int row = b.getRow();
         int column = b.getColum();
         client.destroy_block(row, column);
     }
 
+    /**
+     * Retorna la velocidad actual de la bola
+     * @return velocidad de la bola
+     */
     public float getBallSpeed() {
         return ballSpeed;
     }
 
+    /**
+     * Cambia el valor de la velocidad de la bola al especificado
+     * @param speed nuevo valor de velocidad de la bola
+     */
     public void setBallSpeed(float speed) {
         this.ballSpeed = speed;
     }

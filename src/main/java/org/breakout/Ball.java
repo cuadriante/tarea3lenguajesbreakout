@@ -24,13 +24,15 @@ public class Ball{
     private boolean isMoving = false;
 
     private GameWindow gameWindow;
-/**
- * Constructor de la clasa Ball
- *
- * @param centerX Posición en el eje X de la bola
- * @param centerY Posición en el eje Y de la bola
- * @param gw
- */
+    /**
+    * Constructor de la clasa Ball
+    *
+    * @param centerX Posición en el eje X de la bola
+    * @param centerY Posición en el eje Y de la bola
+     * @param speed velocidad
+    * @param gw ventana de juego
+     * @param id id
+    */
     public Ball(int centerX, int centerY, float speed, GameWindow gw, int id){
         this.circle = new Circle(centerX, centerY, RADIUS);
         circle.setFill(Color.OLIVE);
@@ -63,10 +65,6 @@ public class Ball{
             // this.changeDirectionY();
             // this.removeBall();
         }
-    }
-
-    public void collision(){
-       // if (!Game)
     }
 
     /**
@@ -109,6 +107,11 @@ public class Ball{
         }
     }
 
+    /**
+     * cambia el valor de x y y de la bola
+     * @param x valor en x
+     * @param y valor en y
+     */
     public void setBallXandY(int x, int y){
         this.circle.setCenterY(y + ySpeed);
         this.circle.setCenterX(x + xSpeed);
@@ -136,6 +139,10 @@ public class Ball{
         return this.circle;
     }
 
+    /**
+     * retorna la velocidad
+     * @return velocidad
+     */
     public float getSpeed(){
         return Math.abs(this.xSpeed);
     }
@@ -164,8 +171,6 @@ public class Ball{
         }
     }
 
-
-
     /**
      * Establece el atributo de visibilidad a falso
      */
@@ -175,18 +180,36 @@ public class Ball{
         this.circle.setVisible(value);
     }
 
+    /**
+     * Retorna la visibilidad
+     * @return visibilidad
+     */
     public boolean getVisibility(){
         return this.visibility;
     }
 
+    /**
+     * Retorna la velocidad en x
+     * @return velocidad en x
+     */
     public float getXSpeed(){
         return this.xSpeed;
     }
 
+    /**
+     * Retorna la velocidad en y
+     * @return velocidad y
+     */
     public float getYSpeed(){
         return this.ySpeed;
     }
 
+    /**
+     * Vuelve a utilizar una bola ya creada que no este movilizandose ni sea visible
+     * en la ventana de juego en el momento del chequeo
+     * @param X posicion en el eje x en la cual aperecera la bola
+     * @param Y posicion en el eje y en la cual aparecera la bola
+     */
     public void recycle(int X, int Y){
         System.out.println("se esta reciclando la bolita");
         float speed = gameWindow.getBallSpeed();
@@ -200,17 +223,11 @@ public class Ball{
         this.visibility = true;
     }
 
+
     /**
-     * Verifica si la bola colisiona con la barra del jugador. Si 
+     * Verifica si la bola colisiona con la barra del jugador o con un bloque. Si
      * lo hace, cambia la dirección de la bola
-     * @param playerBar Barra del jugador
      */
-    public void checkPlayerBarCollision(PlayerBar playerBar) {
-        if(this.circle.getBoundsInParent().intersects( playerBar.getShape().getBoundsInParent()) ){
-            this.changeDirectionY();
-        }
-    }
-    
     public void checkCollision() {
         for(Block b : gameWindow.getBlockList()){
             if(b.getShape().isVisible() && this.circle.getBoundsInParent().intersects(b.getShape().getBoundsInParent()) ){
@@ -226,6 +243,10 @@ public class Ball{
         }
     }
 
+    /**
+     * Activa un "poder" que puede afectar, a la bola, a la barra de jugador, entre otros al destruir un tipo de bloque.
+     * @param type tipo de bloque
+     */
     public void activatePower(int type) {
         // System.out.println(type);
         switch (type) {
@@ -241,11 +262,20 @@ public class Ball{
 
     }
 
+
+    /**
+     * Inicializa la velocidad inicial de la bola
+     * @param speed Velocidad de la bola
+     */
     public void setInitialSpeed(float speed){
         this.xSpeed = speed;
         this.ySpeed = speed;
     }
 
+    /**
+     * Retorna el atributo id.
+     * @return id
+     */
     public int getId() {
         return id;
     }

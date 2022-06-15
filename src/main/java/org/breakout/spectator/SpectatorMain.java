@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import org.breakout.GameWindow;
 
 /**
- * The type Main.
+ * Main de espectador.
  */
 // public class Main extends Application implements EventHandler<ActionEvent>{
 public class SpectatorMain extends Application {
@@ -19,6 +19,14 @@ public class SpectatorMain extends Application {
         launch(args);
     }
 
+    /**
+     * Inicializa la ventana del espectador
+     * @param Lobby the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws Exception
+     */
     @Override
     public void start(Stage Lobby) throws Exception {
         SpectatorWindow gw = new SpectatorWindow(Lobby);
