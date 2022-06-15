@@ -44,6 +44,11 @@ public class PlayerBar {
         return this.rectangle;
     }
 
+    public void setPos(int xPos){
+        this.rectangle.setX(xPos);
+        setCenter();
+    }
+
     /**
      * Mueve la raqueta hacia la derecha
      */
