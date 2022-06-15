@@ -18,10 +18,12 @@ public class SpectatorClient {
     private BufferedWriter output_buffer;
 
     private Adapter adapter = new Adapter();
-    // private SpectatorWindow spectatorWindow = new SpectatorWindow(Lobby);
+    private SpectatorWindow spectatorWindow;
 
-    public SpectatorClient(int PORT) {
+    public SpectatorClient(int PORT, SpectatorWindow sw) throws Exception {
         try {
+            this.spectatorWindow = sw;
+
             this.socket = new Socket("localhost", PORT);
 
             this.reader = new InputStreamReader(socket.getInputStream());
@@ -171,6 +173,7 @@ public class SpectatorClient {
             while (true) {
                 if (input_buffer.ready()) {
                     String message = input_buffer.readLine();
+                    System.out.println(message);
                     int id = adapter.processId(message);
                     processMesage(id, message);
                 }
@@ -182,9 +185,12 @@ public class SpectatorClient {
 
     private void processMesage(int id, String message) {
         switch(id){
-            case(5)->{
+            case(7)->{
                 int xPos = adapter.singleDatatoInt(message);
-                // spectatorWindow.setPlayerBarPos(xPos);
+                spectatorWindow.setPlayerBarPos(xPos);
+            }
+            default->{
+                System.out.println("Mensaje no procesado");
             }
         }
     }

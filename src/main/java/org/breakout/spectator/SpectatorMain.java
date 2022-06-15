@@ -22,6 +22,8 @@ public class SpectatorMain extends Application {
     @Override
     public void start(Stage Lobby) throws Exception {
         SpectatorWindow gw = new SpectatorWindow(Lobby);
+        SpectatorClient client = new SpectatorClient(8080, gw);
+        client.test_communication();
     }
 
 }

@@ -45,14 +45,10 @@ public class GameWindow {
     }
 
     GameWindow(Stage Lobby) throws Exception {
-        // playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(),
-        // BlockFactory.getHeight());
-        playerBar = new PlayerBar(200, 350, PLAYER_BAR_WIDTH, BlockFactory.getHeight());
+        
+        playerBar = buildPlayerBar();
+    
         gameLoop = new GameLoop(this, ballList, blockList, playerBar);
-
-        client.set_paddle_width(BlockFactory.getWidth());
-        int paddlePos = (int) playerBar.getShape().getX();
-        client.set_paddle_position(paddlePos);
 
         Lobby.setTitle("Breakout");
         Lobby.setResizable(false);
@@ -232,6 +228,14 @@ public class GameWindow {
         Ball ball = new Ball(x, y, this.ballSpeed, this, this.numBalls);
         this.numBalls += 1;
         return ball;
+    }
+
+    public PlayerBar buildPlayerBar() {
+        int xPos = 200;
+        PlayerBar playerBar = new PlayerBar(xPos, 350, PLAYER_BAR_WIDTH, BlockFactory.getHeight());
+        client.set_paddle_position(xPos);
+        client.set_paddle_width(PLAYER_BAR_WIDTH);
+        return playerBar;
     }
 
     /**

@@ -40,6 +40,7 @@ public class Adapter {
     public int processId(String message) {
         String[] arrOfStr = message.split("$", -2);
         String idStr = arrOfStr[0];
+        System.out.println(idStr);
         int id = Integer.valueOf(idStr);
 
         return id;

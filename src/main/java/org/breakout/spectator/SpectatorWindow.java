@@ -25,7 +25,6 @@ public class SpectatorWindow {
     final int STAGE_HEIGHT = 400;
     private Pane root;
     private int numBalls = 1;
-    Client client = new Client(8080);
     private static final Text puntosLabel = new Text();
     private static final Text levelLabel = new Text();
     private static final Text livesLabel = new Text();
@@ -40,9 +39,9 @@ public class SpectatorWindow {
     public SpectatorWindow(Stage Lobby) throws Exception {
         playerBar = new PlayerBar(200, 350, BlockFactory.getWidth(), BlockFactory.getHeight());
 
-        client.set_paddle_width(BlockFactory.getWidth());
+        // client.set_paddle_width(BlockFactory.getWidth());
         int paddlePos = (int) playerBar.getShape().getX();
-        client.set_paddle_position(paddlePos);
+        // client.set_paddle_position(paddlePos);
 
         Lobby.setTitle("Breakout: Spectator");
         Lobby.setResizable(false);
@@ -57,7 +56,7 @@ public class SpectatorWindow {
     }
 
     private void connectToClient() {
-        client.test_communication();
+        // client.test_communication();
     }
 
     private void start(Stage Lobby) {
@@ -72,7 +71,7 @@ public class SpectatorWindow {
         scene.setFill(Color.BURLYWOOD);
 
         int barPos = (int) playerBar.getShape().getX();
-        client.set_paddle_position(barPos);
+        // client.set_paddle_position(barPos);
 
         Lobby.setScene(scene);
         Lobby.show();
