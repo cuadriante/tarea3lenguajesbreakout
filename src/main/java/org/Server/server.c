@@ -11,11 +11,11 @@ GameData *game_data;
 int main()
 {
     // Varas de los sockets de Windows
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-    {
-        return 1;
-    }
+    // WSADATA wsa;
+    // if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+    // {
+    //     return 1;
+    // }
     game_data = start_game();
 
     client_socket = malloc(sizeof(int));
@@ -93,8 +93,8 @@ void receive_message()
 
     if (strcmp(received_message, "0") == 0)
         send_blocks();
-    else if (strcmp(received_message, "1") == 0)
-        send_balls();
+    // else if (strcmp(received_message, "1") == 0)
+    //     send_balls();
     else if (strcmp(received_message, "2") == 0)
         send_paddle();
     else if (strcmp(received_message, "3") == 0)
@@ -155,6 +155,12 @@ void process_message(const char *received_message)
         separate_parameters(received_message, id);
         hide_ball(id[0]);
     }
+    else if (received_message[1] == '7')
+    {
+        int ball_id[1];
+        separate_parameters(received_message, ball_id);
+        send_ball(ball_id[0]);
+    }
     else
         send_message("Mensaje no reconocido\n", *client_socket);
 }
@@ -189,17 +195,27 @@ void send_message(const char *message, const int socket)
     stop_on_error(send(socket, message, message_size, 0));
 }
 
-void send_balls()
+void send_ball(const int ball_id)
 {
-    char ball_str[55];
-    for (int i = 0; i < game_data->existing_balls; i++)
-    {
-        sprintf(ball_str, "%d,%d,%d\n",
-                game_data->balls[i]->id,
-                game_data->balls[i]->pos_x,
-                game_data->balls[i]->pos_y);
+    Ball *ball = get_ball_by_id(game_data, ball_id);
 
-        send_message(ball_str, *client_socket);
+    char ball_str[55];
+    sprintf(ball_str, "%d,%d,%d\n",
+            ball->id,
+            ball->pos_x,
+            ball->pos_y);
+
+    send_message(ball_str, *client_socket);
+
+    if (*spectator_socket != -1)
+    {
+        char ball_str[55];
+        sprintf(ball_str, "6$%d,%d,%d\n",
+                ball->id,
+                ball->pos_x,
+                ball->pos_y);
+
+        send_message(ball_str, *spectator_socket);
     }
 }
 
@@ -241,7 +257,7 @@ void send_score()
     if (*spectator_socket != -1)
     {
         char score_str[10];
-        sprintf(score_str, "1$%d\n", game_data->score);
+        sprintf(score_str, "0$%d\n", game_data->score);
         send_message(score_str, *spectator_socket);
     }
 }
@@ -256,7 +272,7 @@ void send_lives()
     if (*spectator_socket != -1)
     {
         char lives_str[10];
-        sprintf(lives_str, "2$%d\n", game_data->lives);
+        sprintf(lives_str, "1$%d\n", game_data->lives);
         send_message(lives_str, *spectator_socket);
     }
 }
@@ -271,7 +287,7 @@ void send_level()
     if (*spectator_socket != -1)
     {
         char level_str[10];
-        sprintf(level_str, "3$%d\n", game_data->level);
+        sprintf(level_str, "2$%d\n", game_data->level);
         send_message(level_str, *spectator_socket);
     }
 }
@@ -299,9 +315,26 @@ void level_up()
 
 void add_ball()
 {
-    create_new_ball(game_data);
+    Ball *ball = create_new_ball(game_data);
 
-    send_balls();
+    char ball_str[55];
+    sprintf(ball_str, "%d,%d,%d\n",
+            ball->id,
+            ball->pos_x,
+            ball->pos_y);
+
+    send_message(ball_str, *client_socket);
+
+    if (*spectator_socket != -1)
+    {
+        char ball_str[55];
+        sprintf(ball_str, "3$%d,%d,%d\n",
+                ball->id,
+                ball->pos_x,
+                ball->pos_y);
+
+        send_message(ball_str, *spectator_socket);
+    }
 }
 
 void move_ball_x(const int id, const int pos_x)
@@ -409,4 +442,16 @@ void hide_ball(const int id)
             ball->pos_y);
 
     send_message(hidden_str, *client_socket);
+
+    if (*spectator_socket != -1)
+    {
+        char hidden_str[20];
+        sprintf(hidden_str, "9$%d,%d,%d\n",
+                ball->id,
+                ball->pos_x,
+                ball->pos_y);
+
+        send_message(hidden_str, *spectator_socket);
+    }
+    send_score();
 }

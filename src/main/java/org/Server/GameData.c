@@ -76,7 +76,7 @@ int generate_random_powerup(const int min_number, const int max_number)
     }
 }
 
-void create_new_ball(GameData *game_data)
+Ball *create_new_ball(GameData *game_data)
 {
     for (int i = 0; i < MAX_BALLS; i++)
     {
@@ -90,12 +90,12 @@ void create_new_ball(GameData *game_data)
 
             game_data->existing_balls += 1;
 
-            break;
+            return game_data->balls[i];
         }
         else if (game_data->balls[i]->hidden)
         {
             game_data->balls[i]->hidden = false;
-            break;
+            return game_data->balls[i];
         }
     }
 }
