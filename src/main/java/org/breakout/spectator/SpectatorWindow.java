@@ -79,6 +79,11 @@ public class SpectatorWindow {
         }
     }
 
+    /**
+     * cambia la posicion en el eje x de la bola
+     * @param id id
+     * @param posX posicion en x
+     */
     public void setBallPosX(int id, int posX) {
         for (Ball ball : ballList) {
             if (ball.getId() == id) {
@@ -87,6 +92,11 @@ public class SpectatorWindow {
         }
     }
 
+    /**
+     * Cambia la posicion en el eje y de la bola
+     * @param id id
+     * @param posY posicion en el eje y
+     */
     public void setBallPosY(int id, int posY) {
         for (Ball ball : ballList) {
             if (ball.getId() == id) {
@@ -122,14 +132,26 @@ public class SpectatorWindow {
         }
     }
 
+    /**
+     * Cambia las vidas a las especificadas
+     * @param l vidas
+     */
     public void newLife(String l) {
         lives.setText(l);
     }
 
+    /**
+     * Cambia los puntos a los especificados
+     * @param pts puntos
+     */
     public void updatePuntos(String pts) {
         puntos.setText(pts);
     }
 
+    /**
+     * Cambia los puntos a los especificados
+     * @param lvl nivel
+     */
     public void nextLevel(String lvl) {
         level.setText(lvl);
 
@@ -144,6 +166,10 @@ public class SpectatorWindow {
         playerBar.setPos(xPos);
     }
 
+    /**
+     * Agrega una bola al juego del espectador
+     * @param id id
+     */
     public void addBall(int id) {
         System.out.println(id);
         for (Ball ball : ballList) {
@@ -264,6 +290,10 @@ public class SpectatorWindow {
         root.getChildren().add(levelLabel);
     }
 
+    /**
+     * Cambia el ancho de la barra de jugador
+     * @param width ancho de la bara de jugador
+     */
     public void setPlayerBarWidth(int width) {
         playerBar.getShape().setWidth(width);
     }
@@ -271,12 +301,18 @@ public class SpectatorWindow {
     /**
      * Destruye el bloque indicado.
      * 
-     * @param b bloque a destruir
+     * @param block bloque a destruir
      */
     public void breakBlock(Block block) {
         block.getShape().setVisible(false);
     }
 
+    /**
+     * Retorna un bloque
+     * @param row fila
+     * @param column columna
+     * @return bloque
+     */
     public Block getBlock(int row, int column) {
         for (Block block : blockList) {
             if (block.getRow() == row && block.getColum() == column) {
